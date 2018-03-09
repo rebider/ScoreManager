@@ -1,0 +1,300 @@
+﻿@using MT.Common
+@using MT.Models
+@model MT.Areas.Admin.ViewModels.IndexViewModel
+@{
+    ViewBag.Title = "CRM后台管理中心";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .z-hide {
+        display: none !important;
+    }
+    .user-photo {
+        position:absolute;
+        right:90px;
+        top:26px;
+    }
+    /*改变框架颜色*/
+    .header {
+        background-color:#044d80;
+    }
+    .layui-larry-menu ul.layui-nav .layui-this{
+        background-color: #00243e;
+    }
+    .header-demo .layui-nav-bar {
+          background-color: #00243e;
+    }
+    .layui-nav .layui-nav-item a,
+    .header-demo .layui-nav .layui-nav-item a {
+        color:#e0e0e0
+    }
+    .layui-nav {
+        background-color:#0b5c94;
+    }
+    .layui-nav-tree .layui-this>a:hover{
+        background-color:#00243e !important;
+    }
+    .layui-nav-tree .layui-this>a{
+        background-color:#00243e !important;
+    }
+
+</style>
+
+<div class="layui-layout layui-layout-admin" id="layui_layout">
+    <!-- 顶部区域 -->
+    <div class="layui-header header header-demo">
+        <div class="layui-main">
+            <!-- logo区域 -->
+            <a class="logo">
+                @*<img src="~/Plugins/common/images/logo1.png" alt="logo1.png">*@
+              
+                <img src="~/Styles/Images/LOGO.png" style="width:auto"/>
+            </a>
+            <!-- 顶级菜单区域 -->
+            <div class="layui-larry-menu">
+                <ul class="layui-nav clearfix">
+                    @{
+                        int i = 1;
+
+                        foreach (GroupModel group in Model.GroupList)
+                        {
+
+                            if (Model.NodeList.Count(s => s.GroupID == group.ID.ToInt() && s.NodeLevel == 3 && s.DisplayFlag == 1) == 0)
+                            {
+                                continue;
+                            }
+                            if (i == 1)
+                            {
+                                <li class="layui-nav-item  cslist ">
+                                    <a href="@(group.Url == "#" ? "javascript:void(0);" : group.Url)" class="layui-this" data-group="@group.ID">
+                                        <i class="fa @group.IcoCss fa-fw"></i>@group.Title
+                                    </a>
+                                </li>
+                                @(i++)
+                            }
+                            else
+                            {
+                                <li class="layui-nav-item  cslist ">
+                                    <a href="@(group.Url == "#" ? "javascript:void(0);" : group.Url)" class="" data-group="@group.ID">
+                                        <i class="fa @group.IcoCss fa-fw"></i>@group.Title
+                                    </a>
+                                </li>
+                            }
+                        }
+                    }
+                </ul>
+                @*<li class="layui-nav-item layui-this">
+                        <a href="javascirpt:;"><i class="iconfont icon-wangzhanguanli"></i>内容管理</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascirpt:;"><i class="iconfont icon-weixin3"></i>微信公众</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascirpt:;"><i class="iconfont icon-ht_expand"></i>扩展模块</a>
+                    </li>*@
+
+            </div>
+            <div class="user-photo">你好！@MTConfig.CurrentUser.UserType, 欢迎登录</div>
+            <!-- 右侧导航 -->
+            <ul class="layui-nav admin-header-item">
+                @*<li class="layui-nav-item first">
+                        <a href="javascript:;">
+                            <img src="~/Plugins/admin/images/userimg.jpg" class="userimg" />
+                            <cite>默认站点</cite>
+                            <span class="layui-nav-more"></span>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="#">默认站点</a>
+                            </dd>
+                            <dd>
+                                <a href="#">我的站点1</a>
+                            </dd>
+                            <dd>
+                                <a href="#">我的站点2</a>
+                            </dd>
+                        </dl>
+                    </li>*@
+
+                <li class="layui-nav-item">
+                    <a href="#" class="logout">
+                        <i class="fa fa-sign-out"></i>
+                        退出
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div id="content" class="fullwidth" style="display: none;"><span class="expand"></span></div>
+    </div>
+    <!-- 左侧侧边导航开始 -->
+    <div class="layui-side layui-side-bg layui-larry-side" id="larry-side">
+        <div class="layui-side-scroll" id="larry-nav-side" lay-filter="side">
+            
+            <!-- 左侧菜单 -->
+
+
+
+            <ul class="layui-nav layui-nav-tree" style="padding-top:55px;margin-right:0px;height:100%" >
+
+
+                <!-- 个人信息 -->
+                @{
+                    var firstGroup = new GroupModel();
+                    foreach (GroupModel group in Model.GroupList)
+                    {
+                        if (Model.NodeList.Count(s => s.GroupID == group.ID.ToInt() && s.NodeLevel == 3 && s.DisplayFlag == 1) == 0)
+                        {
+                            continue;
+                        }
+
+                        if (string.IsNullOrEmpty(firstGroup.ID))
+                        {
+                            firstGroup = group;
+                        }
+
+                        List<NodeModel> node2List = Model.NodeList.Where(s => s.NodeLevel == 2 && s.GroupID.ToString() == group.ID).ToList();
+
+                        foreach (NodeModel node2 in node2List)
+                        {
+                            List<NodeModel> node3List = Model.NodeList.Where(s => s.NodeLevel == 3 && s.Pid.ToString() == node2.ID && s.DisplayFlag == 1).ToList();
+                            if (node2.DisplayFlag == 0)
+                            {
+                                continue;
+                            }
+                            string link;
+                            if (!string.IsNullOrEmpty(node2.Link) && node2.Link != "#")
+                            {
+                                link = node2.Link;
+                            }
+                            else
+                            {
+                                link = "javascript:void(0);";
+                            }
+                            string target;
+                            if (string.IsNullOrEmpty(node2.Link) || "null".Equals(node2.Link.ToLower()))
+                            {
+                                target = "mainRigh";
+                            }
+                            else
+                            {
+                                target = node2.Target;
+                            }
+
+                            if (node3List.Count == 1)
+                            {
+                                link = "/Admin/" + node2.Name + "/" + node3List[0].Name;
+                            }
+
+                            string name = "";
+                            foreach (NodeModel node in node3List)
+                            {
+                                if (node.DisplayFlag == 1)
+                                {
+                                    name = node.Name;
+                                    break;
+                                }
+                            }
+                            if (node3List.Count > 0)
+                            {
+                                name = node3List[0].Name;
+                            }
+
+
+                            @:<li data-group="@group.ID" class="@(group.ID == firstGroup.ID ? "" : "z-hide") scdli layui-nav-item" ico-id="@node2.Name">
+                                <a ico-id="@node2.Name" href="javascript:;" data-url="@link">
+                                    <i class="fa @node2.IcoCss fa-fw" data-icon="fa @node2.IcoCss fa-fw"></i>
+                                    <span class="text">@node2.Title</span><i></i>
+                                </a>
+
+                            if (node3List.Count > 1)
+                            {
+                                @:<dl class="layui-nav-child">
+
+
+
+
+                                foreach (NodeModel node3 in node3List)
+                                {
+                                    if (node3.DisplayFlag == 0)
+                                    {
+                                        continue;
+                                    }
+                                    if (!string.IsNullOrEmpty(node3.Link) && node3.Link != "#")
+                                    {
+                                        link = node3.Link;
+                                        target = node3.Target;
+                                    }
+                                    else
+                                    {
+                                        link = "/Admin/" + node2.Name + "/" + node3.Name;
+                                        target = node3.Target;
+                                    }
+                                    @:<dd class=""><a href="javascript:;" data-url="@link" target="@target" class="listtwo"><i class="fa @node3.IcoCss fa-fw" data-icon="icon-geren1"></i><span>@node3.Title</span></a></dd>
+                                }
+
+                                @:</dl>
+                                        }
+                            @:</li>
+                                                        }
+                    }
+                }
+
+
+            </ul>
+        </div>
+    </div>
+
+    <!-- 左侧侧边导航结束 -->
+    <!-- 右侧主体内容 -->
+    <div class="layui-body" id="admin-body" style="bottom: 0;border-left: solid 2px #00243e	;">
+        <div class="layui-tab layui-tab-card larry-tab-box" id="larry-tab" lay-filter="demo" lay-allowclose="true" style="overflow-x:scroll">
+            <ul class="layui-tab-title">
+                <li class="layui-this" id="admin-home"><i class="fa fa-fa fa-fw"></i><em>后台首页</em><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></li>
+            </ul>
+            <div id="refresh_iframe" class="layui-btn refresh_iframe">刷新</div>
+            <div class="layui-tab-content" style="min-height: 150px; height: 0px;min-width: 1000px">
+                <div class="layui-tab-item layui-show">
+                    <iframe src="main" style="height: 150px;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 底部区域 -->
+    <!-- 加载js文件-->
+
+
+</div>
+<script>
+
+    $(function () {
+        var topMenu = $(".clearfix li a");
+        topMenu.each(function () {
+            $(this).click(function () {
+                var aSel = $(this).attr('class');
+                if (aSel != 'layui-this') {
+                    topMenu.removeClass('layui-this');
+                    $(this).addClass("layui-this");
+                } else {
+                    topMenu.removeClass('layui-this');
+                }
+                var dataGroup = $(this).attr('data-group');
+                $('.scdli').removeClass('z-hide').addClass('z-hide');
+                $('.scdli[data-group="' + dataGroup + '"]').removeClass('z-hide');
+            });
+        });
+    })
+    $(document).ready(function () {
+        $(".logout").click(function () {
+            layer.confirm('您确定退出吗?', { icon: 3, title: '提示' }, function (index) {
+                window.location.href = "/Admin/Public/Login";
+
+            }, function () {
+                $(".logout").parent("").removeClass("layui-this");
+
+            });
+           
+        });
+    });
+
+</script>

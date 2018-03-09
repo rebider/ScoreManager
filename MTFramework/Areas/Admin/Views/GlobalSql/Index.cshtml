@@ -1,0 +1,117 @@
+﻿@using MT.Models
+@using MT.Common
+@model PetaPoco.Page<GlobalSqlModel>
+
+@{
+    ViewBag.Title = "列表";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            BindCheckAll();
+        });
+    </script>
+}
+
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <div class="">
+            <blockquote class="layui-elem-quote mylog-info-tit">
+                <div class="layui-form-item ">
+                    @using (Html.BeginForm(vs["action"].ToString(), vs["controller"].ToString(), FormMethod.Get))
+                    {
+                        <div class="layui-inline">
+                            <input type="text" class="layui-input" placeholder="SQL键名" name="Item.SQLKey" id="Item_SQLKey" value="@(Model.Item == null ? "" : Model.Item.SQLKey + "")" />
+                        </div>
+                        <div class="layui-inline">
+                            <input name="" type="submit" value="查询" class="layui-btn"/>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="button" class="layui-btn layui-btn-normal" onclick="goAdd()"><i class="layui-icon"></i> 添加</button>
+                        </div>
+                    }
+                   
+                </div>
+            </blockquote>
+        </div>
+        <!-- search start -->
+        <!-- search end -->
+
+
+        <div class="larry-personal-body clearfix">
+            <table border="0" class="layui-table">
+                <tr>
+                    
+                    <th>
+                        @Html.LabelFor(m => m.Item.SQLKey)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.SQLContent)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.SqlConnection)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.Remark)
+                    </th>
+
+                    <th>操作</th>
+                </tr>
+                @if (Model.Items.Count == 0)
+                {
+                    <tr>
+                        <td colspan="5">@MTConfig.ListNoData</td>
+                    </tr>
+                }
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        
+                        <td>
+                            @item.SQLKey
+                        </td>
+                        <td>
+                            @item.SQLContent
+                        </td>
+                        <td>
+                            @item.SqlConnection
+                        </td>
+                        <td>
+                            @item.Remark
+                        </td>
+                        <td>
+                            @{
+                                if (Html.IsAuth("Admin", vs["controller"].ToString(), "Edit"))
+                                {
+                                    <a href="/Admin/@(vs["controller"])/Edit/@item.ID" class="layui-btn layui-btn-small layui-btn-normal">编辑</a>
+                                }
+                            }
+                            @{
+                                if (Html.IsAuth("Admin", vs["controller"].ToString(), "Delete"))
+                                {
+                                    <a onclick="deletemodel('/Admin/@(vs["controller"])/Delete/@item.ID')" class="layui-btn layui-btn-small layui-btn-danger">删除</a>
+                                }
+                            }
+                        </td>
+                    </tr>
+                                }
+            </table>
+            <div class="pageboder">  @Html.RenderPage(Model, "Admin") </div>
+        </div>
+    </div>
+</section>
+
+
+
+@section foot{
+    <script type="text/javascript">
+        function goAdd() {
+            window.location.href = '/Admin/@vs["controller"].ToString()/Add';
+        }
+    </script>
+}
+

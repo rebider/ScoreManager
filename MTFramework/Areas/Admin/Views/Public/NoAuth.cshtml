@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "对不起,您无权限访问此页面";
+    Layout = null;
+}
+<html>
+<head>
+    @MT.Common.ResourceHelper.CreateStyleResourceUrl("Admin", new[] { "common", "backstage" })
+    <script src="~/Scripts/jquery-1.7.2.min.js"></script>
+    <link href="~/Plugins/common/layui/css/layui.css" rel="stylesheet" media="all" />
+    <link href="~/Plugins/common/layui/css/modules/layer/default/layer.css" rel="stylesheet" media="all" />
+
+
+</head>
+<body>
+    @*<div class="m-opersf f-cb">
+            <dl>
+                <dt class="ico-fail"></dt>
+                <dd>
+                    <h1 class="z-err">
+                        对不起,您无权限访问此页面</h1>
+                    <p>
+                        将在<em class="z-err">@(int.Parse(ViewData["time"].ToString()))</em>秒后自动跳转，若不想等待，请<a href="javascript:history.go(-1);">点击此处</a>跳转</p>
+                    <p>
+                        <i class="z-err"></i>
+                    </p>
+                </dd>
+            </dl>
+        </div>*@
+    <script src="~/Plugins/common/layui/layui.js"></script>
+    <script src="~/Plugins/common/layui/lay/dest/layui.all.js"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            layer.open({
+                content: "对不起,您无权限访问此页面",
+                yes: function (index, layero) {
+                    history.go(-1);
+                    layer.close(index); //如果设定了yes回调，需进行手工关闭
+                }
+            });
+        });
+
+        @*setTimeout(function () {
+        history.go(-1);
+    }, parseInt('@ViewData["time"].ToString()') * 1000);*@
+    </script>
+</body>
+</html>

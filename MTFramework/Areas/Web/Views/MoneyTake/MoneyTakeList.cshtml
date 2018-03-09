@@ -1,0 +1,115 @@
+﻿@using MT.Models
+@using MT.Common
+@using MT.Common.Helper
+@model PetaPoco.Page<MoneyTakeModel>
+
+@{
+    ViewBag.Title = "列表";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+
+}
+<style>
+    html {
+        background-color:#fafafa;
+    }
+    table tr:nth-child(even) {
+        background-color:#f9f9f9
+    }
+    table tr:nth-child(even) td{
+        background-color:#f9f9f9
+    }
+</style>
+<section class="layui-larry-box" style="background-color:#fafafa;">
+    <header class="larry-personal-tit">
+        <div><a href="/web/MoneyTake/Index"><i class="layui-icon ">&#xe603;</i><span lang="return"></span></a></div>
+    </header>
+    <fieldset class="layui-elem-field layui-field-title" style="margin: 0px;border:none">
+        <legend lang="gold_record" style="margin:0px;padding:14px 0px 30px;font-size:20px;color:#333"></legend>
+    </fieldset>
+    <div class="larry-personal" style="width:100%;">
+        <div class="larry-personal-body clearfix">
+            <table border="0" class="layui-table">
+                <tr>
+                    <th>
+                        <label lang="application_time"></label>
+                       
+                    </th>
+                    <th>
+                        <label lang="cash_withdrawal"></label>
+                        
+                    </th>
+                    
+                    <th>
+                        <label lang="curr_withdrawal"></label>
+                    
+                    </th>
+                    <th>
+                        <label lang="convert"></label>
+                        
+                    </th>
+                    <th>
+                        <span lang="collection_information"></span>
+                        
+                    </th>
+                    <th>
+                        <span lang="state"></span>
+                       
+                    </th>
+                    
+                </tr>
+                @if (Model.Items.Count == 0)
+                {
+                    <tr>
+                        <td colspan="8" lang="nodata" align="center"></td>
+                    </tr>
+                }
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            @item.InsTime
+                        </td>
+                        <td>
+                            @item.TakeMoney
+                        </td>
+                        <td>
+                            @item.MoneyType
+                        </td>
+                        <td>
+                            @item.TransMoney
+                        </td>
+                        <td>
+                            @item.BankName|@item.CardName|@item.CardNo
+                        </td>
+                        
+                           
+                            @if (item.Status == 1)
+                            {
+                            <td><span lang="alreadyprocessed" style="background-color:#66bb6a;padding:4px 5px;color:#fff"></span></td>
+                            }
+                            else if (item.Status == 3)
+                            {
+                                <td><span  lang="pending_treatment" style="background-color:#ec8f35;padding:4px 5px;color:#fff"></span></td>
+                            }
+                            else if (item.Status == 2)
+                            {
+                                <td><span style="background-color:#f67467;padding:4px 5px;color:#fff"><span lang="processingfailure"></span></span> :@item.Result</td>
+                            }
+
+                    </tr>
+                }
+            </table>
+            <div class="pageboder"> @Html.ViewPage(Model, "Web") </div>
+        </div>
+    </div>
+   
+</section>
+@section foot{
+
+}
+

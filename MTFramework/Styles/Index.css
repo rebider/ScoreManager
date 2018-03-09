@@ -1,0 +1,33 @@
+﻿
+.header {
+    height: 65px;
+    border-bottom: 1px solid #404553;
+    background-color: #fff;
+    color: #fff;
+}
+.layui-nav-tree .layui-nav-bar {
+    width: 5px;
+    height: 0;
+    background-color: #f59131;
+}
+.layui-layout-admin .layui-header {
+    border-bottom: 1px solid #eaeaea;
+    background:#fff;
+}
+.layui-elem-quote {
+    margin-bottom: 10px;
+    padding: 15px;
+    line-height: 22px;
+    border-left: 5px solid #8c26c7;
+    border-radius: 0 2px 2px 0;
+    background-color: #f2f2f2;
+}
+.layui-nav-tree .layui-nav-child dd.layui-this, .layui-nav-tree .layui-this, .layui-nav-tree .layui-this>a, .layui-nav-tree .layui-this>a:hover {
+    background-color: #f59131;
+    color: #fff;
+}
+ 
+    
+    .ys-crm{
+        height: 40px;
+}

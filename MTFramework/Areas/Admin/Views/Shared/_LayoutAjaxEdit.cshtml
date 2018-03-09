@@ -1,0 +1,300 @@
+﻿@using MT.Common
+@{
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="~/Styles/common.css" rel="stylesheet" />
+    <link href="~/Styles/backstage.css" rel="stylesheet" />
+    <link href="~/Styles/bscommon.css" rel="stylesheet" />
+    @RenderSection("head", false)
+    <script src="~/Scripts/jquery-1.7.2.min.js"></script>
+    <link rel="icon" href="~/Styles/images/16.png" type="image/x-icon">
+    <link href="~/Plugins/Font-Awesome-master/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Plugins/common/layui/css/layui.css" rel="stylesheet" media="all" />
+    <link href="~/Plugins/common/global.css" rel="stylesheet" media="all" />
+    <link href="~/Plugins/admin/css/adminstyle.css" rel="stylesheet" media="all" />
+    <link href="~/Plugins/common/layui/css/modules/layer/default/layer.css" rel="stylesheet" media="all" />
+    <link href="~/Plugins/admin/css/personal.css" rel="stylesheet" />
+</head>
+<body>
+    @RenderBody()
+    <script src="~/Plugins/common/layui/layui.js"></script>
+    <script src="~/Plugins/admin/js/larry.js"></script>
+    <script src="~/Plugins/admin/js/index.js"></script>
+    <script src="~/Plugins/common/layui/lay/dest/layui.all.js"></script>
+    <script src="~/Scripts/layverify.js"></script>
+    <script type="text/javascript">
+
+
+        $(function() {
+            $("input[disabled]").css("background", "#eee");
+
+            //监听回车按键
+            document.onkeydown = function (event) {
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                if (e && e.keyCode == 13) {//大回车
+                    return false;
+                } else if (e && e.keyCode == 108) {//数字键盘回车
+                    return false;
+                }
+            }
+            //监听回车按键
+            document.onkeydown = function (event) {
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                if (e && e.keyCode == 13) {//大回车
+                    return false;
+                } else if (e && e.keyCode == 108) {//数字键盘回车
+                    return false;
+                }
+            }
+        });
+        function openpage(url){
+            layer.open({
+                title:"选择用户",
+                type: 2,
+                content: [url],
+                area: ['1138px', '666px'],
+                success: function(layero, index){
+                    //var body = layer.getChildFrame('body', index);
+                    //var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+                    //console.log(body.html()); //得到iframe页的body内容
+                    //body.find('input').val('Hi，我是从父页来的');
+                }
+            });}
+
+        //$(function () {
+        //    $("label").each(function () {
+        //        var labelval = $(this).text();
+        //        if (labelval.length == 2) {
+        //            var stris = labelval.split('');
+        //            var dt = $(this).parent("dt");
+        //            var htm = "<span>" + stris.join("<span class='kongge'></span>") + "</span>:";
+        //            $(this).remove();
+        //            $(dt).html(htm);
+        //        }
+        //        if (labelval.length == 3) {
+        //            var stris3 = labelval.split('');
+        //            var dt2 = $(this).parent("dt");
+        //            var htm3 = "<span>" + stris3.join("<span class='kongge3'></span>") + "</span>:";
+        //            $(this).remove();
+        //            $(dt2).html(htm3);
+        //        }
+        //    });
+        //});
+
+
+        //function stopconfirm(title, rul) {
+        //    art.dialog({
+        //        title: '提示',
+        //        width:450,
+        //        height: 80,
+        //        top: '20%',
+        //        lock: true,
+        //        background: '#fff', // 背景色
+        //        opacity: 0.5,	// 透明度
+        //        content: title,
+        //        ok: function () {
+        //            $.ajax({
+        //                url: rul,
+        //                type: "Post",
+        //                success: function (data) {
+        //                    window.location.reload();
+        //                }
+        //            });
+        //        },
+        //        cancelVal: '取消',
+        //        cancel: true //为true等价于function(){}
+        //    });
+        //}
+        var lock = false;
+        function addmodel(url) {
+            if (lock) return;
+            lock = true;
+            if (!url) { url = '/Admin/@vs["controller"]/@vs["controller"]Index'; }
+            //loading层
+            var index = layer.load(1, {
+                shade: [0.5, '#000'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                url: "/Admin/@vs["controller"]/@vs["controller"]Add",
+                type: "POST",
+                data: $("form").serialize(),
+                success: function (data) {
+                    lock = false;
+                    if (data.status == 1) {
+                        layer.open({
+                            content: "保存成功",
+                            yes: function(index, layero) {
+                                location.href = url;
+                                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                            }
+                        });
+                    }else{
+                        lock = false;
+                        layer.closeAll("loading");
+
+                        layer.open({
+                            content:data.msg
+                        });
+                    }
+                },error:function() {
+                    layer.closeAll("loading");
+                    layer.msg(data.msg);
+                    lock = false;
+                }
+            });
+        }
+
+
+
+        function editmodel(url) {
+            if (lock) return;
+            lock = true;
+            if (!url) { url = '/Admin/@vs["controller"]/@vs["controller"]Index'; }
+            //loading层
+            var index = layer.load(1, {
+                shade: [0.5, '#000'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                url: "/Admin/@vs["controller"]/@vs["controller"]Edit",
+                type: "POST",
+                data: $("form").serialize(),
+                success: function (data) {
+                    lock = false;
+                    if (data.status == 1) {
+                        layer.open({
+                            content: "保存成功",
+                            yes: function(index, layero) {
+                                location.href = url;
+                                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                            }
+                        });
+
+                    }else{
+                        lock = false;
+                        layer.closeAll("loading");
+                        layer.open({
+                            content:data.msg,
+                            yes: function(index, layero) {
+                                //parent.location.href = url;
+                                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                            }
+                        });
+                    }
+                },error:function() {
+                    layer.closeAll("loading");
+                    layer.msg(data.msg);
+                    lock = false;
+                }
+            });
+        }
+
+        function editoradd(controller,action,url,msg) {
+            if (lock) return;
+            lock = true;
+            if (!url) { url = '/Admin/@vs["controller"]/@vs["controller"]Index'; }
+            if (!controller) { controller = @vs["controller"]; }
+            if (!action) { action = 'Edit'; }
+            if (!msg) { msg = '保存成功'; }
+            //loading层
+            var index = layer.load(1, {
+                shade: [0.5, '#000'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                url: "/Admin/"+controller+"/"+@vs["controller"]action,
+                type: "POST",
+                data: $("form").serialize(),
+                success: function (data) {
+                    if (data.status == 1) {
+                        lock = false;
+                        layer.open({
+                            content: msg,
+                            yes: function(index, layero) {
+                                location.href = url;
+                                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                            }
+                        });
+                    }else{
+                        lock = false;
+                        layer.closeAll("loading");
+                        layer.open({
+                            content:data.msg
+                        });
+                    }
+                },error:function() {
+                    layer.closeAll("loading");
+                    layer.msg(data.msg);
+                    lock = false;
+                }
+            });
+        }
+
+
+        function back(url) {
+            if (!url) { url = '/Admin/@vs["controller"]/@vs["controller"]Index'; }
+            @*var pathname = '/Admin/@vs["controller"]/Index';
+            if ((pn || '') != '') {
+                pathname = pn;
+            }
+            var keyValues = {};
+            var arr = (top.art.dialog.data[pathname.toLowerCase()] || '').split('&');
+            var i;
+            var keyValue;
+            for (i = 0; i < arr.length; i++) {
+                if (arr[i] == '' || arr[i].split('=').length < 2) {
+                    continue;
+                }
+                keyValue = arr[i].split('=');
+                keyValues[keyValue[0]] = keyValue[1];
+            }
+            if ((params || '') != '') {
+                arr = params.split('&');
+                for (i = 0; i < arr.length; i++) {
+                    if (arr[i] == '' || arr[i].split('=').length < 2) {
+                        continue;
+                    }
+                    keyValue = arr[i].split('=');
+                    keyValues[keyValue[0]] = keyValue[1];
+                }
+            }
+            var parameters = new Array();
+            for (i in keyValues) {
+                parameters.push(i + '=' + keyValues[i]);
+            }*@
+            location.href = url;
+        }
+        @*$(document).ready(function () {
+
+            var pathname = '/Admin/@vs["controller"]/@vs["controller"]Index';
+            $('form').submit(function () {
+                if ($('.field-validation-error').length == 0) {
+                    $.ajax({
+                        url: $('form').attr('action'),
+                        type: $('form').attr('method'),
+                        data: $('form').serialize(),
+                        success: function (data) {
+                            //alert(data.msg);
+                            if (data.status == 1) {
+                                back(data.jumpUrl);
+                                //location.href = pathname + '?' + parameters.join('&');
+                            }
+                        }
+                    });
+                }
+                return false;
+            });
+            $("input,textarea,select").focus(function () {
+                $(this).css("border-color", "#66afe9");
+            });
+            $("input,textarea,select").blur(function () {
+                //让当前失去焦点的文本框背景色变为白色
+                $(this).css("border-color", "#e1e1e1");
+            });
+        });*@
+    </script>
+    @RenderSection("foot", false)
+</body>
+</html>

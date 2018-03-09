@@ -1,0 +1,132 @@
+﻿@using MT.Common
+@{
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="~/Plugins/Font-Awesome-master/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Plugins/ZTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <link href="~/Styles/bscommon.css" rel="stylesheet" />
+    <link href="~/Styles/backstage.css" rel="stylesheet" />
+    <link href="~/Styles/login.css" rel="stylesheet" />
+    <link href="~/Styles/Validate.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-1.7.2.min.js"></script>
+    <link rel="icon" href="~/Styles/images/16.png" type="image/x-icon">
+    @RenderSection("head", false)
+    <link href="~/Styles/bscommon.css" rel="stylesheet" />
+    <link href="~/Plugins/common/layui/css/layui.css" rel="stylesheet" media="all" />
+    <link href="~/Plugins/common/global.css" rel="stylesheet" media="all" />
+    <link href="~/Plugins/admin/css/adminstyle.css" rel="stylesheet" media="all" />
+    <link href="~/Plugins/admin/css/personal.css" rel="stylesheet" />
+
+</head>
+<body>
+    @RenderBody()
+    <script src="~/Plugins/admin/js/index.js"></script>
+    <script src="~/Plugins/common/layui/lay/dest/layui.all.js"></script>
+    <script src="~/Scripts/jquery-1.7.2.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Plugins/ZTree/js/jquery.ztree.all-3.5.min.js"></script>
+    <script type="text/javascript">
+        function editmodel(url) {
+
+            if (!url) { url = '/Admin/@vs["controller"]/Index'; }
+            //loading层
+            var index = layer.load(1, {
+                shade: [0.5, '#000'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                url: "/Admin/@vs["controller"]/Edit",
+                type: "POST",
+                data: $("form").serialize(),
+                success: function (data) {
+                    if (data.status == 1) {
+                        layer.open({
+                            content: "保存成功",
+                            yes: function (index, layero) {
+                                location.href = url;
+                                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                            }
+                        });
+
+                    }
+                }, error: function () {
+                    layer.closeAll("loading");
+                    layer.msg(data.msg);
+                }
+            });
+        }
+
+        function actionmodel(controller, action, url, msg) {
+            if (!url) { url = '/Admin/@vs["controller"]/Index'; }
+            if (!controller) { controller = "@vs["controller"]"; }
+            if (!action) { action = 'Edit'; }
+            if (!msg) { msg = '保存成功'; }
+            //loading层
+            var index = layer.load(1, {
+                shade: [0.5, '#000'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                url: "/Admin/" + controller + "/" + action,
+                type: "POST",
+                data: $("form").serialize(),
+                success: function (data) {
+                    if (data.status == 1) {
+                        layer.open({
+                            content: msg,
+                            yes: function (index, layero) {
+                                location.href = url;
+                                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                            }
+                        });
+                    }
+                }, error: function () {
+                    layer.closeAll("loading");
+                    layer.msg(data.msg);
+                }
+            });
+        }
+        function back(url) {
+            if (!url) { url = '/Admin/@vs["controller"]/Index'; }
+            @*var pathname = '/Admin/@vs["controller"]/Index';
+            if ((pn || '') != '') {
+                pathname = pn;
+            }
+            var keyValues = {};
+            var arr = (top.art.dialog.data[pathname.toLowerCase()] || '').split('&');
+            var i;
+            var keyValue;
+            for (i = 0; i < arr.length; i++) {
+                if (arr[i] == '' || arr[i].split('=').length < 2) {
+                    continue;
+                }
+                keyValue = arr[i].split('=');
+                keyValues[keyValue[0]] = keyValue[1];
+            }
+            if ((params || '') != '') {
+                arr = params.split('&');
+                for (i = 0; i < arr.length; i++) {
+                    if (arr[i] == '' || arr[i].split('=').length < 2) {
+                        continue;
+                    }
+                    keyValue = arr[i].split('=');
+                    keyValues[keyValue[0]] = keyValue[1];
+                }
+            }
+            var parameters = new Array();
+            for (i in keyValues) {
+                parameters.push(i + '=' + keyValues[i]);
+            }*@
+            location.href = url;
+        }
+
+
+    </script>
+    @RenderSection("foot", false)
+</body>
+</html>

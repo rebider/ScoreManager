@@ -1,0 +1,13 @@
+﻿@{
+    FieldTemplateMetadata metaData = ViewData.ModelMetadata as FieldTemplateMetadata;
+    System.ComponentModel.DataAnnotations.UIHintAttribute attribute = (metaData != null) ? metaData.Attributes.OfType<System.ComponentModel.DataAnnotations.UIHintAttribute>().SingleOrDefault() : null;
+
+    if (attribute != null)
+    {
+        string dataKey = attribute.ControlParameters["viewDataKey"].ToString();
+        string valueField = attribute.ControlParameters["Value"].ToString();
+        string textField = attribute.ControlParameters["Text"].ToString();
+        SelectList list = new SelectList(ViewData[dataKey] as System.Collections.IEnumerable, valueField, textField);
+    @Html.RadioButtonList(metaData.PropertyName, list)
+    }
+}

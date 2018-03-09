@@ -1,0 +1,47 @@
+﻿/*信息管理*/
+.icoback{ background: url('Images/crmico.png');width: 22px;height: 22px;}
+.Customer{background-position:-45px -250px;}/*客户管理*/
+.Customer2{background-position:-1px -250px;}/*客户管理*/
+.Product{background-position:-45px -292px;}
+.Product2{background-position:-1px -292px;}
+
+.User{background-position:-45px -337px;}
+.User2{background-position:-1px -337px;}
+
+.GlobalSql{background-position:-45px -382px;}
+.GlobalSql2{background-position:-1px -382px;}
+
+.Config{background-position:-45px -425px;}
+.Config2{background-position:-1px -425px;}
+
+.StatisticsStudentsNumber{background-position:-45px -467px;}
+.StatisticsStudentsNumber2{background-position:-1px -467px;}
+
+.StatisticsArea{background-position:-45px -513px;}
+.StatisticsArea2{background-position:-1px -513px;}
+
+.StatisticsGenderDistribution{background-position:-45px -558px;}
+.StatisticsGenderDistribution2{background-position:-1px -558px;}
+
+.StatisticsIntentionCountry{background-position:-45px -599px;}
+.StatisticsIntentionCountry2{background-position:-1px -599px;}
+
+.StatisticsClientSource{background-position:-45px -643px;}
+.StatisticsClientSource2{background-position:-1px -643px;}
+
+.StatisticsConsultationMode{background-position:-45px -683px;}
+.StatisticsConsultationMode2{background-position:-1px -683px;}
+
+.StatisticsDistributionStatus{background-position:-45px -730px;}
+.StatisticsDistributionStatus2{background-position:-1px -730px;}
+
+.StatisticsClientStatus{background-position:-45px -771px;}
+.StatisticsClientStatus2{background-position:-1px -771px;}
+
+.StatisticspPlanSchool{background-position:-45px -801px;}
+.StatisticspPlanSchool2{background-position: 0 -802px;}
+
+
+
+
+

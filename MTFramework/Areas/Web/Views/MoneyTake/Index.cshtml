@@ -1,0 +1,288 @@
+﻿
+@using MT.Models
+@using MT.Common
+@using MT.Common.Helper
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+    List<UserInfoModel> bankInfo = ViewBag.Info;
+}
+<style>
+     #TakeMoney.warn-input {
+        border-color:red !important;
+    }
+    .layui-input, .layui-select {
+        background-color:transparent;
+        border-color:#232f41
+    }
+    .layui-form-select dl dd.layui-this {
+        background-color:#329ef4;
+    }
+    .layui-input-block {
+        margin-left:205px;
+        padding-top:0px;
+    }
+    .layui-input-block .a3 {
+        background-color:#329ef4;
+        color:#fff;
+        border:none;
+    }
+    .layui-input-block .a3:hover {
+         background-color:#329ef4;
+        color:#fff;
+        border:none;
+    }
+</style>
+@section head{
+
+
+
+
+}
+<style>
+    .a3{color:#333333;background:#ffffff;border: 1px solid #eaeaea;}
+    .a3:hover{color:#ffffff;background:#57b6c8;}
+    .layui-input-inline-1 {
+        width: 72%!important;
+    }
+    .moneyTake-title {
+        padding-left:20px;
+        line-height:48px;
+        border-bottom:1px solid #232f41;
+    }
+</style>
+<section class="layui-larry-box" style="padding-top:30px;background:#16202f;height:870px;padding-left:14px;">
+    <fieldset  style="margin-top:-7px;margin-bottom:25px;font-family:Roboto;font-size:18px;color:#cad4de;">
+        <div lang="withdraw" ></div>
+    </fieldset>
+    <div style="width:50%;">
+        <table style="width:100%;">
+            <tr style="height:0px;">
+                <td width="40%"></td>
+                <td width="60%"></td>              
+            </tr>
+          
+          
+        </table>
+    </div>
+
+
+
+
+   
+        <form method="post" class="layui-form " id="form" style="background:#1c283b;border-top:none;width:804px;color:#cad4de;box-shadow:0px 1px 3px 0px #1c283b ">
+            <div class="moneyTake-title" lang="moneyTakeTitle"></div>
+            <div class="layui-form-item"  style="padding:20px 15px 0px;margin-bottom:0px">
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width:200px;" lang="wallet_bag"></label>
+                    <div class="layui-input-inline layui-input-inline-1">
+                        <input type="text" readonly name="Money" value="@ViewBag.Money" class="layui-input" lay-filter='Money' id="Money" />
+                    </div>
+                </div>
+                <div class="layui-form-item" style="display:none">
+                    <label class="layui-form-label" style="width:200px;" lang="currency_type"></label>
+                    <div class="layui-input-inline">
+                        @Html.Raw(DropDownListHelper.GetDropDownList("DDL_PayFeeMoneyType", "", " name='MoneyType' id='MoneyType' lay-filter='MoneyType' ", "", ""))
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width:200px" lang="amount_money1"></label>
+                    <div class="layui-input-inline layui-input-inline-1">
+                        <input type="text" class="layui-input" onkeyup="Trans(this.value)" id="TakeMoney" name="TakeMoney"  placeholder="$" autocomplete="off"  />
+                        <div style="color:red" id="diverror"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item" style="display:none">
+                    <label class="layui-form-label" style="width:200px" lang="convert"></label>
+                    <div class="layui-input-inline layui-input-inline-1">
+                        <input type="text" class="layui-input" id="TransMoney" name="TransMoney"  readonly />
+                        <input type="text" id="RealRate" name="RealRate" />
+                    </div>
+                </div>
+                @foreach (UserInfoModel item in bankInfo)
+                {
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:200px" lang="payee_name"></label>
+                        <div class="layui-input-inline layui-input-inline-1">
+                            @if (ViewBag.Userlang == "En")
+                            { 
+                                <input type="text" required lay-verify="required" name="CardName" id="CardName" value='@item.UserName' class="layui-input" readonly />
+                            }
+                            @if (ViewBag.Userlang == "Cn"|| ViewBag.Userlang ==null)
+                            {
+                                <input type="text" required lay-verify="required" name="CardName" id="CardName" value='@item.UserNameCn' class="layui-input" readonly />
+                            }
+                        </div>
+                    </div>
+                    <div class="layui-form-item" >
+                        <label class="layui-form-label" style="width:200px" lang="taketype"></label>
+                        <div class="layui-input-inline layui-input-inline-1" style="z-index:2">
+                         
+                            @if (ViewBag.Userlang == "En")
+                             {
+                                <select name='TakeType' id='TakeType' style="z-index:2">
+                                    <option value="0" selected='selected'>Bank Transfer</option>
+                                    <option value="1">Wire Transfer</option>
+                                </select>
+                             }
+                            
+                            @if (ViewBag.Userlang == "Cn" || ViewBag.Userlang == null)
+                            {
+                                <select name='TakeType' id='TakeType' style="z-index:2">
+                                    <option value="9" selected='selected'>银行转账</option>
+                                    <option value="1">电汇</option>
+                                </select>
+                            }
+                          
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="z-index:1">
+                        <label class="layui-form-label" style="width:200px" lang="bank_name"></label>
+                        <div class="layui-input-inline layui-input-inline-1" @*style="z-index:2"*@>
+                            <input type="text" required lay-verify="required" name="BankName" id="BankName" value="@item.BankName" class="layui-input" readonly autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:200px" lang="bank_branch"></label>
+                        <div class="layui-input-inline layui-input-inline-1">
+                            <input type="text" required lay-verify="required" name="BankBranch" id="BankBranch" value="@item.BankBranch" class="layui-input" readonly />
+                        </div>
+                    </div>
+                    <div class="layui-form-item" >
+                        <label class="layui-form-label" style="width:200px" lang="bank_address"></label>
+                        <div class="layui-input-inline layui-input-inline-1">
+                            <input type="text" required  name="BankAddress" id="BankAddress" value="@item.CardAddress" class="layui-input" readonly />
+                        </div>
+                    </div>
+                    <div id="parentCls" class="layui-form-item">
+                        <label class="layui-form-label" style="width:200px" lang="card_no1"></label>
+                        <div class="layui-input-inline layui-input-inline-1">
+
+                            <input type="text" required lay-verify="required|number" name="CardNo" id="CardNo" value="@item.CardNo" class="layui-input" maxlength="19" autocomplete="off" readonly />
+                        </div>
+                        </div>
+                
+                }
+            </div>
+
+            <div class="layui-form-item"  style="padding:7px 15px 32px;">
+                <div class="layui-input-block">
+                    
+                  
+                    <input type="submit" lay-submit btn-lang="request" class="layui-btn a3" />
+                    @*<div class="layui-btn">
+                            <a href="MoneyTakeList">查看出金记录</a>
+                        </div>*@
+                    @*<input type="button" id="SeeMoney" btn-lang="ch_record" class="layui-btn a3" />*@
+                    <input type="hidden" id="Take50" value="@ViewBag.Take50" />
+                    <input type="hidden" value="@ViewBag.checktwo" id="checktwo" />
+                </div>
+            </div>
+        </form>
+        
+        @*</fieldset>*@
+</section>
+@section foot
+{
+<script src="~/Scripts/backcardcheck.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        layui.use('form', function () {
+            var form = layui.form();
+            form.on('select(MoneyType)', function (data) {
+                $("#TransMoney").val("");
+                $("#errmessage").val("");
+                $("#TakeMoney").val("");
+            });
+
+
+        });
+        $("#form").submit(function () {
+
+            var index = layer.load(1, {
+                shade: [0.5, '#000'] //0.1透明度的白色背景
+            });
+            if ($("#TakeMoney").val() < 50)
+            {
+                layer.msg($("#Take50").val());
+                layer.closeAll("loading");
+                return false;
+            }
+            $.ajax({
+                url: "/Web/MoneyTake/AddMoneyTake",
+                type: "POST",
+                data: $("form").serialize(),
+                success: function (data) {
+                    if (data.isOk)
+                    {
+
+                        location.href = "../FinaceRecord/Index";
+                        layer.closeAll("loading");
+                    }
+                    else
+                    {
+                        layer.msg(data.info);
+                        $("#InMoney").addClass("warn-input");
+                        layer.closeAll("loading");
+                    }
+                }
+            });
+            return false;
+        });
+        $(function () {
+            $("#SeeMoney").click(function () {
+                window.location.href = "MoneyTakeList";
+            });
+        });
+        function Trans(money) {
+            if (!isNaN(money)) {
+
+                var dot = money.indexOf(".");
+
+                if (dot != -1) {
+
+                    var dotCnt = money.substring(dot + 1, money.length);
+
+                    if (dotCnt.length == 2)
+                    {
+
+                        $("#TakeMoney").attr("maxlength", money.length);
+                        $("#diverror").html("");
+                        $("#errmessage").val("");
+                        return false;
+                    }
+                    if (dotCnt.length > 2) {
+
+                        $("#TakeMoney").addClass("warn-input");
+                        $("#diverror").html(($("#checktwo").val()));
+
+                        return false;
+                    }
+                }
+            }
+            if ($("#TakeMoney").val() < 50)
+            {
+                $("#diverror").html($("#Take50").val());
+                $("#TakeMoney").addClass("warn-input");
+                return false;
+            }
+            $("#TakeMoney").attr("maxlength", "");
+            $("#TakeMoney").removeClass("warn-input");
+            $("#diverror").html("");
+            $("#errmessage").val("");
+
+        };
+
+
+        $(function () {
+            new TextMagnifier({
+                inputElem: '#CardNo',
+                align: 'top'
+            });
+
+        });
+</script>
+    }

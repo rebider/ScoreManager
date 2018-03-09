@@ -1,0 +1,107 @@
+﻿@using MT.Models
+@using MT.Common
+@{
+    ViewBag.Title = "我的钱包";
+    Layout = "~/Areas/web/Views/Shared/_LayoutIndex.cshtml";
+    string userid = ViewBag.userid;
+}
+<style>
+    .wallet-text {
+        margin-bottom:20px;
+        font-size:20px;
+        color:#333;
+     
+    }
+    .wallet {
+        width:600px;
+        background-color:#fff;
+    }
+    .wallet-title {
+        line-height:122px;
+        background-color:#f67467;
+        color:#fff;
+        text-align:center;
+        font-size:18px
+    }
+    .wallet-title > img {
+        margin-right:12px;
+    }
+    .wallet-number {
+        color:#f67467;
+        font-size:36px;
+        line-height:200px;
+        text-align:center;
+        border-bottom:1px solid #eaeaea;
+    }
+    .wallet-operation {
+        padding:15px 0px 20px;
+        text-align:center;
+
+    }
+    .wallet-operation > a {
+        display:inline-block;
+        padding:5px 12px;
+        font-size:12px;
+        border:1px solid #eaeaea;
+    }
+    .wallet-operation > a:hover {
+         background-color: #f67467;
+         color:#fff;
+         border:1px solid #f67467;
+    }
+</style>
+<!-- 用户语言设置 -->
+<div style="margin-left:25px;">
+    <input type="hidden" value="@MTConfig.UserLang" id="lang" />
+    <div class="wallet-text" lang="my_wllet"></div>
+    <div class="wallet">
+        <div class="wallet-title">
+            <img src="~/Plugins/common/images/icon-my.png" /><span lang="westfield_wallet"></span>
+        </div>
+        <div class="wallet-number"></div>
+        <div class="wallet-operation" >
+            <a href="/Web/MoneyPay/Index" lang="golden" data-id="golden"></a>
+            <a href="/Web/MoneyTake/index" lang="withdraw" data-id="moneytake"></a>
+            <a href="/Web/FinaceManage/CustomerTurn" lang="cus_trun" data-id="cus_trun"></a>
+            <a href="/Web/FinaceManage/UserTurn" lang="user_turn" data-id="user_turn"></a>
+            <a href="/Web/FinaceRecord/Index" lang="records" data-id="records"></a>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $.ajax({
+            url: "/Web/public/MatchRealName",
+            type: "post",
+            success: function (data) {
+                if (data.status) {
+                    $("a[data-id=moneytake]").show();
+                    $("a[data-id=cus_trun]").show();
+                    $("a[data-id=user_turn]").show();
+                }
+                else {
+                    $("a[data-id=moneytake]").hide();
+                    $("a[data-id=cus_trun]").hide();
+                    $("a[data-id=user_turn]").hide();
+                }
+            }
+        });
+    });
+    var userId='@userid';
+
+    $.ajax({
+        url: "/Web/Interface/GetNowUserMoney",
+        data: { userid: userId },
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+
+            $(".wallet-number").html("$ " + data.toFixed(2));
+        }
+    });
+    $(".wallet-operation").on("click", "a", function () {
+        var id = $(this).data("id");
+
+        $(parent.document).find(".layui-nav-tree>li#" + id).addClass("layui-this").siblings().removeClass("layui-this");
+    })
+</script>

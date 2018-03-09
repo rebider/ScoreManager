@@ -1,0 +1,230 @@
+﻿@using MT.Common
+@{
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>@ViewBag.Title</title>
+    <link href="~/Plugins/Font-Awesome-master/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.7.2.min.js"></script>
+    <script src="~/Scripts/CheckBoxUtil.js"></script>
+    <link href="~/Styles/bscommon.css" rel="stylesheet"/>
+    <link href="~/Styles/common.css" rel="stylesheet"/>
+    <link href="~/Styles/backstage.css" rel="stylesheet"/>
+    <link rel="icon" href="~/Styles/images/16.png" type="image/x-icon">
+    <link href="~/Plugins/common/layui/css/layui.css" rel="stylesheet" media="all"/>
+    <link href="~/Plugins/common/global.css" rel="stylesheet" media="all"/>
+    <link href="~/Plugins/admin/css/adminstyle.css" rel="stylesheet" media="all"/>
+    <link href="~/Plugins/common/layui/css/modules/layer/default/layer.css" rel="stylesheet" media="all"/>
+    <link href="~/Plugins/admin/css/personal.css" rel="stylesheet"/>
+    @RenderSection("head", false)
+</head>
+<body>
+
+
+    @RenderBody()
+    <script src="~/Scripts/sort.js?v=1.0"></script>
+    <script src="~/Plugins/common/layui/layui.js"></script>
+    <script src="~/Plugins/admin/js/larry.js"></script>
+    <script src="~/Plugins/admin/js/index.js"></script>
+    <script src="~/Plugins/common/layui/lay/dest/layui.all.js"></script>
+    <script src="~/Scripts/layverify.js"></script>
+    <script type="text/javascript">
+
+        layui.use(['jquery', 'form'], function () {
+            var form = layui.form();
+            form.verify({
+                //检查输入是否为数字
+                isnumber: function (value) {
+                    if (value + "" != "") {
+                        var reg = /^-?d+$/;    //         /^(([a-z]+[0-9]+)|([0-9]+[a-z]+))[a-z0-9]*$/i
+                        if (!isNaN(value)) {
+
+                        } else {
+                            return "请输入数字";   
+                        }
+                    }
+                }
+            })
+        });
+
+        //同步服务器
+        function synchro() {
+            layer.confirm('您确定要同步吗?', { icon: 3, title: '提示' }, function (index) {
+                $.ajax({
+                    url: "",
+                    type: "POST",
+                    success: function (data) {
+                        if (data.status == 1) {
+                            if (data.msg == "") {
+                                data.msg = "已同步！";
+                            }
+                            layer.open({
+                                content: data.msg,
+                                yes: function (layero, index) {
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            layer.open({
+                                content: data.msg,
+                                yes: function (layero, index) {
+                                    window.location.reload();
+                                }
+                            });
+                        }
+                    }
+                });
+
+            });
+        }
+
+        //加载弹出页
+        function openpage(url) {
+            layer.open({
+                title: "选择用户",
+                type: 2,
+                content: [url],
+                area: ['800px', '500px'],
+                success: function (layero, index) {
+                    //var body = layer.getChildFrame('body', index);
+                    //var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+                    //console.log(body.html()); //得到iframe页的body内容
+                    //body.find('input').val('Hi，我是从父页来的');
+                }
+            });
+        }
+
+        //添加页面跳转
+        function goAdd() {
+            window.location.href = '/Admin/@vs["controller"].ToString()/@vs["controller"]Edit?actiontype=1';
+        }
+
+        //刷新当前页面
+        $("#refreshed").click(function () {
+            window.location.reload();
+            return false;
+        });
+
+        //删除方法
+        function deletemodel(url) {
+            layer.confirm('您确定要删除吗?', { icon: 3, title: '提示' }, function (index) {
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    success: function (data) {
+                        if (data.status == 1) {
+                            if (data.msg == "") {
+                                data.msg = "删除成功！";
+                            }
+                            layer.open({
+                                content: data.msg,
+                                yes: function (layero, index) {
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            layer.open({
+                                content: data.msg,
+                                yes: function (layero, index) {
+                                    window.location.reload();
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+
+
+        //$(document).ready(function () {
+        //    top.art.dialog.data[location.pathname.toLowerCase()] = location.search.replace('?', '');
+
+        //    $('input[value="查询"]').click(function () {
+        //        top.art.dialog.data[location.pathname.toLowerCase()] = $('form').serialize();
+        //    });
+        //    $('input[value="刷新"]').click(function () {
+        //        top.art.dialog.data[location.pathname.toLowerCase()] = $('form').serialize();
+        //    });
+        //    $("input,textarea,select").focus(function () {
+        //        $(this).css("border-color", "#66afe9");
+        //        $(this).css("padding-left", "3px");
+        //    });
+        //    $("input,textarea,select").blur(function () {
+        //        让当前失去焦点的文本框背景色变为白色
+        //        $(this).css("border-color", "#e1e1e1");
+        //    });
+        //});
+
+        $(function () {
+
+            //监听回车按键
+            document.onkeydown = function (event) {
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                if (e && e.keyCode == 13) {//大回车
+                    return false;
+                } else if (e && e.keyCode == 108) {//数字键盘回车
+                    return false;
+                }
+
+            }
+
+
+            $(".g-mn", parent.document).removeClass("frma");
+
+            //$(".m-table tbody tr").find("td").each(function () {
+
+            //    if ($(this).val() == "") {
+            //        $(this).val("--");
+
+            //    }
+
+            //});
+        });
+
+        //返回上级菜单
+        function back(url) {
+            if (!url) { url = '/Admin/@vs["controller"]/@vs["controller"]Index'; }
+            @*var pathname = '/Admin/@vs["controller"]/Index';
+            if ((pn || '') != '') {
+                pathname = pn;
+            }
+            var keyValues = {};
+            var arr = (top.art.dialog.data[pathname.toLowerCase()] || '').split('&');
+            var i;
+            var keyValue;
+            for (i = 0; i < arr.length; i++) {
+                if (arr[i] == '' || arr[i].split('=').length < 2) {
+                    continue;
+                }
+                keyValue = arr[i].split('=');
+                keyValues[keyValue[0]] = keyValue[1];
+            }
+            if ((params || '') != '') {
+                arr = params.split('&');
+                for (i = 0; i < arr.length; i++) {
+                    if (arr[i] == '' || arr[i].split('=').length < 2) {
+                        continue;
+                    }
+                    keyValue = arr[i].split('=');
+                    keyValues[keyValue[0]] = keyValue[1];
+                }
+            }
+            var parameters = new Array();
+            for (i in keyValues) {
+                parameters.push(i + '=' + keyValues[i]);
+            }*@
+            location.href = url;
+        }
+
+     
+       
+
+
+    </script>
+    @RenderSection("foot", false)
+</body>
+</html>

@@ -1,0 +1,111 @@
+﻿@using MT.Common
+@{
+    ViewBag.Title = "忘记密码";
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title lang="noemail"></title>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+
+    <script src="~/Scripts/bootstrap.autocomplete.js" type="text/javascript"></script>
+
+    <link href="~/Styles/bscommon.css" rel="stylesheet" />
+    <link href="/Styles/common.css" rel="stylesheet" />
+    <link href="~/Styles/backstage.css" rel="stylesheet" />
+
+    <link href="/Plugins/common/layui/css/layui.css" rel="stylesheet" />
+</head>
+<body>
+    <input type="hidden" value="@MTConfig.UserLang" id="lang" />
+    <script src="/Plugins/common/layui/layui.js"></script>
+    <script src="/Plugins/common/layui/lay/dest/layui.all.js"></script>
+    <script src="~/Scripts/lang/selectlang.js"></script>
+    <script src="~/Scripts/layverify.js"></script>
+    <div>
+        <form class="layui-form">
+            <div class="layui-form-item" style="margin-top: 30px;">
+                <label class="layui-form-label" style="width: 165px;" lang="Mt4Tradingaccount"></label>
+                <div class="layui-input-inline">
+                    <input type="text"  class="layui-input" name="mt4account" id="mt4account" lay-verify="required" />  
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-top: 30px;">
+                <label class="layui-form-label" style="width: 165px;" lang="Mt4pwd"></label>
+                <div class="layui-input-inline">
+                    <input type="password" class="layui-input" name="mt4pwd" id="mt4pwd" lay-verify="required" />
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-top: 30px;">
+                <label class="layui-form-label" style="width: 165px;" lang="NewEmailAddress"></label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="mt4email" id="mt4email" lay-verify="required" />
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-top: 30px;" >
+                <label class="layui-form-label" style="width: 165px;" lang="MakeSureEmailAddress"></label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="mt4makesureemail" id="mt4makesureemail" lay-verify="required" />
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-top: 30px;">
+                <input type="hidden" id="surerest" btn-lang="getemailconfirm" />
+                <div class="layui-input-inline">
+                    <a class="layui-btn layui-btn-normal" lay-submit id="reset" lay-filter="formDemo" lang="makesure" style="margin-left:185px"></a>
+                </div>
+             </div>
+        </form>
+    </div>
+    <script>
+
+    layui.use('form',
+        function() {
+            var form = layui.form();
+
+            //监听提交
+            form.on('submit(formDemo)',
+                function(data) {
+                    layer.confirm($("#surerest").val(),
+                        function(index) {
+                            var i;
+                            $.ajax({
+                                url: 'GetEmailSure',
+                                type: 'post',
+                                data: { "mt4account": $("#mt4account").val(), "mt4pwd": $("#mt4pwd").val(), "mt4email": $("#mt4email").val(), "mt4makesureemail": $("#mt4makesureemail").val() },
+                                dataType: 'json',
+                                success: function(data) {
+                                    layer.open({
+                                        title: "",
+                                        content: data.msg,
+                                        yes: function(index) {
+                                            layer.close(index);
+                                            var pi = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                            parent.layer.close(pi); //再执行关闭
+                                        }
+                                    });
+                                },
+                                beforeSend: function() {
+                                    i = loading();
+                                },
+                                error: function(e, jqxhr, settings, exception) {
+                                    loadOver(i);
+                                }
+                            });
+                            layer.close(index);
+                        });
+                });
+        });
+    //正在加载
+    function loading() {
+        return layer.msg($("#restting").val(),
+        { icon: 16, shade: [0.5, '#333'], scrollbar: false, offset: '', time: 100000 });
+    }
+
+    //加载完毕
+    function loadOver(index) {
+        layer.close(index);
+    }
+    </script>
+</body>
+</html>

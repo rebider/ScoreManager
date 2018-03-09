@@ -1,0 +1,192 @@
+﻿@using MT.Models
+@using MT.Common
+@using MT.Common.Helper
+@using MT.Models
+@model PetaPoco.Page<TradeOrderModel>
+
+@{
+    ViewBag.Title = "佣金结算";
+    List<TradeOrderModel> list = ViewBag.toList;
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+}
+
+<section class="layui-larry-box" style="padding:0px;">
+    <a onclick="javascript: window.history.go(-1);"><i class="layui-icon " style="color:darkgoldenrod"></i><span style="color: darkgoldenrod;font-family:'微软雅黑'" lang="return">back</span></a>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend lang="agentarea"></legend>
+    </fieldset>
+    <div class="larry-personal">
+        <br />
+        <div class="larry-personal-body clearfix " style="margin: 0px;">
+            <blockquote class="layui-elem-quote layui-quote-nm" style="height: 80px;">
+                <form method="post" class="layui-form col-lg-7" id="form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width: 120px;" lang="outstanding_Commission"></label>
+                        <div class="layui-input-inline">
+                            <input class="layui-input" type="text" id="sumBonus" style="background-color:#dbd5d5"/>
+                        </div>
+                        @*<div class="layui-form-mid layui-word-aux">这里是辅助文字</div>*@
+                        <a href="javascript:void(0)" class="layui-btn layui-btn-normal" style="margin-left:20px;" onclick="BonusSettle();" lang="settlement_Commission"><i class="fa fa-dollar"></i>&nbsp;</a>
+                    </div>
+                </form>
+            </blockquote>
+
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px; clear: both">
+                <legend lang="offline_account"></legend>
+            </fieldset>
+            <table class="layui-table" lay-skin="line">
+                <thead>
+                <tr>
+                    <td lang="order"></td>
+                    <td lang="trading_account"></td>
+                    <td lang="belong_user"></td>
+                    <td lang="transaction_type"></td>
+                    <td lang="volume"></td>
+                    <td lang="date_time"></td>
+                    <td lang="return_amount"></td>
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                @if (Model.Items.Count == 0)
+                {
+                    <tr>
+                        <td colspan="8" align="center" lang="nodata"></td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>@item.Mt4Order</td>
+                            <td>@item.TradeAccount</td>
+                            <td>@item.UserName/@item.UserNameCn</td>
+                            <td>@item.Cmd @item.Symbol</td>
+                            <td>@item.Volume</td>
+                            <td>@item.OpenTime</td>
+                            <td>@item.Bonus</td>
+                            <td><a href="javascript:;" onclick="SingleBonusSettle(@item.Account,@item.OrderID,@item.Bonus)" class="layui-btn layui-btn-small">结算</a></td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+            <div class="pageboder"> @Html.ViewPage(Model, "Web") </div>
+
+            @*已结算**@           
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px; clear: both">
+                <legend>已结算</legend>
+            </fieldset>
+            <table class="layui-table" lay-skin="line">
+                <thead>
+                    <tr>
+                        <td lang="order"></td>
+                        <td lang="trading_account"></td>
+                        <td lang="belong_user"></td>
+                        <td lang="transaction_type"></td>
+                        <td lang="volume"></td>
+                        <td lang="date_time"></td>
+                        <td lang="return_amount"></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (list.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="7" align="center" lang="nodata"></td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var item in list)
+                        {
+                            <tr>
+                                <td>@item.Mt4Order</td>
+                                <td>@item.TradeAccount</td>
+                                <td>@item.UserName/@item.UserNameCn</td>
+                                <td>@item.Cmd @item.Symbol</td>
+                                <td>@item.Volume</td>
+                                <td>@item.OpenTime</td>
+                                <td>@item.Bonus</td>                              
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            
+
+            <div class="pageboder"> @Html.ViewPage(Model, "Web") </div>
+            <input type="hidden" btn-lang="confirm_settle" value="" id="confirm_settle"/>
+            <input type="hidden" btn-lang="nobonus" value="" id="nobonus" />
+        </div>
+    </div>    
+</section>
+@section foot{
+    <script>
+        //获取未结算佣金总额
+        $(function() {
+            $("#sumBonus").attr("disabled", true);
+            $.ajax({ //未结算佣金总额
+                url: "GetSumBonus",
+                type: "post",
+                dataType: "Json",
+                data: {},
+                success: function(data) {
+                    $("#sumBonus").val(data.info);
+                }
+            });
+        });
+
+        var lock = false;
+        //批量结算佣金
+        function BonusSettle() {
+            if (lock) return;
+            lock = true;
+            layer.confirm($("#confirm_settle").val(),
+                function() {
+                    if (parseInt($("#sumBonus").val()) <= 0) {
+                        layer.msg($("#nobonus").val());
+                        return;
+                    }
+                    $.post('BonusSettle',
+                        {},
+                        function(data) {
+                            lock = false;
+                            layer.open({
+                                content: data.info,
+                                yes: function() {
+                                    window.location.reload();
+                                }
+                            });
+
+                        });
+                });
+        }
+
+        //单条结算佣金
+        function SingleBonusSettle(accountId, tradeOrderId, userMoney) {
+            if (lock) return;
+            lock = true;
+            layer.confirm($("#confirm_settle").val(),
+                function() {
+                    if (parseInt($("#sumBonus").val()) <= 0) {
+                        layer.msg($("#nobonus").val());
+                        return;
+                    }
+                    $.post('BonusSettle',
+                        {"accountId":accountId,"tradeOrderId":tradeOrderId,"userMoney":userMoney},
+                        function(data) {
+                            lock = false;
+                            layer.open({
+                                content: data.info,
+                                yes: function() {
+                                    window.location.reload();
+                                }
+                            });
+
+                        });
+                });
+        }
+    </script>
+}

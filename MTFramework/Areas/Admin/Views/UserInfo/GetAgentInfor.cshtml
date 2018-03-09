@@ -1,0 +1,116 @@
+﻿@using MT.Models
+@using MT.Common
+@model PetaPoco.Page<UserInfoModel>
+
+@{
+    ViewBag.Title = "列表";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <div class="">
+            <blockquote class="layui-elem-quote mylog-info-tit">
+                <div class="layui-form-item ">
+                    <form action="/Admin/@vs["controller"].ToString()/@vs["action"].ToString()" method="get" class="layui-form ">
+                        <div class="layui-inline">
+                            <input type="text" class="layui-input" placeholder="姓名/中文姓名/代理号" name="Item.UserName" id="Item_UserName" value="@(Model.Item == null ? "" : Model.Item.UserName + "")" />
+                        </div>
+
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn "> 查询</button>
+                        </div>
+                        <input type="hidden" value="@(ViewBag.orderby==null?"":ViewBag.orderby)" id="orderby" name="orderby" />
+                    </form>
+                </div>
+            </blockquote>
+        </div>
+        <div class="larry-personal-body clearfix">
+            <table border="0" class="layui-table">
+                <tr>
+                    <th>
+                       代理号
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.UserName)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.UserNameCn)
+                    </th>
+
+                    <th>
+                        @Html.LabelFor(m => m.Item.UserAgentID)
+                    </th>
+                    @*<th>
+                        账户数
+                    </th>*@
+
+                    <th>操作</th>
+                </tr>
+                @if (Model.Items.Count == 0)
+                {
+                    <tr>
+                        <td colspan="6">@MTConfig.ListNoData</td>
+                    </tr>
+                }
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            @item.UserID
+                        </td>
+                        <td>
+                            @item.UserName
+                        </td>
+                        <td>
+                            @item.UserNameCn
+                        </td>
+
+                        <td>
+                            @item.AgentName
+                        </td>
+                        @*<td>
+                            @item.AccountCount
+                        </td>*@
+
+                        <td>
+                            <a href="" onclick="tranform('@ViewBag.CurrentID','@item.UserID','@item.UserName','@item.UserNameCn')" class="layui-btn layui-btn-small layui-btn-normal">选择</a>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+            <div class="pageboder"> @Html.RenderPage(Model, "Admin") </div>
+        </div>
+    </div>
+</section>
+@section foot{
+    <script type="text/javascript">
+
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        function tranform(curid, id, name, cnname) {
+            parent.$('#IB').val(id);
+            parent.$('#IBUserName').val(name + " " + cnname + " " + id);
+            parent.layer.close(index);
+            //$.ajax({
+            //    url: "/admin/UserInfo/GetIbStatus",
+            //    type: "post",
+            //    data: { "curid": curid },
+            //    success: function (data) {
+            //        if (data.status == 0) {
+            //            parent.layer.alert(data.msg,{icon:1});
+            //            parent.layer.close(index);
+            //            return false;
+            //        } else {
+            //            parent.$('#IB').val(id);
+            //            parent.$('#IBUserName').val(id + " " + name + " " + cnname);
+            //            parent.layer.close(index);
+            //        }
+            //    }
+            //});
+            
+        }
+    </script>
+}
+

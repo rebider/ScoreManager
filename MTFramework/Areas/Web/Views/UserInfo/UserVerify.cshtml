@@ -1,0 +1,885 @@
+﻿@model UserInfoModel
+@using MT.Common
+@using MT.Common.Helper
+@using MT.Models
+
+
+@{
+    <style>
+        #ck {
+        }
+    </style>
+    ViewBag.Title = "用户认证";
+    Layout = "/Areas/Web/Views/Shared/_LayoutPage.cshtml";
+    List<string> ck = ViewBag.ck;
+    int times = 1;
+    int updateStatus = ViewBag.updateStatus;
+    var red = "";
+    if (updateStatus==0)
+    {
+        red = "readonly";
+    }
+    else
+    {
+        red = "";
+    }
+    string creditCard = "";
+    string debitCard = "";
+    string clickupload = "";
+    if (MTConfig.UserLang == "En")
+    {
+        creditCard = "Credit Card";
+        debitCard = "Debit Card";
+        clickupload = "Click here to upload.";
+    }
+    else
+    {
+        creditCard = "信用卡";
+        debitCard = "借记卡";
+        clickupload = "点击上传";
+    }
+}
+<style>
+    html{color: #cad4de; background:#16202f;}
+  
+    #ck {
+        padding: 10px;
+        line-height: 40px;
+        font-size: 14px;
+        color: #f02a4a;
+        border: 1px #f02a4a solid;
+       
+        border-radius: 3px;
+        width: 360px;
+        float: left;
+        line-height: 25px;
+        margin: 5px;
+    }
+
+    img {
+        width: 100%;
+    }
+    .example-btn {
+        position: absolute;
+        z-index: 100;
+        top: 6px;
+        right: 10px;
+        padding:0px 14px;
+        height:32px;
+        line-height:32px;
+    }
+    .layui-input, .layui-select, .layui-textarea {
+    height: 38px;
+    line-height: 38px;
+    line-height: 36px\9;
+    border: 1px solid #16202f;
+    
+    border-radius: 2px;
+}
+    .layui-field-box input{background:none!important;
+                            border: 1px solid #232f41!important;
+    }
+    .layui-elem-field {
+    margin-bottom: 10px;
+    padding: 0;
+    border: none;
+    width: 20%;
+    float: left;
+}
+    .layui-btn-primary {
+    border:none;
+    background: none;
+    color: #cad4de;
+}
+    .layui-btn-primary:hover{color: #cad4de;}
+ .layui-form-select dl dd.layui-this {
+    background-color: #329ef4!important;
+    color: #fff;
+}
+ .y-btn{ background:#329ef4;}
+</style>
+<section class="layui-larry-box" style="background:#16202f;">
+    <div class="larry-personal">
+        <header class="larry-personal-tit" style="padding-top:10px">
+            <div>
+                <a onclick="window.history.go(-1);" style="color: #cad4de;"><i class="layui-icon " style="margin-left:12px;color: #cad4de;"></i><span style="font-family:'微软雅黑'" lang="return"></span></a>
+                @*<a onclick="javascript:window.history.go(-1)"><i class="layui-icon ">&#xe603;</i><span lang="return"></span></a>*@
+            </div>
+        </header>
+        <div lang="User_Auth" style="text-align:left;height:45px;line-height:45px;font-size:20px;margin-bottom:10px;margin-left:12px;color: #cad4de;"></div>
+        @if (Model.VerifyStatus == 1)
+        {
+            <div class="layui-elem-field " style="margin-left:15px;float:none;width:100%;background:#1c283b;border: 1px solid #232f41;" >
+                <div lang="verify_result" style="font-size:16px;padding-top:15px;padding-left:30px;width:100%;color: #cad4de;"></div>
+
+                <div class="">
+                    <div style="margin:10px 30px 20px;overflow:hidden;">
+                        @{
+                            if (ck != null && ck.Count > 0)
+                            {
+                                foreach (var item in ck)
+                                {
+                                    if (item == "1")
+                                    {
+                                        <div id="ck" lang='notconfirm_name'></div>
+                                    }
+                                    if (item == "2")
+                                    {
+                                        <div id="ck" lang='notconfirm_idno'></div>
+                                    }
+                                    if (item == "3")
+                                    {
+                                        <div id="ck" lang='notconfirm_cardtype'></div>
+                                    }
+                                    if (item == "4")
+                                    {
+                                        <div id="ck" lang='notconfirm_banktype'></div>
+                                    }
+                                    if (item == "5")
+                                    {
+                                        <div id="ck" lang='notconfirm_cardno'></div>
+                                    }
+                                    if (item == "6")
+                                    {
+                                        <div id="ck" lang='notclear_bankcard'></div>
+                                    }
+                                    if (item == "7")
+                                    {
+                                        <div id="ck" lang='notclear_id'></div>
+
+                                    }
+                                    if (item == "8")
+                                    {
+                                        <div id="ck" lang='not_8'></div>
+                                    }
+                                    if (item == "9")
+                                    {
+                                        <div id="ck" lang='not_9'></div>
+                                    }
+                                    if (item == "10")
+                                    {
+                                        <div id="ck" lang='not_10'></div>
+                                    }
+                                    if (item == "11")
+                                    {
+                                        <div id="ck" lang='not_11'></div>
+                                    }
+                                    if (item == "12")
+                                    {
+                                        <div id="ck" lang='not_12'></div>
+                                    }
+                                    if (item == "13")
+                                    {
+                                        <div id="ck" lang='not_13'></div>
+                                    }
+                                    if (item == "14")
+                                    {
+                                        <div id="ck" lang='not_14'></div>
+                                    }
+                                    times++;
+                                }
+                            }
+
+                        }
+                    </div>
+                </div>
+
+            </div>
+                            }
+
+        <form class="larry-personal-body clearfix  layui-form" style="margin:0px;">
+           
+            <input type="hidden" name="UserID" id="UserID" value="@Model.UserID" />
+            <input type="hidden" value="@Model.Lang" id="Lang" name="Lang" />
+            <div class="" style="height:auto;width:97%;overflow:hidden;border:1px #232f41 solid;margin-left:14px;">
+                <div lang="user_info" style="text-align:left;height:45px;line-height:45px;border-bottom:1px #232f41 solid;font-size:16px;text-indent:1em; background:#1c283b;color: #cad4de;"></div>
+                <div class="layui-field-box f-fl" style="width:33%; background:#1c283b;color: #cad4de;">
+                    <div class="">
+                        <div class="layui-form-item">
+                            @if (MTConfig.UserLang == "En")
+                            {
+                                <div class="layui-form-label  " lang="Vusername_cn"></div>
+
+
+                                <input type="text" class="layui-input" name="UserName" id="UserName" value="@Model.UserName" lay-verify="required"  @red/>
+
+                            }
+                            else
+                            {
+                                <div class="">
+                                    <div class="">
+                                        <label class="layui-form-label f-width90 " lang="Vusername_cn" style="float:none;width:100%"></label>
+                                    </div>
+                                    <div class="layui-input-inline" style="width:100%;">
+                                        <input type="text" class="layui-input" name="UserNameCn" id="UserNameCn" value="@Model.UserNameCn" lay-verify="required" style="width:100%;"  @red/>
+                                    </div>
+                                </div>
+                                
+                            }
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" lang="VIDcard"></label>
+                            <div class="layui-input-inline" style="width:100%;">
+                                <input type="text" class="layui-input" name="IDcard" lay-verify="idcard" id="IDCard" value="@Model.IDcard" style="width:100%;"  @red/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-field-box f-fl" style="width:33%; background:#1c283b;color: #cad4de;">
+                    <div class="">
+                        <div class="layui-form-item">
+                            @if (MTConfig.UserLang == "En")
+                            {
+                                <div class="layui-form-label  " lang="Vusername"></div>
+
+
+                                <input type="text" class="layui-input" name="UserName" id="UserName" value="@Model.UserName" lay-verify="required" @red/>
+
+                            }
+                            else
+                            {
+                             
+                                <div class="">
+                                    <label class="layui-form-label f-width90" lang="Vusername" style="float:none;"></label>
+                                    <div class="layui-input-inline" style="width:100%;">
+                                        <input type="text" class="layui-input" name="UserName" id="UserNameCn" value="@Model.UserName" lay-verify="required" style="width:100%;" @red/>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                       
+                        <div class="layui-form-item">
+                            <div class="f-fl" style="width:100%;">
+                                <label class="layui-form-label" lang="VBirthday" style="float:none;"></label>
+                                <div class="layui-input-inline f-width180" style="width:100%!important;">
+
+                                    <input type="text" class="layui-input" name="Birthday" id="Birthdaycal" value="@(Model.Birthday==null?"":Model.Birthday.Value.ToString("yyyy-MM-dd"))" onclick="layui.laydate({elem: this, isdate: true, format: 'YYYY-MM-DD'})" style="display:none" @red/>
+                                    <input type="text" class="layui-input" name="Birthday" id="Birthdayinp" value="@(Model.Birthday==null?"":Model.Birthday.Value.ToString("yyyy-MM-dd"))" readonly="readonly" />
+                                </div>
+                            </div>
+                      
+                        </div>
+
+                       
+                    </div>
+                </div>
+                <div class="layui-field-box f-fl" style="width:34%; background:#1c283b;color: #cad4de;">
+                    <div class="layui-form-item">
+              
+                        <div class="" style="height:38px;margin-top:5px;">
+                            <div class="layui-form-item ">
+                                <label class="layui-form-label f-width90" lang="sex" style="float:none;"></label>
+                                <div class="layui-input-inline"  style="width:100%;">
+                                    @if (MTConfig.UserLang == "En")
+                                    {
+                                        if (Model.Sex == 1)
+                                        {
+
+                                            <input class="mar120" type="radio" name="Sex" value="1" title="Male " checked="checked" />
+                                                <input class="mar120" type="radio" name="Sex" value="0" title="Female" />
+                                        }
+                                        else
+                                        {
+                                            <input class="mar120" type="radio" name="Sex" value="1" title="Male" />
+                                                <input class="mar120" type="radio" name="Sex" value="0" title="Female" checked="checked" />
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (Model.Sex == 1)
+                                        {
+                                            <input class="mar120" type="radio" name="Sex" value="1" title="男" checked="checked" />
+                                                <input class="mar120" type="radio" name="Sex" value="0" title="女" />
+                                        }
+                                        else
+                                        {
+                                            <input class="mar120" type="radio" name="Sex" value="1" title="男" />
+                                                <input class="mar120" type="radio" name="Sex" value="0" title="女" checked="checked" />
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" lang="address"></label>
+                        <div class="layui-input-inline" style="width:100%!important;">
+                            <input type="text" class="layui-input" name="Address" id="Address" value="@Model.Address"  @red/>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+            <div id="uinfoform">
+
+
+                @*BankInfo*@
+                <div class="f-fl" style="width:100%;">
+                    <div class="" style="width:97%;height:auto;overflow:hidden;margin-top:30px;border:1px #232f41 solid;margin-left:14px;background:#1c283b;">
+                        <div lang="bank_info" style="text-align:left;height:45px;line-height:45px;border-bottom:1px #232f41 solid;font-size:16px;text-indent:1em;color: #cad4de;"></div>
+                        <div class="layui-field-box" style="width:100%;">
+                            <div class="f-fl layui-field-box" style="width:33%;">
+                                <div style="position: relative">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" lang="card_type" style="float:none;color: #cad4de;"></label>
+                                        <div class="layui-input-inline" style="float:none;width: 100%;color: #cad4de;">
+                                            <select id="CardType" name="CardType" lay-search="" >
+                                                @if (MTConfig.CurrentUserInfo != null && Model.CardType != null)
+                                                {
+                                                    if (MTConfig.CurrentUserInfo.CardType == 1)
+                                                    {
+                                                        <option value="1" selected>@creditCard</option>
+                                                        <option value="2">@debitCard</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="1">@creditCard</option>
+                                                        <option value="2" selected>@debitCard</option>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <option value="2">@debitCard</option>
+                                                    <option value="1">@creditCard</option>
+                                                
+                                                }
+                                            </select>
+                                          
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" lang="bank_address" style="float:none;color: #cad4de;"></label>
+                                        <div class="layui-input-inline" style="float:none;width: 100%;color: #cad4de;">
+                                            <input type="text" class="layui-input" name="CardAddress" id="CardAddress" value="@Model.CardAddress" @red />
+                                        </div>
+                                    </div>
+                                 
+                                </div>
+                            </div>
+                            <div class="f-fl layui-field-box" style="width:33%;">
+                                <div style="position: relative">
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" lang="card_no" style="float:none;color: #cad4de;"></label>
+                                        <div class="layui-input-inline" style="float:none;width: 100%;height:auto;color: #cad4de;">
+                                            <input type="text" class="layui-input" name="CardNo" id="CardNo" value="@(Model.CardNo == null?"":Model.CardNo)" lay-verify="number" maxlength="19" @red/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" lang="bank_branc" style="float:none;color: #cad4de;"></label>
+                                        <div class="layui-input-inline" style="float:none;width: 100%;height:auto;color: #cad4de;">
+                                            <input type="text" class="layui-input" name="BankBranch" id="BankBrabch" value="@(Model.BankBranch == null?"":Model.BankBranch)" lay-verify="required"  @red/>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="f-fl layui-field-box" style="width:34%;">
+                                <div class="layui-form-item" style="width:103%;">
+                                    <label class="layui-form-label" lang="bank_type" style="float:none;color: #cad4de;"></label>
+                                    <div class="layui-input-inline" style="float:none;width: 100%;color: #cad4de;">
+                                        @Html.Raw(DropDownListHelper.GetDropDownList("DDL_GETBANKTYPE", "class='color: #cad4de;'", " name='BankType' id='BankType' readonly='none'", "", Model.BankType == null ? "" : Model.BankType + ""))
+                                     
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div style="overflow:hidden;width:100%;margin-top:30px;">
+                       
+                        <div class="layui-elem-field" style="margin-left:14px;width:auto;position:relative;background:#1c283b;">
+
+                            <div lang="id_photo" style="text-align:left;height:45px;line-height:45px;font-size:16px;text-indent:1em;color: #cad4de;">
+
+                            </div>
+                            <button type="button" class="layui-btn layui-btn-primary example-btn" id="button_eg1" btn-lang="example"></button>
+                            <div class="" style="width:100%;padding:20px;">
+                                <div class="layui-form-item f-fl" style="border:1px dashed #232f41;width:320px;height:200px;">
+                                    <div style="position: relative;width:320px;height:200px;">
+                                        <img src="" id="id11" class="iv-img" style="width:100%;height:auto;" />
+
+                                        @{if (!string.IsNullOrEmpty(Model.IdentityFile))
+                                            {
+                                                <input type="hidden" name="IdentityFile" id="IdentityFile" value="@Model.IdentityFile.ToInt()" />
+                                                <img  style="max-height:300px" src="@ResourceHelper.CreateUploadImgUrl(Model.IdentityFile.ToInt())" id="id11" />
+                                            }
+                                            else
+                                            {
+                                                <input type="hidden" name="IdentityFile" id="IdentityFile" />
+                                                <img src="" id="id11" class="iv-img" style="width:100%;height:auto;" />
+                                            }
+                                        }
+                                        @{
+                                            if (ViewBag.updateStatus > 0)
+                                            {
+                                                <input type="button" value="@clickupload" class="layui-btn layui-btn-primary" style="position:absolute;width:100%;height:100%; border: none; top: 2px; left: 2px; background: none;" onclick="javascript: $('#IdentityFilef').click();" />
+                                            }
+                                        }
+                                       
+                                    </div>
+                                    <div class="iv-iptfile">
+                                      
+                                        <input type="file" name="IdentityFilef" id="IdentityFilef" style="margin: 0 auto; display: none">
+                                        <input type="text" name="IdentityFilet" id="IdentityFilet" class="layui-input " style="display: none" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-elem-field" style="margin-left:14px;width:auto;position:relative;background:#1c283b;">
+                            <div lang="id_photo2" style="text-align:left;height:45px;line-height:45px;font-size:16px;text-indent:1em;color: #cad4de;"></div>
+                            <button type="button" class="layui-btn layui-btn-primary example-btn" id="button_eg2" btn-lang="example"></button>
+                            <div class="" style="width:100%;padding:20px;">
+                                <div class="layui-form-item f-fl" style="border:1px dashed #232f41;width:320px;height:200px;">
+                                    <div style="position: relative;width:320px;height:200px;">
+                                        <div style="position: relative;width:320px;height:200px;">
+                                            @{if (!string.IsNullOrEmpty(Model.IdentityFile2))
+                                                {
+                                                    <input type="hidden" name="IdentityFile2" id="IdentityFile2" value="@Model.IdentityFile2.ToInt()" />
+                                                    <img style="max-height:300px" src="@ResourceHelper.CreateUploadImgUrl(Model.IdentityFile2.ToInt())" id="id22" />
+                                                }
+                                                else
+                                                {
+                                                    <input type="hidden" name="IdentityFile2" id="IdentityFile2" />
+                                                    <img src="" id="id22" class="iv-img" style="width:100%;height:auto;" />
+                                                }
+                                            }
+                                            @{
+                                                if (ViewBag.updateStatus > 0)
+                                                {
+                                                    <input type="button" value="@clickupload" class="layui-btn layui-btn-primary" style="position:absolute; border: none; top: 2px; left: 2px; background: none;width:100%;height:100%;" onclick="javascript: $('#IdentityFile2f').click();" />
+                                                }
+                                            }
+                                           
+                                        </div>
+                                        <div class="iv-iptfile">
+                                            <input type="file" name="IdentityFile2f" id="IdentityFile2f" class="layui-upload-file " style="display: none">
+                                        
+                                            <input type="text" name="IdentityFile2t" id="IdentityFile2t" class="layui-input " style="display: none" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-elem-field iv-fiel" style="width:auto;margin-left:14px;position:relative;background:#1c283b;">
+                            <div lang="card_photo" style="text-align:left;height:45px;line-height:45px;font-size:16px;text-indent:1em;color: #cad4de;"></div>
+
+                         
+
+
+
+                            <button type="button" class="layui-btn layui-btn-primary example-btn" id="button_eg3" btn-lang="example"></button>
+
+                            <div style="padding:20px;width: 100%; ">
+                                <div class="layui-form-item f-fl" style="border:1px dashed #232f41;width:320px;height:200px;">
+                                    <div style="position: relative;width:320px;height:200px;">
+                                        @{if (!string.IsNullOrEmpty(Model.BankCardFile))
+                                            {
+                                                <input type="hidden" name="BankCardFile" id="BankCardFile" value="@Model.BankCardFile.ToInt()" />
+                                                <img style="max-height:300px" src="@ResourceHelper.CreateUploadImgUrl(Model.BankCardFile.ToInt())" id="bankfile3" />
+                                            }
+                                            else
+                                            {
+                                                <input type="hidden" name="BankCardFile" id="BankCardFile" class="layui-input" />
+                                                <img src="" id="bankfile3" class="iv-img" style="width:100%;height:auto;" />
+                                            }
+                                        }
+                                        @{
+                                            if (ViewBag.updateStatus > 0)
+                                            {
+                                                <input type="button" value="@clickupload" class="layui-btn layui-btn-primary" style="position:absolute;width: 100%;height: 100%; border: none; top: 2px; left: 2px; background: none;" onclick="javascript: $('#BankCardFilef').click();" />
+                                            }
+                                        }
+                                      
+                                    </div>
+                                    <div class="iv-iptfile">
+                                     
+                                        <input type="file" name="BankCardFilef" id="BankCardFilef" class="layui-upload-file f-fl" lang="up_cardphoto" style="display: none">
+                                        <input type="text" name="BankCardFilet" id="BankCardFilet" class="layui-input f-fl" style="display: none" />
+
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="f-cb"></div>
+
+                 
+                        </div>
+                        <div class="layui-elem-field iv-fiel" style="width:auto;margin-left:14px;position:relative;background:#1c283b;">
+                            <div lang="card_photo1" style="text-align:left;height:45px;line-height:45px;font-size:16px;text-indent:1em;color: #cad4de;"></div>
+                            <button type="button" class="layui-btn layui-btn-primary example-btn" id="button_eg4" btn-lang="example"></button>
+                            <div style="padding:20px;width: 100%; ">
+                                <div class="layui-form-item f-fl" style="border:1px dashed #232f41;width:320px;height:200px;">
+                                    <div style="position: relative;width:320px;height:200px;">
+                                      @{if (!string.IsNullOrEmpty(Model.BankCardFile2))
+                                          {
+                                            <input type="hidden" name="BankCardFile2" id="BankCardFile2" value="@Model.BankCardFile2.ToInt()" />
+                                                <img style="max-height:300px" src="@ResourceHelper.CreateUploadImgUrl(Model.BankCardFile2.ToInt())" id="bankfile4" />
+                                          }
+                                          else
+                                          {
+                                            <input type="hidden" name="BankCardFile2" id="BankCardFile2" />
+                                                <img src="" id="bankfile4" class="iv-img" style="width:100%;height:auto;" />
+                                          }
+                                    }
+                                        @{
+                                            if (ViewBag.updateStatus > 0)
+                                            {
+                                                <input type="button" value="@clickupload" class="layui-btn layui-btn-primary" style="position:absolute;width: 100%;height: 100%; border: none; top: 2px; left: 2px; background: none;" onclick="javascript: $('#BankCardFilef2').click();" />
+                                            }
+                                        }
+                                       
+                                    </div>
+                                    <div class="iv-iptfile">
+                                    
+                                        <input type="file" name="BankCardFilef2" id="BankCardFilef2" class="layui-upload-file f-fl" lang="up_cardphoto1" style="display: none">
+                                        <input type="text" name="BankCardFilet2" id="BankCardFilet2" class="layui-input f-fl" style="display: none" />
+
+                                   
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="f-cb"></div>
+
+                         
+                        </div>
+                    </div>
+                 
+
+                    @{
+                        if (ViewBag.updateStatus > 0)
+                        {
+                            <div class="layui-form-item" style="margin-bottom: 50px;margin-left:5px;margin-top:10px;">
+                                <div class="layui-input-block f-fl" style="margin-left:15px!important;width:">
+                                    <input type="submit" id="ok" lay-submit btn-lang="submit" class="layui-btn y-btn" style="padding:0 20px;" />
+                                </div>
+                            </div>
+                        }
+                    }
+                   
+                </div>
+
+            </div>
+
+        </form>
+
+
+
+    </div>
+
+</section>
+@section foot
+{
+    <script>
+        $(function () {
+            $("#button_eg1").click(function () {
+                ShowBigPicture("/Styles/Images/cardFront.png", "证件正面");
+
+            });
+            $("#button_eg2").click(function () {
+                ShowBigPicture("/Styles/Images/cardNegative.png", "证件反面");
+
+            });
+            $("#button_eg3").click(function () {
+                ShowBigPicture("/Styles/Images/bankCardFront.png", "银行卡正面");
+
+            });
+            $("#button_eg4").click(function () {
+                ShowBigPicture("/Styles/Images/bankCardNegative.png", "银行卡反面");
+
+            });
+
+        });
+        function ShowBigPicture(url,alt) {
+            var json = {
+
+                "data": [   //相册包含的图片，数组格式
+                    {
+                        "alt": alt,
+                        "src": url, //原图地址
+                    }
+                ]
+            }
+            layer.photos({
+                photos: json //格式见API文档手册页
+                , anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
+            });
+        }
+        $(".layui-form-label").css("width", "150px");
+
+        var upload = "";
+        if ('@MTConfig.UserLang' == "En") {
+            upload = "uploading...";
+        } else {
+            upload = "上传中......";
+        }
+        layui.upload({
+            url: '/Admin/Public/Upload',
+            elem: '#BankCardFilef',
+            unwrap: true,
+
+            before: function (input) {
+                //返回的参数item，即为当前的input DOM对象
+                layer.load('', { icon: 1, shade: [0.6, "#f5f5f5"] });
+            },
+            success: function (res) {
+                layer.closeAll('loading');
+                if (res.status == 1) {
+                    $("#BankCardFilet").val(res.name);
+                    $("#BankCardFile").val(res.id);
+                    $("#bankfile3").attr("src", "/Home/Img?id=" + res.id + "&width=322&height=197");
+                } else {
+                    layer.msg(res.msg);
+                }
+            }
+        });
+        layui.upload({
+            url: '/Admin/Public/Upload',
+            elem: '#BankCardFilef2',
+            unwrap: true,
+
+            before: function (input) {
+                //返回的参数item，即为当前的input DOM对象
+                layer.load('', { icon: 1, shade: [0.6, "#f5f5f5"] });
+            },
+            success: function (res) {
+                layer.closeAll('loading');
+                if (res.status == 1) {
+                    $("#BankCardFilet2").val(res.name);
+                    $("#BankCardFile2").val(res.id);
+                    $("#bankfile4").attr("src", "/Home/Img?id=" + res.id + "&width=322&height=197");
+                } else {
+                    layer.msg(res.msg);
+                }
+            }
+        });
+        layui.upload({
+            url: '/Admin/Public/Upload',
+            elem: '#IdentityFilef',
+            unwrap: true,
+            before: function (input) {
+                //返回的参数item，即为当前的input DOM对象
+                layer.load('', { icon: 1, shade: [0.6, "#f5f5f5"] });
+            },
+            success: function (res) {
+                layer.closeAll('loading');
+                if (res.status == 1) {
+                    $("#IdentityFilet").val(res.name);
+                    $("#IdentityFile").val(res.id);
+                    $("#id11").attr("src", "/Home/Img?id=" + res.id + "&width=322&height=197");
+                } else {
+                    layer.msg(res.msg);
+                }
+            }
+        });
+
+        layui.upload({
+            url: '/Admin/Public/Upload',
+            elem: '#IdentityFile2f',
+            unwrap: true,
+            before: function (input) {
+                //返回的参数item，即为当前的input DOM对象
+                layer.load('', { icon: 1, shade: [0.6, "#f5f5f5"] });
+            },
+            success: function (res) {
+                layer.closeAll('loading');
+                if (res.status == 1) {
+                    $("#IdentityFile2t").val(res.name);
+                    $("#IdentityFile2").val(res.id);
+                    $("#id22").attr("src", "/Home/Img?id=" + res.id + "&width=322&height=197");
+                } else {
+                    layer.msg(res.msg);
+                }
+            }
+        });
+
+        $(function () {
+            //监听回车按键
+            document.onkeydown = function (event) {
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                if (e && e.keyCode == 13) {//大回车
+                    return false;
+                } else if (e && e.keyCode == 108) {//数字键盘回车
+                    return false;
+                }
+            }
+        });
+
+        $("form").submit(function () {
+              if ($("#IdentityFile2").val() == "" || $("#IdentityFile").val() == "" || $("#BankCardFile2").val() == "" || $("#BankCardFile").val() == "") {
+                if ('@MTConfig.UserLang' == "En") {
+                    layer.msg("Uploading pictures can not be empty.");
+                } else {
+                    layer.msg("上传所有图片不能为空");
+                }
+                return false;
+            }
+            $.ajax({
+                type: 'POST',
+                url: "/Web/UserInfo/UserVerify?verifystatus=0",
+                data: $('form').serialize(),
+                success: function (data) {
+                    if (data.status ==1) {
+                        layer.msg(data.msg);
+                        window.location.href = "/Web/UserInfo/Index?verifystatus=0";
+                    } else {
+                        layer.msg(data.msg);
+                    }
+
+                },
+                error: function () {
+                    window.location.href = "/Web/UserInfo/Index?verifystatus=0";
+                }
+            });
+            return false;
+        });
+
+        $(function () {
+            function GetBirthdatByIdNo(iIdNo) {
+                var tmpStr = "";
+                var birthday = $("#Birthday");
+                iIdNo = $.trim(iIdNo);
+                if (iIdNo.length == 15) {
+                    tmpStr = iIdNo.substring(6, 12);
+                    tmpStr = "19" + tmpStr;
+                    tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6);
+                    sexStr = parseInt(iIdNo.substring(14, 1), 10) % 2 ? "男" : "女";
+                    birthday.val(tmpStr);
+
+                } else {
+                    tmpStr = iIdNo.substring(6, 14);
+                    tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6);
+                    sexStr = parseInt(iIdNo.substring(17, 1), 10) % 2 ? "男" : "女";
+                    birthday.val(tmpStr);
+                }
+            }
+        });
+        $(function () {
+            if ($("#model").val() + "" == "") {
+                $("#Birthdaycal").hide();
+                $("#Birthdayinp").show().attr("readonly", true);
+            } else {
+                if ($("#IDCard").val().length == 18) {
+                    $("#Birthdaycal").hide();
+                    $("#Birthdayinp").show().attr("readonly", true);
+                } else {
+                    $("#Birthdaycal").show();
+                    $("#Birthdayinp").hide();
+                }
+            }
+
+        });
+
+        $("#IDCard").blur(function () {
+            if ($("#IDCard").val().length == 18) {
+                $("#Birthdaycal").hide();
+                $("#Birthdayinp").show().attr("readonly", true);
+                checkIDNo();
+            } else {
+                $("#Birthdaycal").show();
+                $("#Birthdayinp").hide();
+            }
+        });
+        //身份证号码验证
+        function checkIDNo() {
+            if ('@MTConfig.UserLang' == "En") {
+                var national = "ID number does not meet the national standard, please check!";
+                var paper = "Credentials area unknowm, please check!";
+                var birth = "Illegal date of birth!";
+                var format = "Credentials nunmber format illegal!";
+                var idnumber = "Please enter your ID number!";
+            } else {
+                national = "身份证号码不符合国定标准，请核对！";
+                paper = "证件地区未知，请核对！";
+                birth = "证件出生日期非法！";
+                format = "证件号码格式非法！";
+                idnumber = "请输入证件号！";
+            }
+            if ($("#IDCard").val() != "") {
+                //身份证的地区代码对照
+                var aCity = { 11: "北京", 12: "天津", 13: "河北", 14: "山西", 15: "内蒙古", 21: "辽宁", 22: "吉林", 23: "黑龙江", 31: "上海", 32: "江苏", 33: "浙江", 34: "安徽", 35: "福建", 36: "江西", 37: "山东", 41: "河南", 42: "湖北", 43: "湖南", 44: "广东", 45: "广西", 46: "海南", 50: "重庆", 51: "四川", 52: "贵州", 53: "云南", 54: "西藏", 61: "陕西", 62: "甘肃", 63: "青海", 64: "宁夏", 65: "新疆", 71: "台湾", 81: "香港", 82: "澳门", 91: "国外" };
+                //获取证件号码
+                var person_id = $("#IDCard").val();
+                //合法性验证
+                var sum = 0;
+                //出生日期
+                var birthday;
+                //验证长度与格式规范性的正则
+                var pattern = new RegExp(/(^\d{15}$)|(^\d{17}(\d|x|X)$)/i);
+                if (pattern.exec(person_id)) {
+                    //验证身份证的合法性的正则
+                    pattern = new RegExp(/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/);
+                    if (pattern.exec(person_id)) {
+                        //获取15位证件号中的出生日期并转位正常日期
+                        birthday = "19" + person_id.substring(6, 8) + "-" + person_id.substring(8, 10) + "-" + person_id.substring(10, 12);
+                    }
+                    else {
+                        person_id = person_id.replace(/x|X$/i, "a");
+                        //获取18位证件号中的出生日期
+                        birthday = person_id.substring(6, 10) + "-" + person_id.substring(10, 12) + "-" + person_id.substring(12, 14);
+                        //校验18位身份证号码的合法性
+                        for (var i = 17; i >= 0; i--) {
+                            sum += (Math.pow(2, i) % 11) * parseInt(person_id.charAt(17 - i), 11);
+                        }
+                        if (sum % 11 != 1) {
+                            layer.msg(national);
+                            $("#Birthdayinp").val("");
+                            $("#Birthdaycal").val("");
+                            return false;
+                        }
+                    }
+                    //检测证件地区的合法性
+                    if (aCity[parseInt(person_id.substring(0, 2))] == null) {
+                        layer.msg(paper);
+                        $("#Birthdayinp").val("");
+                        $("#Birthdaycal").val("");
+                        return false;
+                    }
+                    var dateStr = new Date(birthday.replace(/-/g, "/"));
+                    //alert(birthday +":"+(dateStr.getFullYear()+"-"+ Append_zore(dateStr.getMonth()+1)+"-"+ Append_zore(dateStr.getDate())))
+                    if (birthday != (dateStr.getFullYear() + "-" + Append_zore(dateStr.getMonth() + 1) + "-" + Append_zore(dateStr.getDate()))) {
+                        layer.msg(birth);
+                        $("#Birthdayinp").val("");
+                        $("#Birthdaycal").val("");
+                        return false;
+                    }
+                    $("#Birthdayinp").val(birthday);
+                    $("#Birthdaycal").val(birthday);
+                }
+                else {
+                    layer.msg(format);
+                    $("#Birthdayinp").val("");
+                    $("#Birthdaycal").val("");
+                    return false;
+                }
+            }
+            else {
+                layer.msg(idnumber);
+                $("#Birthdayinp").val("");
+                $("#Birthdaycal").val("");
+                return false;
+            }
+        };
+
+
+        function Append_zore(temp) {
+            if (temp < 10) {
+                return "0" + temp;
+            }
+            else {
+                return temp;
+            }
+        }
+
+
+    </script>
+
+}

@@ -1,0 +1,132 @@
+﻿
+@using MT.Common
+@using MT.Common.Helper
+@using MT.Models
+@model List<AccountModel>
+@{
+    ViewBag.Title = "创建账户";
+    Layout = "~/Areas/Web/Views/Shared/_LayoutPage.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+   
+
+}
+
+@section head{
+}
+
+<section class="layui-larry-box" style="padding:0px;margin-top:20px;">
+    <div class="larry-personal">
+
+        <div class="larry-personal-body clearfix " style="margin:0px;margin-left:4%">
+            <form  class="layui-form col-lg-10" id="form">
+                <div class="layui-form-item">
+                    <div style="color:red; float:left" lang="Mt4Tradingaccount">  </div>
+                    @*@foreach (var item in Model)
+                    {
+                         <span style="color:red" name="Mt4Account" value="@item.Account">@item.Account  </span>
+                    }*@
+                    <div style="color:red" name="Mt4Account" id="Mt4Account" >@ViewBag.Account  </div>
+                   </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width: 140px;" lang="NewEmailAddress">&nbsp;</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="NewEmail" value="" class="layui-input" id="NewEmail" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width: 140px;" lang="MakeSureEmailAddress"></label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="NewEmailAgain" value="" class="layui-input" id="NewEmailAgain" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input type="button" onclick="save();" lay-submit btn-lang="extract" class="layui-btn" />
+                            <input type="button" onclick="closelayer();" lay-submit btn-lang="close" class="layui-btn layui-btn-danger" />
+
+
+                        </div>
+                    </div>
+                    @*<div class="layui-form-item">
+            <label class="layui-form-label" style="width: 140px;" lang="Mt4Tradingaccount">&nbsp;</label>
+            <div class="layui-input-inline" style="border:1px solid #ccc;padding:10px 0;border-radius:2px;">*@
+                    @*@foreach (var item in Model)
+            {
+                <span style="color:red" name="Mt4Account" value="@item.Account">@item.Account  </span>
+            }*@
+                    @*<input type="text" name="Mt4Account" value="@Model.Account" class="layui-input" id="Mt4Account" readonly/>*@
+                    @*</div>
+            </div>*@
+
+</form>
+
+        </div>
+    </div>
+</section>
+@section foot
+{
+    <script>
+
+        var lock = false;
+        ////账户提取
+        function save(url) {
+           
+            if ($("#NewEmail").val() == $("#NewEmailAgain").val()) {
+                $.ajax({
+                    url: "/Web/MyAccount/FindAccount",
+                    type: "POST",
+                    data: { Mt4Account: $("#Mt4Account").html(), NewEmail: $("#NewEmail").val() },
+                    success: function (data) {
+                        lock = false;
+                        if (data.status == 1) {
+                            //保存成功
+                            layer.open({
+                                content: data.msg,
+                                yes: function (index, layero) {
+                                    layer.load();
+                                    parent.location.href = "/Web/MyAccount/MyAccountIndex?actiontype=1";
+                                }
+                            });
+
+                        } else {
+
+                            
+                            layer.msg(data.msg);
+
+                        }
+                    },
+                    beforeSend: function () {
+                        i = loading();
+                    },
+                    error: function (e, jqxhr, settings, exception) {
+                       
+                        loadOver(i);
+                    }
+                });
+            }
+            else {
+                layer.msg("邮箱不一致");
+            }
+
+        }
+        //关闭弹窗
+        function closelayer() {
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index); //再执行关闭
+        }
+
+        //加载中
+        function loading() {
+            return layer.msg($("#submit").val(),
+            { icon: 16, shade: [0.5, '#f5f5f5'], scrollbar: false, offset: '', time: 100000 });
+        }
+
+        //加载完毕
+        function loadOver(index) {
+            layer.close(index);
+        }
+
+    </script>
+}
+
+

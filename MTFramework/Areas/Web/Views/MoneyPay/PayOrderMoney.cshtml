@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+}
+<p style="margin-top:40px; margin-left:20px; font-size:20px"> <span class="tt">温馨提示：</span> <span class="">请在新打开的支付页面进行支付!</span></p>
+<br />
+<center style="margin-top:20px">
+    <a class="layui-btn  layui-btn-danger" style="margin-left:0px; " name="return" id="return" href="javascript:Reset(@ViewBag.TypeName);" tabindex="3">支付失败</a>
+    <a class="layui-btn layui-btn-normal " style="margin-left:0px; " name="btnsubmit2" id="btnsubmit2" href="javascript:Reset(@ViewBag.TypeName);" tabindex="3">完成支付</a>
+</center>
+
+@section foot{
+<script type="text/javascript">
+     function Reset(typeurl) {
+        $(".close-reveal-modal").click();
+        window.location.href = "/Money/" + typeurl;
+     }
+    </script>
+    }

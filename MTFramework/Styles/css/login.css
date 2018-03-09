@@ -1,0 +1,197 @@
+﻿
+/*登录页面*/
+html,body{
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+.login-bg{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background: url(/Styles/images/bg.jpg) center center no-repeat;
+}
+.login{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 522px;
+	height: 508px;
+	margin: -254px 0px 0px -261px;
+	/*background: url(/Styles/images/loginBg.png) center center no-repeat;*/
+}
+.logo{
+	position: absolute;
+	top:7px;
+	left:23px;
+}
+.lang-bot {
+vertical-align: middle;
+}
+.lang-text{padding-right:5px;}
+.phone-language{
+	position: absolute;
+	right: 20px;
+	color: #fff;
+    line-height:66px;
+}
+.phone-language .phone{
+	padding:10px 56px 10px 44px;
+	background: url(/Styles/images/phone.png) left center no-repeat;
+}
+.phone-language .language{
+    position:relative;
+    display:inline-block;
+    width:100px;
+    cursor:pointer;
+}
+.phone-language .language img{
+   vertical-align:middle;
+   margin-right:6px;
+}
+.phone-language .language span{
+    display:inline-block;
+    vertical-align:middle
+}
+.phone-language .lang-list {
+    position:absolute;
+    right:0px;
+    top:66px;
+    width:100%;
+    padding-bottom:10px;
+    line-height:28px;
+    display:none;
+    background:#ffffff;
+    color:#333333;
+    border:1px solid #ffffff;
+    border-radius:3px;
+    padding-left:10px;
+}
+.login-title{
+	margin: 52px 0px 66px;
+	font-size: 30px;
+	line-height: 28px;
+	text-align: center;
+	color: #cad4de;
+	font-weight: lighter;
+}
+.input-box{
+	position: relative;
+	width: 360px;
+	height: 54px;
+	margin: 0px auto 16px;
+	border: 1px solid #242e3d;
+	border: 1px solid #888781 \9;
+	border-radius: 4px;
+}
+.input-box .placeholder{
+	display: block;
+	position: absolute;
+	z-index: 3;
+	left: 66px;
+	top:0px;
+	width: 292px;
+	height: 100%;
+	line-height: 54px;
+	color: #3f4957;
+}
+.input-box .login-icon{
+	display: inline-block;
+	width: 50px;
+	height: 100%;
+	
+	vertical-align: middle;
+	background: url(/Styles/images/login-icon.png) center center no-repeat;
+}
+.input-box .icon-user{
+	background-position: center 16px;
+}
+.input-box .icon-img{
+	background-position: center -136px;
+}
+.input-box .icon-img+input{
+	width: 208px;
+}
+.input-box .checkcode{
+	position: absolute;
+	right:10px;
+	top:12px;
+	width: 74px;
+	height: 30px;
+	vertical-align: middle;
+	border-radius: 3px;
+	cursor: pointer;
+}
+.input-box .icon-img~.placeholder{
+	width: 210px;
+}
+.input-box input{
+	width: 290px;
+	margin-left: 16px;
+	background-color: transparent;
+	vertical-align: middle;
+	outline: none;
+	border: none;
+	color: #fff;
+	font-size: 18px;
+	display: none;
+}
+.login-btn{
+	height: 56px;
+	padding-top: 30px;
+	text-align: center;
+}
+.login-btn button{
+	width: 360px;
+	height: 100%;
+	outline: none;
+	border: none;
+	font-size: 28px;
+	background-color: #329ef4;
+	color: #fff;
+	border-radius:4px ;
+	border: 1px solid #329ef4;
+    cursor:pointer;
+}
+.auto-get{
+	width: 360px;
+	margin: 0px auto;
+	overflow: hidden;
+}
+.auto-get .checkbox{
+	float: left;
+	line-height: 22px;
+	cursor: pointer;
+}
+.auto-get .checkbox .checkbox-input{
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	border: 1px solid #242e3d;
+	border-radius:4px ;
+	vertical-align: middle;
+}
+.auto-get .checkbox .checkbox-input.checked{
+	background: url(/Styles/images/checked.png) center center no-repeat;
+}
+.auto-get .checkbox .checkbox-text{
+	display: inline-block;
+	margin-left: 12px;
+	color: #7c8692;
+	color: #7c8692 \9;
+	font-size: 14px;
+	vertical-align: middle;
+}
+.auto-get a{
+	float: right;
+	margin-top: 2px;
+	color: #7c8692;
+	color: #7c8692 \9;
+	font-size: 14px;
+	text-decoration: none;
+}
+.auto-get a:hover {
+    color: rgba(255,255,255,1);
+	color: #fff \9;
+}

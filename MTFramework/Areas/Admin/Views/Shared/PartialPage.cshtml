@@ -1,0 +1,97 @@
+﻿@model VOD.Dal.Page<VOD.Models.VideoCommentModel>
+<div id="updateTarget">
+    <div class="mainTable clearfix">
+        <div class="mainTableTitle">
+            评论信息</div>
+        <div class="clear02">
+        </div>
+        <div class="mainContent">
+            <form id="submitForm">
+            <textarea name="Comment_Content" class="textarea width730"></textarea>
+            <input type="hidden" name="Video_ID" value="@Model.Item.Video_ID"/>
+            </form>
+        </div>
+        <div class="clear01">
+        </div>
+        <div class="mainContent">
+            <input id="submitBtn" type="button" value="发表回复" class="botton floatRigh marginLef10 marginRigh10" />
+        </div>
+        <div class="clear02">
+        </div>
+        <!-- 评论 start -->
+        <div class="mainTable borderNone">
+            <div class="clear02">
+            </div>
+            <div class="mainTable01 width740">
+                @foreach (var m in Model.Items)
+                {
+                    <!-- oneLayer start -->
+                    <div class="messageBox clearfix bgColorGray paddingTB10">
+                        <div class="couMesHeader floatLef ">
+                            <img src="" width="50" height="50" /></div>
+                        <div class="floatLef width88p textAlignL marginLef10">
+                            <div class="MessageConName">
+                                <div class="floatLef width100p">
+                                    <span class="floatLef"><span class="fontColorOrange marginRigh10">@m.Comment_Nick@m.Comment_User</span>的回答
+                                    </span><span class="marginLef10">@( m.create_time.HasValue ? m.create_time.Value.ToString("yyyy-MM-dd HH:mm:ss") : "")</span></div>
+                            </div>
+                            <div class="clear01">
+                            </div>
+                            <div class="width100p">
+                                @m.Comment_Content</div>
+                            <div class="clear01">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- oneLayer end -->
+                    <div class="clear02">
+                    </div>
+                }
+            </div>
+            <!-- 评论 end -->
+            <div class="clear02">
+            </div>
+            <!-- page start -->
+            <div class="page marginRigh10">
+                @Ajax.ActionLink(" ", "Index", "VideoComment", new { Model.Item.Video_ID }, new AjaxOptions() { UpdateTargetId = "updateTarget" }, new { @class = "pageGo", id = "btnGo", onclick = "this.href=this.href + '&CurrentPage=' + document.getElementById('tbGo').value;" })
+                <span class="marginLef5">页</span><span class="marginLef5">
+                    <input id="tbGo" type="text" value="">
+                </span><span class="marginLef10">跳转到第</span><span class="marginLef10">@string.Format("共{0}条", Model.TotalItems)</span>
+                <span class="marginLef5">@string.Format("第{0}页/共{1}页", Model.CurrentPage, Model.TotalPages)</span>
+                @{
+                    int pre = (int)(Model.CurrentPage - 1 > 0 ? Model.CurrentPage - 1 : 1);
+                    int next = (int)(Model.CurrentPage + 1 > Model.TotalPages ? Model.TotalPages : Model.CurrentPage + 1);
+                    if (next <= 0)
+                    {
+                        next = 1;
+                    }
+                    int last = (int)(Model.TotalPages <= 0 ? 1 : Model.TotalPages);
+                }
+                @Ajax.ActionLink(" ", "Index", "VideoComment", new { CurrentPage = last, Model.Item.Video_ID }, new AjaxOptions() { UpdateTargetId = "updateTarget" }, new { @class = "lastPage", id = "lastPage" })
+                @Ajax.ActionLink(" ", "Index", "VideoComment", new { CurrentPage = next, Model.Item.Video_ID }, new AjaxOptions() { UpdateTargetId = "updateTarget" }, new { @class = "pageDown", id = "pageDown" })
+                @Ajax.ActionLink(" ", "Index", "VideoComment", new { CurrentPage = pre, Model.Item.Video_ID }, new AjaxOptions() { UpdateTargetId = "updateTarget" }, new { @class = "pageUp", id = "pageUp" })
+                @Ajax.ActionLink(" ", "Index", "VideoComment", new { CurrentPage = 1, Model.Item.Video_ID }, new AjaxOptions() { UpdateTargetId = "updateTarget" }, new { @class = "fistPage", id = "fistPage" })
+            </div>
+            <!-- page end -->
+        </div>
+        <!-- mainTable end -->
+        <div class="clear02">
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('#submitBtn').bind('click', function ()
+    {
+        var params = $('#submitForm').serialize();
+        $.ajax({
+            url: '/Admin/VideoComment/Add',
+            type: 'POST',
+            data: params,
+            success: function ()
+            {
+                alert('评论成功');
+                $('.fistPage').click();
+            }
+        });
+    });
+</script>

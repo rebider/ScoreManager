@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html ng-app="accountinfo">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>修改杠杆</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+<div ng-controller="leverEdit">
+    杠杆：<input ng-model="Leverage"/>
+    <input type="button" ng-click="SureEdit()" value="修改"/>
+</div>
+<div ng-controller="resetpwd">
+    <input value="密码重置" ng-click="ResetPwd()" type="button"/>
+</div>
+
+</body>
+</html>
+<script src="../../../Plugins/angular-1.5.5/angular.js"></script>
+<script src="../../../Scripts/Controller/AccountInfoModel.js"></script>

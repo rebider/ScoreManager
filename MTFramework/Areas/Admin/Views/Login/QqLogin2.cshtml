@@ -1,0 +1,104 @@
+﻿@using MT.Common
+@{
+    ViewBag.Title = "QqLogin";
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>QQ联合登录</title>
+    @ResourceHelper.CreateStyleResourceUrl("Admin", new[] { "common", "backstage" })
+    @ResourceHelper.CreateScriptResourceUrl(new [] {"Common/jquery-1.7.2.min.js"})
+</head>
+<body>
+    <!-- top导航 -->
+    <div class="g-nav f-cb">
+        <div class="m-nav"><i><a href="/Admin/Public/Logout">【退出】</a></i></div>
+    </div>
+    <!-- /top导航 -->
+    <!-- 头部 -->
+    <div class="g-hd">
+        <div class="m-hd f-cb">
+            <div class="m-logo">
+                
+            </div>
+            <div class="m-menu">
+                <ul>
+                    <li class="z-crt"><a>QQ账号绑定</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /头部 -->
+    <!-- 主体 -->
+    <div class="g-bd f-cb">
+        <div class="m-main">
+            <!-- 左侧 -->
+            <div class="g-sd">
+                <!-- 左侧菜单 -->
+                <div class="m-sd">
+                    <!-- 个人信息 -->
+                    <div class="f-cb psinfo">
+                    </div>
+                    <!-- /个人信息 -->
+                </div>
+                <!-- /左侧菜单 -->
+            </div>
+            <!-- /左侧 -->
+            <!-- 主体内容 -->
+            <div class="g-mn">
+                <div class="g-mnc f-cb" style="border: none;">
+                    <!-- form 4列 -->
+                    <!-- form -->
+                    <div class="m-content">
+                        <div class="m-form f-cb">
+                            <form action="/Admin/Login/QqLogin3" method="POST">
+                                <dl class="f-cb">
+                                    <dt>账号：</dt>
+                                    <dd>
+                                        <input id="Name" name="Name" type="text" class="u-iptl" />
+                                    </dd>
+                                    <dt>密码：</dt>
+                                    <dd>
+                                        <input id="Password" name="Password" type="password" class="u-iptl" />
+                                    </dd>
+                                    <dt></dt>
+                                    <dd>
+                                        <input type="submit" class="u-btnblue" value="保存" />
+                                        <input type="button" class="u-btnblue marl10" value="取消" />
+                                    </dd>
+                                </dl>
+                                <input type="hidden" name="openid" value="@ViewBag.openid"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /主体内容 -->
+        </div>
+    </div>
+    <!-- /主体 -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('input[type="submit"]').click(function() {
+                $.ajax({
+                    url: $('form').attr('action'),
+                    data: $('form').serialize(),
+                    success: function (data) {
+                        if (data.status == 1) {
+                            alert('绑定成功！');
+                            location.href = data.msg;
+                        } else {
+                            alert(data.msg);
+                        }
+                    },
+                    error:function() {
+                        alert('绑定失败！');
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+</body>
+</html>

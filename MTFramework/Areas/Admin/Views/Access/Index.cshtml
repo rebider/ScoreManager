@@ -1,0 +1,147 @@
+﻿@using MT.Models
+@using MT.Common
+@model MT.Models.AccessModel
+@{
+    ViewBag.Title = "列表";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutTreeEdit.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+    List<RoleModel> roleList = ViewBag.roleList;
+}
+@section foot{
+    <script type="text/javascript">
+        var setting = {
+            check: {
+                enable: true
+            },
+            data: {
+                key: {
+                    checked: "IsChecked",
+                    name: "Title"
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: 'ID',
+                    pIdKey: 'Pid'
+                }
+            },
+            callback: {
+                onCheck: zTreeOnCheck
+            }
+        };
+
+        var treeObj = null;
+
+        function zTreeOnCheck(event, treeId, treeNode) {
+            var nodes = treeObj.getCheckedNodes(true);
+            var _nodes = new Array();
+            for (var i = 0; i < nodes.length; i++) {
+                _nodes.push(nodes[i].ID);
+            }
+            $('#nodeIds').val(_nodes.join(','));
+        }
+
+
+
+        function BindTree() {
+            if ($('.layui-this').attr('lay-value') == '') {
+                return;
+            }
+            $.getJSON('/Admin/Access/TreeNode/?roleId=' + $('.layui-this').attr('lay-value') + '&productId=@Model.ProductId', function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].NodeLevel <= 1) {
+                        data[i].open = true;
+                    }
+                }
+                treeObj = $.fn.zTree.init($("#ztree"), setting, data);
+                var main = $(window.parent.document).find("#mainRigh");
+                var thisheight = $("#ztree").height() + 200;
+                main.height(thisheight);
+            });
+        }
+
+        $(document).ready(function () {
+
+
+            $("form").resize(function () {
+                alert(1);
+                var main = $(window.parent.document).find("#mainRigh");
+                var thisheight = $("#ztree").height() + 200;
+                main.height(thisheight);
+            });
+
+            $('.layui-anim-upbit dd').bind('click', function () {
+                BindTree();
+            });
+            $('#ztree_1_ul').bind('click', function () {
+                alert(0);
+                var main = $(window.parent.document).find("#mainRigh");
+                var thisheight = $("#ztree").height() + 200;
+                main.height(thisheight);
+            });
+
+
+            $('#submitBtn').bind('click', function () {
+                if ($('.layui-this').attr('lay-value') == '') {
+                    return;
+                }
+                var nodes = treeObj.getCheckedNodes(true);
+                var _nodes = new Array();
+                for (var i = 0; i < nodes.length; i++) {
+                    _nodes.push(nodes[i].ID);
+                }
+                $('#nodeIds').val(_nodes.join(','));
+
+                $.ajax({
+                    url: "/Admin/@vs["controller"]/Add",
+                    type: "POST",
+                    data: $("form").serialize(),
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.open({
+                                content: "保存成功",
+                                yes: function (index, layero) {
+                                    window.location.reload();
+                                    layer.close(index); //如果设定了yes回调，需进行手工关闭
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <header class="larry-personal-tit">
+            <div>
+                <a onclick="back('/Admin/Product/Index');"><i class="layui-icon ">&#xe603;</i><span>返回上级列表</span></a>
+            </div>
+        </header>
+        <div class="larry-personal-body clearfix ">
+            @using (Html.BeginForm("Add", "Access", FormMethod.Post, new { @class = "layui-form" }))
+            {
+                <div class="layui-form-item">
+                    <label class="layui-form-label">选择框</label>
+                    <div class="layui-input-inline">
+                        @Html.DropDownList("RoleID", new SelectList(roleList, "ID", "Name", Model.ID))
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">选择节点</label>
+                    <div class="layui-input-block">
+                        <ul class="ztree" id="ztree"></ul>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="button" value="保存" class="layui-btn" id="submitBtn" />
+                    </div>
+                </div>
+                @Html.HiddenFor(m => m.ProductId)
+                @Html.Hidden("nodeIds")
+            }
+        </div>
+    </div>
+</section>
+

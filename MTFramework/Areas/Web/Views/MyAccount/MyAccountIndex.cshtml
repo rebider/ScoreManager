@@ -1,0 +1,639 @@
+﻿@using MT.Models
+@using MT.Common
+@using MT.Common.Helper
+@model PetaPoco.Page<AccountModel>
+
+
+@{
+    ViewBag.Title = "列表";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+    var type = ViewBag.type;
+    var lastib = -1;
+}
+
+<link href="~/Styles/MyAccountIndex.css" rel="stylesheet" />
+    <style>
+   .m-page a{border: 1px solid #232f41;margin-right:3px;font-weight:500!important;}
+   .layui-field-box {
+     padding:0!important; 
+}
+   table{border-left:0px!important;border-right:0px!important;}
+    .f-fr.mart20.marr10 {
+         line-height:32px
+    }
+    </style>
+<section class="layui-larry-box" style="margin-left:14px;margin-right:15px;">
+    @if (type == 1)
+    {
+        <a onclick="javascript: window.history.go(-1); " style="display:block;margin-top:30px;color:#cad4de"><i class="layui-icon "></i><span style="font-family:'微软雅黑'" lang="return">back</span></a>
+    }
+
+    <input type="hidden" id="userLang" value="@MTConfig.UserLang"/>
+    <div style="text-align: right; margin-right: 16px;overflow:hidden;margin-top:26px;">
+        <div style="float:left;margin-bottom:25px;color: #cad4de;" class="crm-Account" lang="myaccount"> </div>
+
+    </div>
+    @*<div lang="trading_account" style="height:30px;"></div>*@
+    <div class="" style="width: 100%; margin-right: 2%; background-color: #1c283b;">
+
+        <div class="layui-field-box">
+            <div class="larry-personal">
+                <div class="larry-personal-body clearfix">
+                    <div style="float:right;margin-bottom:20px;padding-top:5px;margin-right: 20px; margin-top: 11px;">
+                        @if (ViewBag.AgentLevelID == 0)
+                        {
+                            <a class="layui-btn layui-btn-normal" href="javascript:;" onclick="AddAccount('/Web/MyAccount/AddAccount')" style="text-align:right" lang="trade_accounts"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;</a>
+                        }
+                       
+                     
+                    </div>
+                    <table border="0" class="layui-table yu-table" style="margin-top: 20px;">
+                        <tr>
+                            
+                            <th lang="mt4account">
+                            </th>
+                            <th lang="leverage">
+                            </th>
+                            <th lang="currency_type">
+                            </th>
+
+                            <th lang="balance">
+                            </th>
+                            @*<th lang="apply_state" style="display: none">
+                                </th>*@
+                            @*<th lang="state"></th>*@
+                            <th lang="account_type">
+                            </th>
+                            <th lang="equity"></th>
+                            <th lang="profit"></th>
+                            <td lang="operate"  style="border-right:none"></td>
+                        </tr>
+                        @if (Model.Items.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="11" lang="nodata" align="center"></td>
+                            </tr>
+                        }
+                       
+                        @foreach (var item in Model.Items)
+                        {
+                            int ib = item.IB.ToInt();
+                            <tr>
+                                
+                                <td>
+                                    @item.Account
+                                </td>
+                                <td>
+                                   1:@item.Leverage
+                                </td>
+                                <td>
+                                    USD
+                                </td>
+<td>
+                                    @item.Balance
+                                </td>
+                                @*@if (ViewBag.applystatus == 0)
+                                    {
+                                        <td style="color: green;display: none" lang="watting_apply"></td>
+                                    }
+                                    else if (ViewBag.applystatus == 1 || ViewBag.applystatus == null)
+                                    {
+                                        <td style="color: orange;display: none" lang="had_passed"></td>
+                                    }
+                                    else if (ViewBag.applystatus == 2)
+                                    {
+                                        <td style="color: red;display: none" lang="had_failed"></td>
+                                    }*@
+                                @*@if (item.Status == 0)
+                                {
+                                    <td lang="applying"></td>
+                                }
+                                else if (item.Status == 1)
+                                {
+                                    <td lang="normal"></td>
+                                }
+                                else
+                                {
+                                    <td lang="lock"></td>
+                                }*@
+                                @if (item.TypeID == 21)
+                                {
+                                    <td lang="typeone"></td>
+                                }
+                                else if (item.TypeID == 22)
+                                {
+                                    <td lang="typetwo"></td>
+                                }
+                                else if (item.TypeID == 23)
+                                {
+                                    <td lang="typethree"></td>
+                                }
+                                else if (item.TypeID == 1)
+                                {
+                                    <td lang="typeone"></td>
+                                }
+                                else
+                                {
+                                    <td>-</td>
+                                }
+                                <td>@item.Equity</td>
+                                <td>@item.Profit</td>
+                                @if (item.Status == 3)
+                                {
+                                    if (MTConfig.CurrentUserInfo.AgentLevelID > 0)
+                                    {
+                                        <td style="border-right:none"><a href="javascript:;" onclick="TakeAll(@item.AccountID);" class="layui-btn layui-btn-small layui-btn-warm" lang="takeall"></a></td>
+                                    }
+                                    else
+                                    {
+                                         <td style="border-right:none">
+                                        <a href="javascript:;" onclick="ResetPwd(@item.AccountID);" class="layui-btn layui-btn-small layui-btn-warm" lang="reset"></a>
+                                       
+                                        @if (ViewBag.AgentLevelID == 0)
+                                        {
+                                        <a href="javascript:;" onclick="UpdateLerg('/Web/MyAccount/UpdateLeverage?id=@item.AccountID')" class="layui-btn layui-btn-small layui-btn-warm1" lang="modify"></a>
+                                        <a href="~/web/FinaceManage/UserTurn?type=1&AccountID=@item.AccountID&Account=@item.Account" class="layui-btn layui-btn-small layui-btn-normal1" lang="into"></a>
+                                        }
+                                        
+                                        <a href="~/web/FinaceManage/UserTurn?type=2&AccountID=@item.AccountID&Account=@item.Account" class="layui-btn layui-btn-small layui-btn-danger" lang="roll_out"></a>
+                                    </td>
+                                    }
+                                }
+                                
+                                    @if (item.Email == "")
+                                    {
+                                        if (ib == lastib)
+                                        {
+                                            @*<td rowspan="@item.IBCount"><a href="">账户提取</a></td>*@
+                                            @*<td ><a href="">账户提取</a></td>*@
+                                           
+                                        }
+                                        else
+                                        {
+                                            <td rowspan="@item.IBCount" style="border-right:none"><a  href="javascript:;" onclick="FindAccount('/Web/MyAccount/FindAccount?ID=@item.IB');" class="layui-btn layui-btn-small layui-btn-normal" lang="Designatedmailbox"></a></td>
+                                        }
+                                    
+                                   
+
+                                }
+                            </tr>
+                                lastib = item.IB.ToInt();
+                        }
+                        <tr>
+                            <td colspan="11" style="padding:20px 5px 15px 5px;border-right:none">
+                                @if (ViewBag.applystatus != 1)
+                                {
+                                    <span lang="apply_state" style="color: #cad4de" id="apply_statel"></span>  <span id="apply_state"></span>
+                                }
+                                @if (ViewBag.identitystatus != 1)
+                                {
+                                    <span style="margin-left: 10px; color: #cad4de" lang="MT4_Status" id="account_statel"></span>
+                                    <span id="account_state"></span>
+                                }
+                                <span id="reason" style="color: red; display: none" lang="reason"></span>
+                                <div class="pageboder" style="background: none;color: #cad4de;"> @Html.ViewPage(Model, "Web") </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    @*<div class="pageboder" style="background: none;color: #cad4de;"> @Html.ViewPage(Model, "Web") </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<fieldset class="layui-elem-field" style="width:20%;float:right;margin-left:1%;margin-right:1%">
+            <legend lang="westfield_wallet"></legend>
+            <div class="layui-field-box">
+                <div class="larry-personal" style="text-align:center">
+                    <div class="larry-personal-body clearfix">
+                        <div style="margin-top:15px">
+                            <span style="font-size: 30px;color: #dc143c" id="money"></span>
+                        </div>
+                        <div>
+                            <a href="~/web/FinaceManage/Index" class="layui-btn layui-btn-big" style="margin: 20px 0;" lang="money_management"><i class="fa fa-credit-card" ></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>*@
+    @*<div class="layui-elem-field">
+            <div class="layui-elem-field-my">
+                <div>
+                    <img src="~/Plugins/common/images/icon-my.png" /><span lang="westfield_wallet"></span>
+                </div>
+
+            </div>
+            <div class="layui-elem-field-my1" id="money">
+            </div>
+            <div class="layui-elem-field-my2">
+                <div> <a href="~/web/FinaceManage/Index?actiontype=2" lang="money_management"><i class="fa fa-credit-card"></i></a></div>
+            </div>
+        </div>*@
+    <input type="hidden" id="getmoneyfaild" btn-lang="getmoneyfaild" />
+    <input type="hidden" id="reset_confirm" btn-lang="reset_confirm" />
+    <input type="hidden" id="resetting" btn-lang="resetting" />
+    <input type="hidden" btn-lang="noverify" id="noverify" />
+    <input type="hidden" btn-lang="iknow" id="iknow" />
+    <input type="hidden" btn-lang="goverify" id="goverify" />
+    <input type="hidden" btn-lang="seeverify" id="seeverify" />
+    <input type="hidden" btn-lang="failedverify" id="failedverify" />
+    <input type="hidden" btn-lang="verifying" id="verifying" />
+    <input type="hidden" btn-lang="tip_1" id="tip_1" />
+    <input type="hidden" value="@MTConfig.CurrentUserInfo.AgentLevelID" id="usertype" />
+    <input type="hidden" value="@MTConfig.CurrentUserInfo.Lang" id="userlang" />
+    <input type="hidden" value="@MTConfig.CurrentUserInfo.UserID" id="userid" />
+    <input type="hidden" value="@ViewBag.refresh" id="refresh" />
+</section>
+@section foot{
+    <script type="text/javascript">
+        var lock = false;
+
+        //一键转出
+        function TakeAll(accountid) {
+            if (lock) {
+                return false;
+            }
+            lock = true;
+            var index = layer.confirm("资金会被全部转入钱包，确定吗？", function() {
+                layer.close(index);
+                var loadIndex = layer.load({ icon: 1, shade: [0.6, '#f5f5f5'] });
+                $.ajax({
+                    url: "/Web/FinaceManage/MoneyTake",
+                    type: "post",
+                    data: { "accountId": accountid },
+                    success: function(data) {
+                        lock = false;
+                        layer.close(loadIndex);
+                        layer.msg(data.msg, { icon: 1 });
+                        location.reload();
+                    },
+                    error: function() {
+                        lock = false;
+                        layer.close(loadIndex);
+                        layer.msg("操作失败，请联系管理员或刷新重试");
+                        location.reload();
+                    }
+                });
+            });
+            return false;
+        }
+
+        //获取用户认证状态
+        var Status = "";
+        var userLang = $("#userLang").val()
+        //获取钱包总额
+        $(function() {
+            //$("#apply_state1").hide();
+            //$("#apply_state").hide();
+            //$("#account_state1").hide();
+            //$("#account_state").hide();
+            //判断刷新频率，并提示
+            //if($("#refresh").val()!=""){
+            //    layer.msg($("#refresh").val());
+            //}
+            //获取杠杆申请状态
+            $.ajax({
+                url: "/Admin/LeverageApply/GetStatus",
+                success: function(data) {
+                    if (data.status == 0) {
+
+                        //$("#apply_state").hide();
+                        //$("#apply_statel").hide();
+
+                    }
+                    if (data.status == 1) {
+                        //$("#apply_state1").show();
+                        //$("#apply_state").show();
+                        if (userLang == "En") {
+                            if (data.data == 0) {
+
+                                $("#apply_state").html("<span style='color:orange' >Watting Check</span>");
+                            }
+                            if (data.data == 1) {
+
+                                $("#apply_state").html("<span style='color:green' >Pass</span>");
+                            }
+                            if (data.data == 2) {
+
+                                $("#apply_state").html("<span style='color:red' >Failed</span>");
+                            }
+                        } else {
+                            //$("#apply_state1").show();
+                            //$("#apply_state").show();
+                            if (data.data == 0) {
+
+                                $("#apply_state").html("<span  style='color:#218a5e;' >待审核</span>");
+                            }
+                            if (data.data == 1) {
+                                $("#apply_state").html("<span style='color:#218a5e;'  >已通过</span>");
+                            }
+                            if (data.data == 2) {
+                                $("#apply_state").html("<span style='color:#218a5e;'  >已拒绝</span>");
+                            }
+                        }
+
+                    }
+                }
+            });
+
+            //获取账户申请状态
+            $.ajax({
+                url: "/Admin/AccountCreateApply/GetStatus",
+                success: function(data) {
+
+                    if (data.status == 0) {
+
+                        //$("#account_state").hide();
+                        //$("#account_statel").hide();
+
+
+                    }
+                    if (data.status == 1) {
+                        //$("#account_state1").show();
+                        //$("#account_state").show();
+                        if (userLang == "En") {
+                            if (data.data == 0) {
+                                $("#account_state").html("<span style='color:orange' >Watting Check</span>");
+                            }
+                            if (data.data == 1) {
+                                $("#account_state").html("<span style='color:green' >Pass</span>");
+                            }
+                            if (data.data == 2) {
+                                $("#account_state").html("<span style='color:red' >Failed</span>");
+                            }
+                        } else {
+                            $("#account_state1").show();
+                            $("#account_state").show();
+                            if (data.data == 0) {
+                                $("#account_state").html("<span style='color:#218a5e;'  >待审核</span>");
+                            }
+                            if (data.data == 1) {
+                                $("#account_state").html("<span style='color:#218a5e;'  >已通过</span>");
+                            }
+                            if (data.data == 2) {
+                                $("#account_state").html("<span style='color:red' >已拒绝</span>");
+                            }
+                        }
+
+                    }
+                }
+            });
+
+            //获取钱包总额
+            $.ajax({
+                url: "GetSumMoney",
+                data: {},
+                type: "post",
+                dataType: "json",
+                success: function(data) {
+                    if (data.status == 1) {
+                        $("#money").html(" $" + data.data);
+                    } else {
+                        layer.msg($("#getmoneyfaild").val());
+                    }
+
+                }
+            });
+
+            //获取认证状态
+            $.ajax({
+                url: "/Web/MyAccount/GetIdentityStatus",
+                Type: "post",
+                data: {},
+                success: function(data) {
+                    if (data.data == null) {
+                        Status = "0";
+                    } else {
+                        if (data.data.Status == null) {
+                            Status = "0";
+                        } else if (data.data.Status == "0") {
+                            Status = "0";
+                        } else if (data.data.Status == "1") {
+                            Status = "1";
+                        } else if (data.data.Status == "2") {
+                            Status = "2";
+                        } else if (data.data.Status == "3") {
+                            Status = "3";
+                        }
+                    }
+                }
+            });
+        });
+
+        //重置密码
+        function ResetPwd(AccountId) {
+            var btn1 = "";
+            var btn2 = "";
+            var title = "";
+            var content = "";
+            if ($("#lang").val() == "En") {
+                btn1 = "yes";
+                btn2 = "console";
+                title = "Reset account password";
+                content = "Are you sure to reset account password?";
+            } else {
+                btn1 = "是";
+                btn2 = "否";
+                title = "重置账户密码";
+                content = "您确定要重置密码？";
+            }
+
+            layer.open({
+                title: title,
+                closeBtn: false,
+                content: '<div style="layui-inline">' + content + '</div>',
+                btn: [btn1, btn2],
+                yes: function(index) {
+                    $.ajax({
+                        url: "/Web/MyAccount/ForgetAccountPassword",
+                        type: "post",
+                        data: { "id": AccountId },
+                        success: function(data) {
+                            if (data.status == 1) {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        beforeSend: function() {
+                            i = loading();
+                        },
+                        error: function(e, jqxhr, settings, exception) {
+                            loadOver(i);
+                        }
+                    });
+                }
+            });
+            //layer.confirm($("#reset_confirm").val(),
+            //    {
+            //        btn: [btn1 , btn2] //可以无限个按钮
+            //    },
+            //    function(index, layero) {
+            //        //按钮【按钮一】的回调
+            //        var i;
+            //        $.ajax({
+            //            url: "/Web/MyAccount/ForgetAccountPassword",
+            //            type: "POST",
+            //            data: { "id": AccountId },
+            //            success: function(data) {
+            //                if (data.status == 1) {
+            //                    layer.msg(data.msg);
+            //                }
+            //            },
+            //            beforeSend: function() {
+            //                i = loading();
+            //            },
+            //            error: function(e, jqxhr, settings, exception) {
+            //                loadOver(i);
+            //            }
+            //        });
+            //    });
+        }
+
+        //加载中
+        function loading() {
+            return layer.msg($("#resetting").val(),
+            { icon: 16, shade: [0.5, '#f5f5f5'], scrollbar: false, offset: '', time: 100000 });
+        }
+
+        //加载完毕
+        function loadOver(index) {
+            layer.close(index);
+        }
+
+        //修改杠杆
+        function UpdateLerg(url) {
+            layer.open({
+                title: '&nbsp;',
+                type: 2,
+                resize: false,
+                content: [url],
+                area: ['460px', '350px'],
+                success: function(layero, index) {
+                    //var body = layer.getChildFrame('body', index);
+                    //var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+                    //console.log(body.html()); //得到iframe页的body内容
+                    //body.find('input').val('Hi，我是从父页来的');
+                }
+            });
+        }
+
+        //修改Mt4名
+        function UpdateAccount(url) {
+            layer.open({
+                title: '&nbsp;',
+                type: 2,
+                resize: false,
+                content: [url],
+                area: ['460px', '350px'],
+                success: function(layero, index) {
+                    //var body = layer.getChildFrame('body', index);
+                    //var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+                    //console.log(body.html()); //得到iframe页的body内容
+                    //body.find('input').val('Hi，我是从父页来的');
+                }
+            });
+        }
+
+        //开设账户
+        function AddAccount(url) {
+            //console.log(Status);
+            //代理客户不能创建账户
+            if ($("#usertype").val() != 0) {
+                if ($("#userlang").val() == "En") {
+                    layer.msg("Sorry, AgentUser Can Not Create MT4 Account");
+                    return false;
+                } else {
+                    layer.msg("对不起，代理用户不能创建账户");
+                    return false;
+                }
+            }
+            //账户未认证，不能创建账户
+            if (Status == "2") {
+                layer.open({
+                    title: $("#tip_1").val(),
+                    content: $("#noverify").val(),
+                    btn: [$("#goverify").val(), $("#iknow").val()],
+                    yes: function(index, layero) {
+                        layer.close(index);
+                        location.href = "/Web/UserInfo/UserVerify";
+                    },
+                    btn2: function(index, layero) {
+                        layer.close(index);
+                    }
+                });
+                return false;
+            }
+
+            //账户认证失败，不能创建交易账户
+            if (Status == "1") {
+                layer.open({
+                    title: $("#tip_1").val(),
+                    content: $("#failedverify").val(),
+                    btn: [$("#seeverify").val(), $("#iknow").val()],
+                    yes: function(index, layero) {
+                        parent.location.href = "/Web/UserInfo/UserVerify";
+                    },
+                    btn2: function(index, layero) {
+                        //layer.close(index);
+                        layer.close(index);
+                    }
+                });
+                return false;
+            }
+
+            //账户认证中，不能新建交易账户
+            if (Status == "0") {
+                layer.open({
+                    title: $("#tip_1").val(),
+                    content: $("#verifying").val(),
+                    btn: [$("#iknow").val()],
+                    yes: function(index, layero) {
+                        layer.close(index);
+                    }
+                });
+                return false;
+            }
+            var title = "";
+            if ($("#lang").val() == "En") {
+                title = "Create the MT4 trading accounts";
+            } else {
+                title = "创建MT4交易账户";
+            }
+            layer.open({
+                title: title,
+                type: 2,
+                resize: false,
+                content: [url],
+                area: ['550px', '360px'],
+                yes: function(index, layero) {
+                    layer.close(index);
+                }
+            });
+            return false;
+        }
+
+        //找回账户
+        function FindAccount(url) {
+            var title = "";
+            if ($("#lang").val() == "En") {
+                title = "MT4 Account Extract";
+            } else {
+                title = "MT4账户提取";
+            }
+            layer.open({
+                title: title,
+                type: 2,
+                resize: false,
+                content: [url],
+                area: ['460px', '450px'],
+                yes: function(index, layero) {
+                    layer.close(index);
+                }
+            });
+            return false;
+        }
+
+        $("table tr:nth-child(even)").css('background', '#f9f9f9');
+    </script>
+}
+

@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+@using MT.Common
+@using MT.Models
+
+@{
+    ViewBag.Title = "";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAjaxEdit.cshtml";
+    <script src="~/Contents/ueditor/ueditor.all.js"></script>
+    <script src="~/Contents/ueditor/ueditor.config.js"></script>
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <form class="m-form" enctype="multipart/form-data">
+        <div>
+            <div style="width: 400px; height: 35px; line-height: 35px; margin: 0 auto; margin-top: 30px;">
+                <div class="f-fl " style="font-size: 14px; color: #555; margin-left: 65px">原因:</div>
+                <div class="f-fl marl10">
+                    @Html.DropDownList("TypeList", (List<SelectListItem>)ViewBag.TypeList, new { @class = "u-sltm" })
+                </div>
+            </div>
+            <div style="width: 100%; border-top: 1px solid #e5e5e5; margin-top: 85px;">
+                <input type="hidden" value="@ViewBag.id" id="meg" />
+                <input type="button" value="取消" onclick="top.art.dialog({ id: 'dig1' }).close();" class="u-btnblue2 mart20 f-fr marr10" />
+                <input type="submit" value="保存" onclick="addteacer();" id="sumb" class="u-btnblue2 mart20 f-fr marr10" />
+            </div>
+        </div>
+    </form>
+    @*<div class="m-content">
+    <div class="m-form f-cb">
+        @using (Html.BeginForm()) {
+            <dl class="f-cb">
+                <dt style="left:5px ! important">原因:</dt>
+                <dd>
+                    @Html.DropDownList("TypeList", (List<SelectListItem>)ViewBag.TypeList, new { @class = "u-sltm" })
+                </dd>
+                <dt></dt>
+                <dd>
+                    <input type="hidden" value="@ViewBag.id" id="meg" /> 
+                    <input type="button"   value="确定" class="u-btnblue" onclick="addteacer();"  id="sumb" />
+                    <input type="button" value="取消" class="u-btnblue marl10" onclick="top.art.dialog({ id: 'dig1' }).close();" />
+                </dd>
+            </dl>
+        }
+    </div>
+</div>*@
+
+    <script type="text/javascript">
+        $("#sumb").click(function () {
+                var typeList = $("#TypeList").val();
+                var id = $("#meg").val();
+                $.ajax({
+                    type: 'Get',
+                    url: '/Admin/XUser/Stop',
+                    asnyc: false,
+                    data: {
+                        id: id,
+                        type: typeList,
+                    },
+                    success: function (data) {
+                        var severData = data.split(':');
+                        if (severData[0] == "ok") {
+                            art.dialog({
+                                title: '提示',
+                                width: 300,
+                                height: 80,
+                                top: '20%',
+                                lock: true,
+                                background: '#fff', // 背景色
+                                opacity: 0.5,	// 透明度
+                                content: "停用成功！",
+                                cancelVal: '关闭',
+                                cancel: function () {
+                                    top.art.dialog.close();
+                                    var win = art.dialog.open.origin; //来源页面  
+                                    win.location.reload();
+                                } //为true等价于function(){}
+                             });
+
+                          
+                        } else if (severData[0] == "no") {
+                            $("#error").text(severData[1]);
+                        }
+                    },
+                    error: function (xhr) {
+                        alert(xhr.responseText);
+                    }
+                });
+        });
+    </script>
+</body>
+</html>

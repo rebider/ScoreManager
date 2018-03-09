@@ -1,0 +1,80 @@
+﻿
+@model MT.Models.SystemParamModel
+@using MT.Common
+
+@{
+    ViewBag.Title = "编辑";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAjaxEdit.cshtml";
+	RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+}
+
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <header class="larry-personal-tit">
+            <div><a onclick="back();"><i class="layui-icon ">&#xe603;</i><span>返回上级列表</span></a></div>
+        </header>
+        <div class="larry-personal-body clearfix ">
+   <form action="/Admin/@vs["controller"].ToString()/@vs["action"].ToString()" method="post" class="layui-form col-lg-5"  id="form">
+        <input type="hidden"  name="ParamID" id="ParamID" value="@Model.ParamID" />
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">参数名称</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="ParamName" id="ParamName"  placeholder="参数名称" value="@Model.ParamName"/>
+            </div>
+        </div>
+        
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">参数值</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="ParamValue" id="ParamValue"  placeholder="参数值" value="@Model.ParamValue"/>
+            </div>
+        </div>
+        
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">描述</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="Description" id="Description"  placeholder="描述" value="@Model.Description"/>
+            </div>
+        </div>
+        
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">其他备注</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="Remarks" id="Remarks"  placeholder="其他备注" value="@Model.Remarks"/>
+            </div>
+        </div>
+        
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">序号</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="OrderNo" id="OrderNo"  placeholder="序号" value="@Model.OrderNo"/>
+            </div>
+        </div>
+        
+       <div class="layui-form-item">
+            <div class="layui-input-block">
+                <input type="submit"  lay-submit value="保存" class="layui-btn" />
+            </div>
+        </div>
+    </form>
+	</div>
+</div>
+</section>
+@section foot
+{
+  <script>
+    layui.use('form', function () {
+    });
+
+    $("#form").submit(function () {
+        editmodel("");
+        return false;
+    });
+</script>
+}
+
+

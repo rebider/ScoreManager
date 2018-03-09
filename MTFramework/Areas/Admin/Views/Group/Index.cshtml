@@ -1,0 +1,142 @@
+﻿@using MT.Models
+@using MT.Common
+@model PetaPoco.Page<GroupModel>
+
+@{
+    ViewBag.Title = "列表";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+
+}
+
+
+@section head{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            BindCheckAll();
+        });
+    </script>
+}
+
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <header class="larry-personal-tit">
+            <div><a onclick="back('/Admin/Product/Index');"><i class="layui-icon ">&#xe603;</i><span>返回上级列表</span></a></div>
+        </header>
+        <div class="layui-tab ">
+            <blockquote class="layui-elem-quote mylog-info-tit">
+                <div class="layui-form-item ">
+
+                    <!-- search start -->
+                    @using (Html.BeginForm(vs["action"].ToString(), vs["controller"].ToString(), FormMethod.Get, new { @class = "layui-form" }))
+                    {
+
+                        <div class="layui-inline">
+                            <input type="text" class="layui-input" placeholder="英文名" name="Item.Name" id="Item_Name" value="@(Model.Item == null ? "" : Model.Item.Name + "")" />
+                        </div>
+
+                        <div class="layui-inline">
+                            <input type="text" class="layui-input" placeholder="名称" name="Item.Title" id="Item_Title" value="@(Model.Item == null ? "" : Model.Item.Title + "")" />
+
+                        </div>
+                        <div class="layui-inline">
+                            <input name="" type="submit" value="查询" class="layui-btn" />
+                        </div>
+                        if (Html.IsAuth("Admin", vs["controller"].ToString(), "Edit"))
+                        {
+                            <div class="layui-inline">
+                                <button type="button" class="layui-btn layui-btn-normal  marr10" onclick="usergoAdd()"><i class="layui-icon"></i> 添加</button>
+                            </div>
+                        }
+                    }
+
+                   
+                </div>
+            </blockquote>
+        </div>
+
+
+        <div class="clear01">
+        </div>
+
+        <div class="clear02">
+        </div>
+        <div class="larry-personal-body clearfix">
+            <table border="0" class="layui-table">
+                <tr>
+                    <th><input type="checkbox" class="checkall" /></th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.Name)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.Title)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.Target)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.Url)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.CreateTime)
+                    </th>
+                    <th>操作</th>
+                </tr>
+                @if (Model.Items.Count == 0)
+                {
+                    <tr>
+                        <td colspan="7">@MTConfig.ListNoData</td>
+                    </tr>
+                }
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td><input type="checkbox" class="checkone" value="@item.ID" /></td>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Title
+                        </td>
+                        <td>
+                            @item.Target
+                        </td>
+                        <td>
+                            @item.Url
+                        </td>
+                        <td>
+                            @item.CreateTime
+                        </td>
+                        <td>
+                            @{
+                                if (Html.IsAuth("Admin", vs["controller"].ToString(), "Edit"))
+                                {
+                                    <a href="/Admin/@(vs["controller"])/Edit/@item.ID" class="layui-btn layui-btn-small layui-btn-normal">编辑</a>
+                                }
+                            }
+                            @{
+                                if (Html.IsAuth("Admin", vs["controller"].ToString(), "Delete"))
+                                {
+                                    <a onclick="deletemodel('/Admin/@(vs["controller"])/Delete/@item.ID')" class="layui-btn layui-btn-small layui-btn-danger">删除</a>
+                                }
+                            }
+                           
+                        </td>
+                    </tr>
+                                }
+
+            </table>
+        </div>
+        <div class="clear02">
+        </div>
+        @Html.RenderPage(Model, "Admin")
+    </div>
+</section>
+
+<script>
+    function usergoAdd() {
+        window.location.href = '/Admin/@vs["controller"].ToString()/Add';
+    }
+</script>
+
+

@@ -1,0 +1,156 @@
+﻿@using MT.Models
+@using MT.Common
+@model PetaPoco.Page<ConfigModel>
+
+@{
+    ViewBag.Title = "列表";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            BindCheckAll();
+        });
+    </script>
+}
+
+<div class="m-content">
+    @Html.RenderNavHtml()
+    <div class="f-fr marr10 mart-53">
+        @{
+            if (Html.IsAuth("Admin", vs["controller"].ToString(), "Delete"))
+            {
+            <a class="u-btnadd btnDelete"><i class="ico-btndele"></i>删除</a>
+            }
+        }
+        @{
+            if (Html.IsAuth("Admin", vs["controller"].ToString(), "Add"))
+            {
+            <a class="u-btndele" onclick="goAdd();"><i class="ico-btnadd"></i>添加</a>
+            }
+        }
+    </div>
+    <div class="f-cb">
+    </div>
+    <!-- search start -->
+    @using (Html.BeginForm(vs["action"].ToString(), vs["controller"].ToString(), FormMethod.Get))
+    {
+        <div class="m-search f-cb">
+            <div class="m-schlist f-cb">
+                <div class="searchU">
+                    <div class="searchUP">
+                        @Html.LabelFor(m => m.Item.ConfigKey)：
+                    </div>
+                    <div class="searchUP">
+                        @Html.EditorFor(m => m.Item.ConfigKey)
+                    </div>
+                </div>
+                <div class="searchU">
+                    <div class="searchUP">
+                        @Html.LabelFor(m => m.Item.ConfigData)：
+                    </div>
+                    <div class="searchUP">
+                        @Html.EditorFor(m => m.Item.ConfigData)
+                    </div>
+                </div>
+                <div class="searchU">
+                    <div class="searchUP">
+                        @Html.LabelFor(m => m.Item.ConfigType)：
+                    </div>
+                    <div class="searchUP">
+                        @Html.EditorFor(m => m.Item.ConfigType)
+                    </div>
+                </div>
+                <div class="searchU">
+                    <input name="" type="submit" value="查询" class="u-btnblue marl10" />
+                </div>
+            </div>
+        </div>
+        <!-- search end -->
+    }
+    <div class="clear01">
+    </div>
+    <!-- 跳转操作 start -->
+
+    <!-- 跳转操作 end -->
+    <div class="clear02">
+    </div>
+    <div class="m-content">
+        <table border="0" class="m-table f-cb mart20">
+            <tr>
+                <th>
+                    <input type="checkbox" class="checkall" /></th>
+                <th>
+                    @Html.LabelFor(m => m.Item.ConfigKey)
+                </th>
+                <th>
+                    @Html.LabelFor(m => m.Item.ConfigData)
+                </th>
+                <th>
+                    @Html.LabelFor(m => m.Item.ConfigType)
+                </th>
+                <th>
+                    @Html.LabelFor(m => m.Item.CreateTime)
+                </th>
+
+                <th>操作</th>
+            </tr>
+            @if (Model.Items.Count == 0)
+            {
+                <tr>
+                    <td colspan="6">@MTConfig.ListNoData</td>
+                </tr>
+            }
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" class="checkone" value="@item.ID" /></td>
+                    <td>
+                        @item.ConfigKey
+                    </td>
+                    <td>
+                        @item.ConfigData
+                    </td>
+                    <td>
+                        @item.ConfigType
+                    </td>
+                    <td>
+                        @item.CreateTime
+                    </td>
+                    <td>
+                        @{
+                if (Html.IsAuth("Admin", vs["controller"].ToString(), "Edit"))
+                {
+                            <a href="/Admin/@(vs["controller"])/Edit/@item.ID" class="f-oper"><i class="ico-edit"></i>编辑</a>
+                }
+                        }
+                        @{
+                if (Html.IsAuth("Admin", vs["controller"].ToString(), "Delete"))
+                {
+                            <a  class="f-oper"  onclick="stopconfirm('您确定要删除该条数据吗？','删除成功','/Admin/@(vs["controller"])/Delete/@item.ID','')"><i class="ico-del"></i>删除</a>
+                }  
+                        }</td>
+                </tr>
+            }
+
+        </table>
+    </div>
+    <div class="clear02">
+    </div>
+    <div class="pageboder">@Html.RenderPage(Model, "Admin") </div>
+</div>
+
+@section foot{
+    <script type="text/javascript">
+
+        function goAdd() {
+            window.location.href = '/Admin/@vs["controller"].ToString()/Add';
+        }
+    </script>
+}
+
+

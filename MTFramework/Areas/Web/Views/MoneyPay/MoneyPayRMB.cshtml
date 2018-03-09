@@ -1,0 +1,249 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+<link rel="stylesheet" type="text/css" href="../../../Styles/RMBHelp.css" />
+@section head {
+    <script type="text/javascript">
+
+        var bankCode = new Array(16);
+        var bankName = new Array(16);
+        var bankNotice = new Array(16);
+        var bankOutage = new Array(16);
+
+        var targetBank = 0;
+        bankCode[1] = "086102";
+        bankName[1] = "中国工商银行";
+        bankNotice[1] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>借记卡</td><td class='n'>信用卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>U盾客戶</p></td><td class='n'>单笔<br>限额</td><td>100万元</td><td>信用卡额度</td></tr><tr><td class='n'>每日<br>限额</td><td>100万元</td><td>信用卡额度</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>电子银行口令卡客户</p></td><td class='n'>单笔<br>限额</td><td>已开通手机短信认证2,000元</td><td>已开通手机短信认证2,000元</td></tr><tr><td class='n'>每日<br>限额</td><td>已开通手机短信认证5,000元</td><td>已开通手机短信认证5,000元</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>未认证的网上银行口令卡</p></td><td class='n'>单笔<br>限额</td><td>500元</td><td>500元</td></tr><tr><td class='n'>每日<br>限额</td><td>1,000元</td><td>1,000元</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>柜面注册存量静态密码</p></td><td class='n' >单笔<br>限额</td><td>300元</td><td>300元</td></tr><tr><td class='n'>每日<br>限额</td><td>300元</td><td>300元</td></tr></table><p> 1) 请到银行各营业网点办理成为电子银行个人客户的手续并开通网上支付功能，选择申领电子银行口令卡或U盾;如需办理更高额度的支付业务，可到工商银行营业网点开通手机短信认证，或申领U盾升级为U盾客户。 <br> 2) 信用卡支付时不能超过信用额度</p>";
+        bankOutage[1] = ""; bankCode[2] = "086308";
+        bankName[2] = "招商银行";
+        bankNotice[2] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>借记卡</td><td class='n'>信用卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>专业版</p></td><td class='n'>单笔<br>限额</td><td>无限额</td><td rowspan='2' >不支持</td></tr><tr><td class='n'>每日<br>限额</td><td>无限额</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>大众版</p></td><td class='n'>单笔<br>限额</td><td>5,000元</td><td>499.99元</td></tr><tr><td class='n'>每日<br>限额</td><td>5,000元</td><td>信用卡额度</td></tr></table><p>*直接用卡号密码支付：登陆招行网站或通过电话银行人工或到网点柜面申请开通一卡通网上支付功能，并设定网上支付密码。初始额度为500元，累计消费满200元的15天後次日自动升为5,000元。</p>";
+        bankOutage[2] = ""; bankCode[3] = "086103";
+        bankName[3] = "中国农业银行";
+        bankNotice[3] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>金穗借记卡</td><td class='n'>准贷记卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>动态口令卡</p></td><td class='n'>单笔<br>限额</td><td>1,000元</td><td>1,000元</td></tr><tr><td class='n'>每日<br>限额</td><td>3,000元</td><td>3,000元</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>移动证书</p></td><td class='n'>单笔<br>限额</td><td>无限额</td><td>无限额</td></tr><tr><td class='n'>每日<br>限额</td><td>无限额</td><td>无限额</td></tr></table><p>*请到银行各营业网点办理成为电子银行业务个人注册客户的手续，动态口令卡用户：申领动态口令卡。K宝用户：购买移动K宝(用於储存证书)。</p>";
+        bankOutage[3] = ""; bankCode[4] = "086105";
+        bankName[4] = "中国建设银行";
+        bankNotice[4] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>准贷记卡和借记卡</td><td class='n'>信用卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>动态口令用户 和 U盾用户(签约客户)</p></td><td class='n'>单笔<br>限额</td><td>1万</td><td>500元</td></tr><tr><td class='n'>每日<br>限额</td><td>2万</td><td>500元</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>动态口令用户 和 短信口令卡</p></td><td class='n'>单笔<br>限额</td><td>1,000元</td><td>500元</td></tr><tr><td class='n'>每日<br>限额</td><td>1,000元</td><td>500元</td></tr></table><p>*便捷支付:登陆建设银行网站，到网点柜面开户时预留手机号码自助申请开通，通过 “网银客户支付” 凭接收到的手机动态验证进行网上支付。借记卡高级客户需申请USBkey</p>";
+        bankOutage[4] = ""; bankCode[5] = "086104";
+        bankName[5] = "中国银行";
+        bankNotice[5] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>借记卡</td><td class='n'>信用卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>口令卡</p></td><td class='n'>单笔<br>限额</td><td>50万元</td><td>5,000元</td></tr><tr><td class='n'>每日<br>限额</td><td>350万元</td><td>信用卡额度</td></tr></table><p> 1、如需使用中国银行网上支付服务，请先到我行营业网点申请开通新版中国银行网上银行,并申请安全认证工具「中银e令」；<br> 2、您可通过www.boc.cn登录新版中国银行网上银行，在线开通网上支付服务；<br> 3、网上支付业务存在一定风险，请您注意保护网上银行安全，并妥善保管「中银e令」；<br> 4、开通网上支付过程中设置的「预留信息」和「支付限额」可帮助您有效防范网上支付风险；<br> 5、您可根据需要灵活设置自己的「支付限额」，但您设置的限额不能高于上述银行统一设置的限额；<br> 中国银行客户服务热线：95566<br></p>";
+        bankOutage[5] = ""; bankCode[6] = "086305";
+        bankName[6] = "中国民生银行";
+        bankNotice[6] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>借记卡</td><td class='n'>信用卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>大众版（民生卡用户）</p></td><td class='n'>单笔<br>限额</td><td>300元</td><td>300元</td></tr><tr><td class='n'>每日<br>限额</td><td>300元</td><td>300元</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>贵宾版（文件证书）</p></td><td class='n'>单笔<br>限额</td><td>5,000元</td><td>5,000元或信用卡额度</td></tr><tr><td class='n'>每日<br>限额</td><td>5,000元</td><td>5,000元或信用卡额度</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>贵宾版（U宝）</p></td><td class='n'>单笔<br>限额</td><td>2万</td><td>5,000元或信用卡额度</td></tr><tr><td class='n'>每日<br>限额</td><td>10万</td><td>5,000元或信用卡额度</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>网上银行VIP+(含单KEY)版</p></td><td class='n'>单笔<br>限额</td><td>用户在柜台自行设定</td><td rowspan='2'>不支持</td></tr><tr><td class='n'>每日<br>限额</td><td>用户在柜台自行设定</td></tr></table><p> 1、您需要开通网上支付功能，即开通个人网上银行。<br> 2、大众版支付功能需通过大众版或贵宾版网上银行申请开通或关闭，且每个账户开通和关闭只能各申请一次，您还可以到中国民生银行营业网点申请办理贵宾版个人网上银行并采用民生U宝。目前我行正在举行「上网无忧」民生U宝推广活动，在活动期间办理U宝的客户可以享受多重优惠。<br> 客服热线：95568</p>";
+        bankOutage[6] = ""; bankCode[7] = "086309";
+        bankName[7] = "兴业银行";
+        bankNotice[7] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>兴业理财借记卡</td><td class='n'>兴业e卡</td><td class='n'>信用卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>手机交易短信</p></td><td class='n'>单笔<br>限额</td><td>5,000元</td><td>5,000元</td><td rowspan='2'>&nbsp;</td></tr><tr><td class='n'>每日<br>限额</td><td>1,000元或5,000元</td><td>1,000元或5,000元</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>证书 （普通证书或U盾）</p></td><td class='n'>单笔<br>限额</td><td>无限额</td><td>无限额</td><td rowspan='2'>&nbsp;</td></tr><tr><td class='n'>每日<br>限额</td><td>无限额</td><td>无限额</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>非证书客户</p></td><td class='n'>单笔<br>限额</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>&nbsp;</td><td>500元</td></tr><tr><td class='n'>每日<br>限额</td><td>3,000元</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>动态密码</p></td><td class='n'>单笔<br>限额</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>&nbsp;</td><td>3,000元</td></tr><tr><td class='n'>每日<br>限额</td><td>信用卡额度</td></tr></table><p> 1、证书客户或短信保护客户直接在个人网银「网上购物」板块「开通/关闭网上购物支付」里日限额只能选1000或5000元，总额度最大100万元；<br> 2、客户在柜面或者使用证书可自行设置日限额和总额度（最大100万元）；<br> 3、e卡默认开通网上支付功能，日限额5000元，总额度由客户申请e卡时自行设置（最大100万元），但是可以采取以上两种方式修改；<br> 4、如您使用兴业信用卡，请您登陆本行信用卡网银（http://creditcard.cib.com.cn/），自助开通/关闭网上支付功能并设置限额。<br> 客服热线：95561</p>";
+        bankOutage[7] = ""; bankCode[8] = "086310";
+        bankName[8] = "上海浦东发展银行";
+        bankNotice[8] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>借记卡</td><td class='n'>活期一本通</td><td class='n'>贷记卡</td><td class='n'>信用卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>数字证书版</p></td><td class='n'>单笔<br>限额</td><td colspan='3'>(签约客户)自行设置</td><td rowspan='2'>不支持</td></tr><tr><td class='n'>每日<br>限额</td><td colspan='3'>(签约客户)自行设置</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>动态密码版</p></td><td class='n'>单笔<br>限额</td><td colspan='3'>5万</td><td rowspan='2'>不支持</td></tr><tr><td class='n'>每日<br>限额</td><td colspan='3'>5万</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>&nbsp;</p></td><td class='n'>单笔<br>限额</td><td colspan='3' rowspan='2'>&nbsp;</td><td >500元</td></tr><tr><td class='n'>每日<br>限额</td><td>1,000元</td></tr></table><p> 1、您可以通过动态密码客户支付或数字证书客户支付进行网上支付交易。<br> 2、您可以通过到上海浦东发展银行营业网点柜面注册申请开通个人网上银行，成为动态密码客户，您还可以到上海浦东发展银行营业网点申请数字证书，成为证书客户，以享受更安全的网上支付交易。<br> 3、如您是动态密码客户或数字证书客户，您需要开通网上支付功能，即开通个人网上银行。<br> 客服热线：95528</p>";
+        bankOutage[8] = ""; bankCode[9] = "086301";
+        bankName[9] = "交通银行";
+        bankNotice[9] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>借记卡和贷记卡</td><td class='n'>信用卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>手机注册用户</p></td><td class='n'>单笔<br>限额</td><td>5,000元</td><td>1,000元与信用卡本身限额孰低</td></tr><tr><td class='n'>每日<br>限额</td><td>5,000元</td><td>1,000元与信用卡本身限额孰低</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>证书认证版用户</p></td><td class='n'>单笔<br>限额</td><td>5万</td><td>1,000元与信用卡本身限额孰低</td></tr><tr><td class='n'>每日<br>限额</td><td>5万</td><td>1,000元与信用卡本身限额孰低</td></tr></table><p>*需要持身份证件及银行卡去交行柜台开通网上支付功能，成为交行手机注册版用户或者证书认证版用户,开通后需要进行激活，信用卡不能单独开通，需要挂靠在借记卡或者准贷记卡下面才可以开通网上支付功能</p>";
+        bankOutage[9] = ""; bankCode[10] = "086302";
+        bankName[10] = "中信银行";
+        bankNotice[10] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>理财宝卡借记卡</td><td class='n'>信用卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>加强版文件证书</p></td><td class='n'>单笔<br>限额</td><td>1,000元</td><td rowspan='2'>不支持</td></tr><tr><td class='n'>每日<br>限额</td><td>5,000元</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>加强版U盾</p></td><td class='n'>单笔<br>限额</td><td>用户在柜台自行设定</td><td rowspan='2'>不支持</td></tr><tr><td class='n'>每日<br>限额</td><td>无限额</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>&nbsp;</p></td><td class='n'>单笔<br>限额</td><td rowspan='2'>&nbsp;</td><td>500元</td></tr><tr><td class='n'>每日<br>限额</td><td>5,000元</td></tr></table><p> 1、您需要开通网上支付功能，即开通个人网上银行加强版。<br> 2、您可以到中信银行营业网点申请文件证书或移动证书（USBKEY），登录中信银行网站个人网上银行加强版自助申请设置理财宝卡或中信信用卡网上支付限额，成为个人网上银行加强版客户，以享受更安全的网上支付交易。<br> 3、信用卡验证码（CVV2/CVC2）是一个三位数的验证码，它印在卡片背面，这个验证码会在签名处末尾的顶端以反斜体字来显示，这个验证码会在交易过程核实卡的真实性。<br> 客服热线：95558</p>";
+        bankOutage[10] = ""; bankCode[11] = "086303";
+        bankName[11] = "中国光大银行";
+        bankNotice[11] = "<table><tr><td colspan='3' class='nobg'></td><td class='n'>借记卡和活期一本通</td><td class='n'>信用卡</td></tr><tr><td rowspan='4' class='w'><span class='upc' ></span><p class='w'>银行卡直接支付</p></td><td rowspan='2' class='w2'><p class='w'>手机动态密码</p></td><td class='n'>单笔<br>限额</td><td>5,000元</td><td rowspan='2'>不支持</td></tr><tr><td class='n'>每日<br>限额</td><td>1万</td></tr><tr><td rowspan='2' class='w2'><p class='w'>令牌动态密码</p></td><td class='n'>单笔<br>限额</td><td>50万</td><td rowspan='2'>不支持</td></tr><tr><td class='n'>每日<br>限额</td><td>50万</td></tr><tr><td class='w' rowspan='6'><span class='upc' ></span><p class='w'>网银专业版支付</p></td><td rowspan='2' class='w2'><p class='w'>手机动态密码</p></td><td class='n'>单笔<br>限额</td><td>5,000元</td><td rowspan='2'>不支持</td></tr><tr><td class='n'>每日<br>限额</td><td>1万</td></tr><tr><td rowspan='2' class='w2'><p class='w'>令牌动态密码</p></td><td class='n'>单笔<br>限额</td><td>50万</td><td rowspan='2'>不支持</td></tr><tr><td class='n'>每日<br>限额</td><td>50万</td></tr><tr><td rowspan='2' class='w2'><p class='w'>阳光网盾</p></td><td class='n'>单笔<br>限额</td><td>20万</td><td>300元</td></tr><tr><td class='n'>每日<br>限额</td><td>50万</td><td>信用卡额度</td></tr></table><p> 1、办理数字证书支付签约需开通个人网上银行专业版，并登录网上银行专业版进行签约。<br> 2、银行卡直接支付指个人客户以通过输入银行账号和指定手机中接受到的动态密码信息进行支付的方式。办理银行卡直接支付签约可通过我行网点柜台办理，也可登录个人网上银行专业版进行签约。<br> 3、目前我行银行卡直接支付方式支持中国移动和中国联通的手机号段，暂不支持小灵通。<br> 4、电子支付业务是一项免费服务，个人客户进行电子支付或通过手机接收动态密码短信，均不收取费用。<br> 客服热线：95595<br> http://ebank.cebbank.com/publicintro2.html</p>";
+        bankOutage[11] = ""; bankCode[12] = "086304";
+        bankName[12] = "华夏银行";
+        bankNotice[12] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>借记卡</td><td class='n'>信用卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>非签约客户</p></td><td class='n'>单笔<br>限额</td><td>300元</td><td>300元</td></tr><tr><td class='n'>每日<br>限额</td><td>1,000元</td><td>1,000元</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>U盾证书</p></td><td class='n'>单笔<br>限额</td><td>5,000元</td><td>5,000元</td></tr><tr><td class='n'>每日<br>限额</td><td>5,000元</td><td>5,000元</td></tr <tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>电子钱包用户</p></td><td class='n'>单笔<br>限额</td><td>无限制</td><td>无限制</td></tr><tr><td class='n'>每日<br>限额</td><td>无限制</td><td>无限制</td></tr></table><p> 1、您可以通过普通个人客户支付或签约个人客户支付两种方式进行网上支付交易。<br> 2、您可以到华夏银行营业网点申请网上个人银行服务，成为签约个人客户。<br> 3、如您是普通个人客户，您无需任何申请即可进行网上支付交易，但不能使用个人电子钱包的功能。<br> 4、如您是签约个人客户，您可以登录华夏银行网站自助申请个人电子钱包，成为个人电子钱包客户，并能使用个人电子钱包的全部功能，包括网上支付、查询卡余额以及查询统计历史交易等。<br> 客服热线：95577</p>";
+        bankOutage[12] = ""; bankCode[13] = "086306";
+        bankName[13] = "广东发展银行";
+        bankNotice[13] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>借记卡</td><td class='n'>信用卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>手机动态验证码</p></td><td class='n'>单笔<br>限额</td><td>无限制</td><td>无限制</td></tr><tr><td class='n'>每日<br>限额</td><td>3,000元</td><td>1,500元</td></tr><tr><td class='w' rowspan='2'><span class='upc' ></span><p class='w'>U盾</p></td><td class='n'>单笔<br>限额</td><td>无限制</td><td>无限制</td></tr><tr><td class='n'>每日<br>限额</td><td>3,000元</td><td>1,500元</td></tr></table><p> 1、请不要将自己的生日、电话号码等作为支付密码，建议用字母与数字的组合，增加密码的安全性，同时定期更新自己的网上购物密码。<br> 2、请根据自己需要设置单笔支付限额和日累计限额，如无特殊需要请将支付限额控制在较小金额，以增加帐户安全性。<br> 3、每次购物限额不能超过每日购物限额.<br> 4、为提高帐户的安全性，建议广发信用卡客户致电95508申请开通瞬时通服务，及时掌握帐户变动信息。<br> 客服热线：<br> 广发信用卡客户请拨打全国统一24小时客服热线：95508<br> 广发借记卡及存折客户请拨打当地分（支）行客服热线</p>";
+        bankOutage[13] = ""; bankCode[14] = "086502";
+        bankName[14] = "平安银行";
+        bankNotice[14] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>借记卡</td><td class='n'>信用卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>U盾用户</p></td><td class='n'>单笔<br>限额</td><td>5万</td><td rowspan='2'>不支持</td></tr><tr><td class='n'>每日<br>限额</td><td>5万</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>动态口令用户</p></td><td class='n'>单笔<br>限额</td><td>5万</td><td rowspan='2'>不支持</td></tr><tr><td class='n'>每日<br>限额</td><td>5万</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>网银大众版</p></td><td class='n'>单笔<br>限额</td><td>5万</td><td rowspan='2'>不支持</td></tr><tr><td class='n'>每日<br>限额</td><td>5万</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>&nbsp;</p></td><td class='n'>单笔<br>限额</td><td rowspan='2'>&nbsp;</td><td>2,000元</td></tr><tr><td class='n'>每日<br>限额</td><td>2,000元</td></tr></table><p> *信用卡网上支付的成本是0.5%，借记卡的费率为0.4%<br> 1、您需要开通网上支付功能，即开通网上银行服务。<br> 2、您可以携带有效证件和卡到任意营业网点办理申请成为网银高级用户，即可开通网上支付功能。<br> 3、信用卡开通网上支付功能后，进行网上支付不需要数字证书就可直接支付。<br> 客服热线：40066-99999</p>";
+        bankOutage[14] = ""; bankCode[15] = "086501";
+        bankName[15] = "北京银行";
+        bankNotice[15] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>京卡借记卡</td><td class='n'>储蓄卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>普通版</p></td><td class='n'>单笔<br>限额</td><td>300元</td><td>300元</td></tr><tr><td class='n'>每日<br>限额</td><td>300元</td><td>300元</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>动态密码</p></td><td class='n'>单笔<br>限额</td><td>1,000元</td><td>1,000元</td></tr><tr><td class='n'>每日<br>限额</td><td>5,000元</td><td>5,000元</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>证书版</p></td><td class='n'>单笔<br>限额</td><td>100万</td><td>100万</td></tr><tr><td class='n'>每日<br>限额</td><td>100万</td><td>100万</td></tr></table><p> *覆盖区域： 北京 天津 西安 上海<br> 1、您需要开通网上支付功能，即开通个人网上银行。<br> 2、您可以通过登录北京银行网站自助申请开通个人网上银行，并申请开通电子支付功能，成为普通版个人客户，您还可以到北京银行营业网点申请文件证书或移动证书，成为证书客户，以享受更安全的网上支付交易。<br> 3、如您是普通版个人客户，当您所做的网上支付交易达到总支付限额后，您将不能继续进行网上支付交易。如您仍需进行网上支付交易，请您到北京银行营业网点申领文件证书或移动证书，当您成为专业版个人客户后，您将不再受到支付限额的限制。<br> 客服热线：010-96169</p>";
+        bankOutage[15] = ""; bankCode[16] = "086403";
+        bankName[16] = "中国邮政储蓄";
+        bankNotice[16] = "<table><tr><td colspan='2' class='nobg'></td><td class='n'>借记卡</td><td class='n'>信用卡</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>手机动码</p></td><td class='n'>单笔<br>限额</td><td>1万</td><td>1万</td></tr><tr><td class='n'>每日<br>限额</td><td>1万</td><td>1万</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>动态口令卡</p></td><td class='n'>单笔<br>限额</td><td>10万</td><td>10万</td></tr><tr><td class='n'>每日<br>限额</td><td>10万</td><td>10万</td></tr><tr><td rowspan='2' class='w'><span class='upc' ></span><p class='w'>U盾+手机动码</p></td><td class='n'>单笔<br>限额</td><td>100万</td><td>100万</td></tr><tr><td class='n'>每日<br>限额</td><td>100万</td><td>100万</td></tr></table><p> 必须在邮政储蓄网点进行网上支付业务申请、注册和开通，并开通短信动态密码认证功能。<br> 客服热线：11185</p>";
+        bankOutage[16] = ""; function selectBack(i, bid, outage, disable) {
+
+            if (document.getElementById("select_bank").value > 0) {
+                var d = document.getElementById("bank_id_" + document.getElementById("select_bank").value).className = "";
+                targetBank = 0;
+            }
+
+            document.getElementById("bankName").innerHTML = bankName[i] + '支付限额';
+            document.getElementById("bankDetail").scrollTop = 0;
+            document.getElementById("bankDetail").scrollLeft = 0;
+
+            if (disable == "true") {
+
+                document.getElementById("bankDetail").innerHTML = bankNotice[i] + "<div id='Outage' ><table><tr><th style='background-color:none;'>" + bankOutage[i] + "</th></tr></table></div>";
+                document.getElementById("btn_submit").style.display = 'none';
+
+
+            } else {
+                document.getElementById("bank_id_" + i).className = "current";
+                document.getElementById("select_bank").value = i;
+                document.getElementById("bank_code").value = bankCode[i];
+                targetBank = bid;
+
+                document.getElementById("bankDetail").innerHTML = bankNotice[i];
+                document.getElementById("btn_submit").style.display = 'block';
+                if (outage == "true") {
+                    document.getElementById("bankDetail").innerHTML = bankNotice[i] + "<div id='Outage'><a href='javascript:closeDiv();' id='btnClose' name='btnClose' title='Close'></a><table><tr><th style='background-color:none;'>" + bankOutage[i] + "</th></tr></table></div>";
+                } else {
+                    document.getElementById("bankDetail").innerHTML = bankNotice[i];
+                }
+
+            }
+        }
+
+        function closeDiv() {
+            var div = document.getElementById("Outage");
+            div.parentNode.removeChild(div);
+        }
+
+        function formCheck() {
+            if (targetBank == 0) {
+                alert('请选择银行');
+                return false;
+            }
+            return true;
+        }
+
+
+
+    </script>
+}
+<section class="layui-larry-box" style="padding:5px;">
+
+    <div id="container">
+        <div id="bankList">
+            <h3 id="selectBank" lang="chouse_bank"></h3>
+            <ul>
+                <li id='bank_id_1' class="">
+                    <a href="javascript:selectBack('1' ,'086102' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086102.gif" name='bank_img_1' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_2' class="">
+                    <a href="javascript:selectBack('2' ,'086308' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086308.gif" name='bank_img_2' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_3' class="">
+                    <a href="javascript:selectBack('3' ,'086103' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086103.gif" name='bank_img_3' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_4' class="">
+                    <a href="javascript:selectBack('4' ,'086105' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086105.gif" name='bank_img_4' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_5' class="">
+                    <a href="javascript:selectBack('5' ,'086104' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086104.gif" name='bank_img_5' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_6' class="">
+                    <a href="javascript:selectBack('6' ,'086305' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086305.gif" name='bank_img_6' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_7' class="">
+                    <a href="javascript:selectBack('7' ,'086309' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086309.gif" name='bank_img_7' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_8' class="">
+                    <a href="javascript:selectBack('8' ,'086310' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086310.gif" name='bank_img_8' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_9' class="">
+                    <a href="javascript:selectBack('9' ,'086301' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086301.gif" name='bank_img_9' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_10' class="">
+                    <a href="javascript:selectBack('10' ,'086302' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086302.gif" name='bank_img_10' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_11' class="">
+                    <a href="javascript:selectBack('11' ,'086303' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086303.gif" name='bank_img_11' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_12' class="">
+                    <a href="javascript:selectBack('12' ,'086304' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086304.gif" name='bank_img_12' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_13' class="">
+                    <a href="javascript:selectBack('13' ,'086306' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086306.gif" name='bank_img_13' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_14' class="">
+                    <a href="javascript:selectBack('14' ,'086502' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086502.gif" name='bank_img_14' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_15' class="">
+                    <a href="javascript:selectBack('15' ,'086501' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086501.gif" name='bank_img_15' title='' />
+                    </a>
+                </li>
+                <li id='bank_id_16' class="">
+                    <a href="javascript:selectBack('16' ,'086403' , 'false', 'false')">
+                        <img class="bank_icon" src="../../../Styles/Images/086403.gif" name='bank_img_16' title='' />
+                    </a>
+                </li>
+            </ul>
+        </div>
+        @*<div id="dateTime-conatiner">
+                <span>日期:</span>
+                <span class="date"></span>
+                <span>時間:</span>
+                <span class="time">16:59</span>
+            </div>*@
+        <div id="bankQuotaHead">
+            <span id="bankName"></span>
+        </div>
+        <div id="bankDetail"></div>
+        <div id="paymentDetail">
+            <form method="POST" id="form" action="/Web/MoneyPay/PayOrderMoney">
+                <input type="hidden" name="select_bank" id="select_bank" value="0" />
+                <input type="hidden" name="moneytype" id="moneytype" value="@ViewBag.MoneyType" />
+                <input type="hidden" name="confirm" id="confirm" value="bankconfirmed" />
+                <input type="hidden" name="bank_code" id="bank_code" value="" />
+                <input type="hidden" name="product" id="product" value="Westfield入金" />
+                <input type="hidden" name="sessionid" id="sessionid" value="3A7EC3B1751692F98C83DE958BC08C8B" />
+                <input type="hidden" name="txnid" id="txnid" value="0000000395019572" />
+                <span id="displayAmountReqTitle"><h3 lang="deposit_amount"></h3></span>
+                <input id="displayAmountReq" type="text" value="@ViewBag.TransMoney" readonly="readonly" />
+                <span id="displayAmountDstTitle"><h3 lang="amount_payable"></h3></span>
+                <input id="displayAmountDst" type="text" value="@ViewBag.Tmoneys" readonly="readonly" name="displayAmountDst" />
+                <span id="displaySubmit"><input class="layui-btn layui-btn-warm layui-btn-radius" name="btn_submit" id="btn_submit" btn-lang="confirm_payment" type="submit" /></span>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    //function bank11() {
+
+    //    $("#bank11").css("display", "none");
+    //}
+    //$("#form").submit(function () {
+
+    //    $.ajax({
+    //        url: "/Web/MoneyPay/PayOrderMoney",
+    //        type: "POST",
+    //        data: {
+    //            displayAmountDst: $("#displayAmountDst").val(), bank_code: $("#bank_code").val(), product:"Westfield入金"
+    //        }
+    //    });
+    //    return false;
+    //});
+
+</script>

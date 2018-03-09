@@ -1,0 +1,468 @@
+﻿@using MT.Common.Helper
+@model MT.Models.UserBankModel
+@using MT.Models
+@using MT.Common
+@{
+    Layout = "~/Areas/Web/Views/Shared/_LayoutPage.cshtml";
+    ViewBag.Title = "银行账户页面";
+    string creditCard = "";
+    string debitCard = "";
+    string clickupload = "";
+    if (MTConfig.UserLang == "En")
+    {
+        creditCard = "Credit card";
+        debitCard = "Debit Card";
+        clickupload = "Click here to upload.";
+    }
+    else
+    {
+        creditCard = "信用卡";
+        debitCard = "借记卡";
+        clickupload = "点击上传";
+    }
+}
+<style>
+    .js-max-input {
+        top: 8px !important;
+        left: 88px !important;
+    }
+
+
+    html {
+        color: #cad4de;
+        background: #16202f;
+    }
+
+    #ck {
+        padding: 10px;
+        line-height: 40px;
+        font-size: 14px;
+        color: #f02a4a;
+        border: 1px #f02a4a solid;
+        border-radius: 3px;
+        width: 360px;
+        float: left;
+        line-height: 25px;
+        margin: 5px;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    .example-btn {
+        position: absolute;
+        z-index: 100;
+        top: 6px;
+        right: 10px;
+        padding: 0px 14px;
+        height: 32px;
+        line-height: 32px;
+    }
+
+    .layui-input, .layui-select, .layui-textarea {
+        height: 38px;
+        line-height: 38px;
+        line-height: 36px\9;
+        border: 1px solid #16202f;
+        border-radius: 2px;
+    }
+
+    .layui-field-box input {
+        background: none !important;
+        border: 1px solid #232f41 !important;
+    }
+
+    .layui-elem-field {
+        margin-bottom: 10px;
+        padding: 0;
+        border: none;
+        width: 20%;
+        float: left;
+    }
+
+    .layui-btn-primary {
+        border: none;
+        background: none;
+        color: #cad4de;
+    }
+
+        .layui-btn-primary:hover {
+            color: #cad4de;
+        }
+
+    .layui-form-select dl dd.layui-this {
+        background-color: #329ef4 !important;
+        color: #fff;
+    }
+
+    .y-btn {
+        background: #329ef4;
+    }
+</style>
+<section class="layui-larry-box" style="background:#16202f;">
+    <div class="larry-personal">
+        <header class="larry-personal-tit" style="padding-top:10px">
+            <div>
+                <a onclick="window.history.go(-1);" style="color: #cad4de;"><i class="layui-icon " style="margin-left:12px;color: #cad4de;"></i><span style="font-family:'微软雅黑'" lang="return"></span></a>
+
+            </div>
+        </header>
+        <div lang="User_Auth" style="text-align:left;height:45px;line-height:45px;font-size:20px;margin-bottom:10px;margin-left:12px;color: #cad4de;"></div>
+        <form id="bank" class="larry-personal-body clearfix  layui-form" style="margin:0px;">
+
+
+            <div class="layui-field-box" style="margin-left:20px;float:left">
+                <div class="layui-form-item" style="margin-bottom:5px">
+                    <label class="layui-form-label" lang="card_type"></label>
+                    <div class="layui-input-inline">
+                        <select id="CardType" name="CardType" lay-search="">
+                            @if (Model.CardType > 0)
+                            {
+                                if (Model.CardType == 1)
+                                {
+                                    <option value="1" selected>@creditCard</option>
+                                        <option value="2">@debitCard</option>
+                                }
+                                else
+                                {
+                                    <option value="1">@creditCard</option>
+                                        <option value="2" selected>@debitCard</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="2">@debitCard</option>
+                                    <option value="1">@creditCard</option>
+                            }
+                        </select>
+
+                    </div>
+                </div>
+                <div class="layui-form-item" style="margin-bottom:5px">
+                    <label class="layui-form-label" lang="bank_type"></label>
+                    <div class="layui-input-inline" style="z-index:2">
+                        @if (Model != null)
+                        {
+                            if (Model.BankType == null || Model.BankType + "" == "")
+                            {
+                                <div id="banktypeddl">
+                                    @Html.Raw(DropDownListHelper.GetDropDownList("DDL_GETBANKTYPE", "", " name='BankType' id='BankTypeddl' readonly='none'", "", Model.BankType == null ? "" : Model.BankType + ""))
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="banktypeinp"><input type="text" class="layui-input" name="BankType" id="BankTypeinp" value="@(Model == null ? "" : Model.BankType + "")" /></div>
+                                    <div id="banktypeddl" hidden>
+                                        @Html.Raw(DropDownListHelper.GetDropDownList("DDL_GETBANKTYPE", "", " name='BankType' id='BankTypeddl' readonly='none'", "", Model.BankType == null ? "" : Model.BankType + ""))
+                                    </div>
+                            }
+                        }
+                        else
+                        {
+                            <div id="banktypeddl">
+                                @Html.Raw(DropDownListHelper.GetDropDownList("DDL_GETBANKTYPE", "", " name='BankType' id='BankTypeddl' readonly='none'", "", Model.BankType == null ? "" : Model.BankType + ""))
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+                <div class="layui-form-item" id="parentCls" style="z-index:1;margin-bottom:5px">
+                    <label class="layui-form-label" lang="bank_branc"></label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" name="BankBranch" id="BankBranch" lang="bank_branch" value="@(Model == null ? "" : Model.BankBranch)" />
+                    </div>
+                </div>
+                <div class="layui-form-item" id="parentCls" style="z-index:1;margin-bottom:5px">
+                    <label class="layui-form-label" lang="card_no"></label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" name="CardNo" id="CardNo" lang="card_no" value="@(Model == null ? "" : Model.CardNo + "")" lay-verify="number" maxlength="19" />
+                    </div>
+                </div>
+                <div class="layui-form-item" style="z-index:1;margin-bottom:5px">
+                    <label class="layui-form-label" lang="bank_address"></label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" name="CardAddress" id="CardAddress" lang="bank_address" value="@(Model==null?"":Model.CardAddress+"")" />
+                    </div>
+                </div>
+
+
+
+
+
+                <input type="hidden" value="@Model.UserID" name="UserID" />
+                <input type="hidden" value="@Model.ID" name="ID" />
+                <input type="hidden" value="@(Model==null ?"" :Model.Phone)" name="Phone" />
+
+
+            </div>
+            <div class="layui-elem-field iv-fiel" style="width:auto;margin-left:14px;position:relative;background:#1c283b;">
+                <div lang="card_photo" style="text-align:left;height:45px;line-height:45px;font-size:16px;text-indent:1em;color: #cad4de;"></div>
+
+
+
+
+
+                <button type="button" class="layui-btn layui-btn-primary example-btn" id="button_eg3" btn-lang="example"></button>
+
+                <div style="padding:20px;width: 100%; ">
+                    <div class="layui-form-item f-fl" style="border:1px dashed #232f41;width:320px;height:200px;">
+                        <div style="position: relative;width:320px;height:200px;">
+                            @{if (!string.IsNullOrEmpty(Model.BankCardFile))
+                                {
+                                    <input type="hidden" name="BankCardFile" id="BankCardFile" value="@Model.BankCardFile.ToInt()" />
+                                    <img style="max-height:200px" src="@ResourceHelper.CreateUploadImgUrl(Model.BankCardFile.ToInt())" id="bankfile3" />
+                                }
+                                else
+                                {
+                                    <input type="hidden" name="BankCardFile" id="BankCardFile" class="layui-input" />
+                                    <img src="" id="bankfile3" class="iv-img" style="width:100%;height:auto;" />
+                                }
+                            }
+                            <input type="button" value="@clickupload" class="layui-btn layui-btn-primary" style="position:absolute;width: 100%;height: 100%; border: none; top: 2px; left: 2px; background: none;" onclick="javascript: $('#BankCardFilef').click();" />
+                        </div>
+                        <div class="iv-iptfile">
+
+                            <input type="file" name="BankCardFilef" id="BankCardFilef" class="layui-upload-file f-fl" lang="up_cardphoto" style="display: none">
+                            <input type="text" name="BankCardFilet" id="BankCardFilet" class="layui-input f-fl" style="display: none" />
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="f-cb"></div>
+
+
+            </div>
+            <div class="layui-elem-field iv-fiel" style="width: auto; margin-left: 14px; position: relative; background: #1c283b;">
+                <div lang="card_photo1" style="text-align: left; height: 45px; line-height: 45px; font-size: 16px; text-indent: 1em; color: #cad4de;"></div>
+                <button type="button" class="layui-btn layui-btn-primary example-btn" id="button_eg4" btn-lang="example"></button>
+                <div style="padding: 20px; width: 100%;">
+                    <div class="layui-form-item f-fl" style="border: 1px dashed #232f41; width: 320px; height: 200px;">
+                        <div style="position: relative; width: 320px; height: 200px;">
+                            @{if (!string.IsNullOrEmpty(Model.BankCardFile2))
+                              {
+                                  <input type="hidden" name="BankCardFile2" id="BankCardFile2" value="@Model.BankCardFile2.ToInt()"/>
+                                  <img style="max-height: 200px" src="@ResourceHelper.CreateUploadImgUrl(Model.BankCardFile2.ToInt())" id="bankfile4"/>
+                              }
+                              else
+                              {
+                                  <input type="hidden" name="BankCardFile2" id="BankCardFile2"/>
+                                  <img src="" id="bankfile4" class="iv-img" style="width: 100%; height: auto;"/>
+                              }
+                            }
+                            <input type="button" value="@clickupload" class="layui-btn layui-btn-primary" style="position: absolute; width: 100%; height: 100%; border: none; top: 2px; left: 2px; background: none;" onclick="javascript: $('#BankCardFilef2').click();"/>
+                        </div>
+                        <div class="iv-iptfile">
+
+                            <input type="file" name="BankCardFilef2" id="BankCardFilef2" class="layui-upload-file f-fl" lang="up_cardphoto1" style="display: none">
+                            <input type="text" name="BankCardFilet2" id="BankCardFilet2" class="layui-input f-fl" style="display: none"/>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div>
+                @if (!string.IsNullOrEmpty(ViewBag.remark))
+                {
+                    <span style="color:red">@ViewBag.remark</span>
+                }
+            </div>
+            <!--上传银行卡图片start-->
+            <div class="layui-form-item" style="margin-top:20px">
+                <div class="layui-input-block f-fl">
+                    <input type="submit" lay-submit btn-lang="save" class="layui-btn" style="margin-left:45px" />
+
+                </div>
+
+
+            </div>
+            <!--上传银行卡图片end-->
+        </form>
+    </div>
+</section>
+@section foot
+{
+    <script src="~/Scripts/backcardcheck.js" type="text/javascript"></script>
+    <script>
+            //修改银行名称start
+            var old = '@Model.BankType';
+            $(function () {
+                $("#BankTypeddl+.layui-unselect>.layui-select-title>input").removeAttr("readonly");
+                $("#BankTypeddl+.layui-unselect>.layui-select-title>input").change(function () {
+
+                    $("[name=BankType]").val($(this).val());
+                });
+
+                $("#BankTypeinp").change(function () {
+                    if ($(this).val() != old) {
+                        $("#banktypeinp").hide();
+                        $("#banktypeddl").show();
+                    }
+                    $("#BankTypeddl+.layui-unselect>.layui-select-title>input,[name=BankType]").val($(this).val());
+                });
+                $("#BankTypeddl+div>.layui-anim-upbit").on("click", "dd", function () {
+                    var val = $(this).attr("lay-value");
+
+                    $("[name=BankType]").val(val);
+                });
+                $("#button_eg3").click(function () {
+                    ShowBigPicture("/Styles/Images/bankCardFront.png", "银行卡正面");
+
+                });
+                $("#button_eg4").click(function () {
+                    ShowBigPicture("/Styles/Images/bankCardNegative.png", "银行卡反面");
+
+                });
+            });
+
+            function ShowBigPicture(url, alt) {
+                var json = {
+
+                    "data": [   //相册包含的图片，数组格式
+                        {
+                            "alt": alt,
+                            "src": url, //原图地址
+                        }
+                    ]
+                }
+                layer.photos({
+                    photos: json //格式见API文档手册页
+                    , anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
+                });
+            }
+
+
+
+            //修改银行名称end
+            $(".layui-form-label").css("width", "200px");
+
+            layui.use(['jquery', 'form'],
+                function () {
+                    var form = layui.form();
+                });
+
+            $("#bank").submit(function () {
+                editaddbank();
+                return false;
+            });
+            layui.upload({
+                url: '/Admin/Public/Upload',
+                elem: '#BankCardFilef',
+                unwrap: true,
+
+                before: function (input) {
+                    //返回的参数item，即为当前的input DOM对象
+                    layer.load('', { icon: 1, shade: [0.6, "#f5f5f5"] });
+                },
+                success: function (res) {
+                    layer.closeAll('loading');
+                    if (res.status == 1) {
+                        $("#BankCardFilet").val(res.name);
+                        $("#BankCardFile").val(res.id);
+                        $("#bankfile3").attr("src", "/Home/Img?id=" + res.id + "&width=322&height=197");
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }
+            });
+            layui.upload({
+                url: '/Admin/Public/Upload',
+                elem: '#BankCardFilef2',
+                unwrap: true,
+
+                before: function (input) {
+                    //返回的参数item，即为当前的input DOM对象
+                    layer.load('', { icon: 1, shade: [0.6, "#f5f5f5"] });
+                },
+                success: function (res) {
+                    layer.closeAll('loading');
+                    if (res.status == 1) {
+                        $("#BankCardFilet2").val(res.name);
+                        $("#BankCardFile2").val(res.id);
+                        $("#bankfile4").attr("src", "/Home/Img?id=" + res.id + "&width=322&height=197");
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }
+            });
+            if ('@MTConfig.UserLang' == "En") {
+                upload = "uploading...";
+            } else {
+                upload = "上传中......";
+            }
+        function editaddbank() {
+            var index = layer.confirm("确认修改？", function() {
+                $.ajax(
+                {
+                    url: "/Web/BankCardUpdateApply/CreateApply",
+                    type: "post",
+                    data: $("#bank").serialize(),
+                    success: function (data) {
+//                        if (data.status == 1) {
+//                            layer.open({
+//                                content: "保存成功",
+//                                yes: function (index, layero) {
+//                                    if (data.msg != "") {
+//                                        //parent.layer.msg(data.msg);
+//                                        location.reload();
+//                                        parent.layer.close(index); //再执行关闭
+//                                    } else {
+//                                        //parent.layer.msg(data.msg);
+//                                        return false;
+//                                    }
+//                                }
+//                            });
+//
+//                        } else {
+//                            layer.msg(data.msg);
+//                        }
+                        if (data.status == 1) {
+                            parent.layer.alert(data.msg, { icon: 1 });
+                        } else {
+                            parent.layer.alert(data.msg, { icon: 2 });
+                        }
+                        location.reload();
+                        layer.close(index);
+                    }
+                });
+            });
+                
+            }
+            $('#BankType').autocomplete({
+                source: function (query, process) {
+                    $.post("/Web/MoneyTake/MoneyType", { "Key": query }, function (respData) {
+                        return process(respData);
+                    });
+                },
+                formatItem: function (item) {
+                    return item["ConfigData"];
+                },
+                setValue: function (item) {
+                    return { 'data-value': item["ConfigData"] };
+                },
+                select: function () {
+                    var val = this.$menu.find('.active').attr('data-value');
+                    var realVal = this.$menu.find('.active').attr('real-value');
+                    this.$element
+                        .val(this.updater(val)).attr("real-value", realVal)
+                        .change();
+
+                    //$("#SalerID").val(realVal);
+                    return this.hide();
+                }
+
+
+            });
+            $(function () {
+                new TextMagnifier({
+                    inputElem: '#CardNo',
+                    align: 'top'
+                });
+
+            });
+    </script>
+}

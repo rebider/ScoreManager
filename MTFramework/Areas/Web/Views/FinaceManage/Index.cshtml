@@ -1,0 +1,657 @@
+﻿@using MT.Models
+@using MT.Common
+@using MT.Common.Helper
+@using MT.Models
+@model PetaPoco.Page<MoneyStreamModel>
+@{
+    ViewBag.Title = "资金管理";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+    int actiontype = 0;
+    var read = "";
+    if (MTConfig.CurrentUserInfo.AgentLevelID >0)
+    {
+        actiontype = 2;
+        read = "disabled";
+    }
+}
+
+@section head{
+}
+<link href="~/Styles/MyAccountIndex.css" rel="stylesheet" />
+<script>
+    $(parent.document).find(".layui-nav-tree>li#money").addClass("layui-this").siblings().removeClass("layui-this");
+</script>
+<section class="layui-larry-box" style="padding:0px;">
+    @if (ViewBag.actiontype == 2)
+    {
+        <a onclick="javascript: window.history.go(-1);"><i class="layui-icon " style="margin-left: 12px"></i><span style="font-family:'微软雅黑'" lang="return">back</span></a>
+    }
+    <div class="" style="margin-top: 20px;margin-left: 12px" lang="money_management">
+        
+    </div>
+    <div class="larry-personal">
+        @*<header class="larry-personal-tit">
+            <div><a onclick="javascript: window.history.go(-1);"><i class="layui-icon " style="color:darkgoldenrod">&#xe603;</i><span style="color: darkgoldenrod;font-family:'微软雅黑'" lang="return"></span></a></div>
+        </header>*@
+        <br />
+        <input type="hidden" id="accId" value="@ViewBag.AccountID"/>
+        <input type="hidden" id="type" value="@ViewBag.type"/>
+        <input type="hidden" id="acc" value="@ViewBag.Account"/>
+        <div class="larry-personal-body clearfix " style="margin: 0px;">
+            <div class="f-fl"  style="width:48%;">
+                
+                <div class="layui-elem-field iv-fiel" style="width:100%;height:auto;">
+                    
+                    <div class="crm-rotation" lang="rotation"></div>
+                    <form method="post" class="layui-form col-lg-11" id="form" >
+                        <div class="layui-form-item layui-form-item1" style="margin-top:10px"  >
+                            <label class="layui-form-label"  style="width: 140px;" lang="roll_out"></label>
+                            <div class="layui-input-inline layui-input-inline-1" >
+                                <select name="AccountID" id="AccountID" lay-filter="test" @read>
+                                    <option value="-1" selected lang="select"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-item1" style="margin-top: 10px;" >
+                            <label class="layui-form-label"  style="width: 140px;" lang="into"></label>
+                            <div class="layui-input-inline layui-input-inline-1">
+                                <select name="InAccount" id="InAccount" lay-filter="test2" @read>
+                                    <option value="-1" selected lang="select"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-item1"   >
+                            <label class="layui-form-label"  style="width: 140px;" lang="sum"></label>
+                            <div class="layui-input-inline layui-input-inline-1" @read>
+                                <input type="number" autocomplete="off" class="layui-input" name="StreamMoney" id="StreamMoney" @read />
+                            </div>
+                            @if (MTConfig.UserLang == "En")
+                            {
+                                <input type="hidden" class="layui-input" name="Remark" id="Remark" value="Internal Transfer" />
+                            }
+                            else
+                            {
+                                <input type="hidden" class="layui-input" name="Remark" id="Remark" value="同一客户内转" />
+                            }
+                        </div>
+                        @*<div class="layui-form-item"  >
+                            <label class="layui-form-label" style="width: 140px;" lang="remark_crm"></label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" name="Remark" id="Remark" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item"  >
+                            <label class="layui-form-label" style="width: 140px;" lang="remark_mt4"></label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" name="Remark" id="Remark" />
+                            </div>
+                        </div>*@
+                        <div class="layui-form-item" style="margin-left:10px; height:40px">
+                            <span style="font-size:12px" lang="Rotation_remarks"></span>
+                        </div>
+                        <div class="layui-form-item"  style="margin-bottom: 23px;">
+                            <input type="hidden" name="StreamType" id="StreamType" value="" />
+                            <div class="layui-input-inline " style="width:100px;margin-left:145px;" >
+                                <a id="rotationbtn" onclick="sure();" href="javascript:;" class="layui-btn layui-btn-normal" lang="surepay" ><i class="fa fa-cny"></i>&nbsp;</a>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="f-fl" style="margin-left:15px;width:49%;">
+                <div class="layui-elem-field iv-fiel" style="width:100%;height:auto;">
+                    
+                    <div class="crm-rotation" lang="converted"></div>
+                    <form method="post" class="layui-form col-lg-11" id="form2">
+                        <div class="layui-form-item layui-form-item1"  >
+                            <label class="layui-form-label" style="width: 140px;" lang="current_balance"></label>
+                            <div class="layui-input-inline layui-input-inline-1">
+                                <input type="text" id="money" class="layui-input" style="border:0" value="@ViewBag.sumMoney $"/>
+                                @*<span style="font-size: 16px;" id="money"></span>*@
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-item1"   >
+                            <label class="layui-form-label" style="width: 140px;" lang="into_account"></label>
+                            <div class="layui-input-inline layui-input-inline-1">
+                                <input type="text" autocomplete="off" class="layui-input" name="TarUser" id="" value="" />
+                                @*<select name="TarUserID" id="OuterUserID">
+                            <option value="-1" selected></option>
+                        </select>*@
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-item1"   >
+                            <label class="layui-form-label" style="width: 140px;" lang="sum"></label>
+                            <div class="layui-input-inline layui-input-inline-1">
+                                <input type="number" autocomplete="off" class="layui-input" name="StreamMoney" id="OuterMoney" />
+                            </div>
+                            @if (MTConfig.UserLang == "En")
+                            {
+                                <input type="hidden" class="layui-input" name="Remark" id="Remark" value="Commission Forwarding" />
+                            }
+                            else
+                            {
+                                <input type="hidden" class="layui-input" name="Remark" id="Remark" value="佣金转发" />
+                            }
+                        </div>
+                        @*<div class="layui-form-item"  >
+                            <label class="layui-form-label" style="width: 140px;" >汇率</label>
+                            <input type="text" autocomplete="off" class="layui-input" style="width:100px;border:0" name="" id="" value="@ViewBag.buyPic"/>
+                        </div>*@
+                        @*<div class="layui-form-item"  >
+                    <label class="layui-form-label" style="width: 140px;" lang="remark_crm"></label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" name="Remark" id="Remark" />
+                    </div>
+                </div>
+                <div class="layui-form-item"  >
+                    <label class="layui-form-label" style="width: 140px;" lang="remark_mt4"></label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" name="Remark" id="Remark" />
+                    </div>
+                </div>*@
+                        <div class="layui-form-item" style="margin-left:10px; height:60px">
+                            <span style="font-size:12px" lang="Inside_notes"></span>
+                        </div>
+                        <div class="layui-form-item layui-form-item1"  >
+                           
+                            <div class="layui-input-inline" style="margin-left: 75px;">
+                                <a onclick="OuterSure();" href="javascript:;" class="layui-btn layui-btn-normal" lang="surepay"><i class="fa fa-cny"></i>&nbsp;</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>   
+
+            <div class="layui-elem-field f-fl iv-fiel" style="width:98%; height: auto;">
+                <div lang="records" style="text-align: left;"></div>
+                <div style="text-align: center">
+                    <table class="layui-table">
+                        <thead>
+                            <tr>
+                                <td lang="date_time"></td>
+                                <td lang="type"></td>
+                                <td lang="way"></td>
+                                <td lang="source_account"></td>
+                                <td lang="target_account"></td>
+                                <td lang="sum"></td>
+                                <td lang="state"></td>
+                                <td lang="remark"></td>
+                                
+                                @if (actiontype == 2)
+                                {
+                                    <td lang="settle_time"></td>
+                                }
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (Model.Items.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="9" align="center" lang="nodata"></td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>@item.InsTime</td>
+                                        
+                                        @if (item.StreamType == 1)
+                                        {
+                                            <td>入金</td>
+                                        }
+                                        else if (item.StreamType == 2)
+                                        {
+                                            <td>出金 </td>
+                                        }
+                                        else if (item.StreamType == 3)
+                                        {
+                                            <td>钱包转交易账户 </td>
+                                        }
+                                        else if (item.StreamType == 4)
+                                        {
+                                            <td>交易账户转钱包 </td>
+                                        }
+                                        else if (item.StreamType == 7)
+                                        {
+                                            <td>钱包转钱包 </td>
+                                        }
+                                        else if (item.StreamType == 5)
+                                        {
+                                            <td>佣金</td>
+                                        }
+                                       <td>@item.SourseTradeMethodName</td>
+                                        <td>@item.UserName</td>
+                                        <td>@item.TarUser</td>
+                                        <td>$@item.StreamMoney </td>
+                                       
+                                        @if (item.Status == 1)
+                                        {
+                                            <td> <span lang="status_success" style="padding:0px 5px;background:#66bb6a;line-height:20px; border-radius: 3px; color: #fff;"></span></td>
+                                        }
+                                        else if(item.Status==2)
+                                        {
+                                            <td><span lang="status_failed" style="padding:0px 5px;background:#f67467;line-height:20px; border-radius: 3px; color: #fff;"></span></td>
+                                        }
+                                        else if (item.Status == 3)
+                                        {
+                                            <td>@*<span lang="status_failed" style="padding:0px 5px;background:#f67467;line-height:20px; border-radius: 3px; color: #fff;"></span>*@审核中</td>
+                                        }
+                                        <td>@item.Remark</td>
+                                        @if (actiontype == 2)
+                                        {
+                                            <td>
+                                                @if (item.StreamType == 5)
+                                                {
+                                                    if (item.SettleTimeSpan != null)
+                                                    {
+                                                        <span>@item.SettleTimeSpan</span>
+                                                    }
+                                               }
+                                            </td>
+                                        }
+                                    </tr>
+
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                    <div class="pageboder"> @Html.ViewPage(Model, "Web") </div>
+                    <input id="demo" btn-lang="wallet_balance" type="hidden" />
+                    <input id="account_select" btn-lang="account_select" type="hidden" />
+                    <input id="write_money" btn-lang="write_money" type="hidden" />
+                    <input id="transfer" btn-lang="transfer" type="hidden" />
+                    <input id="morethanzero" btn-lang="morethanzero" type="hidden" />
+                    <input id="confirm_change" btn-lang="confirm_change" type="hidden" />
+                    <input id="sumMoney" type="hidden" value="@ViewBag.sumMoney" />
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+    @section foot
+    {
+        <script>
+            var blank1 =
+                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            var blank2 = "&nbsp;&nbsp;&nbsp;&nbsp;" +
+                $("#sumMoney").val() + "&nbsp;$";
+            //转出账户 Select监听
+            layui.use(['jquery', 'form'],
+                function() {
+                    var form = layui.form();
+                    form.on('select(test)',
+                        function(data) {
+                            if (data.value == "000") {
+                                $("#InAccount").empty();
+                                $("#AccountID").empty();
+                                $.ajax({
+                                    url: "/Web/FinaceManage/GetAccountList",
+                                    Type: "post",
+                                    data: {},
+                                    success: function(data) {
+                                        var dataList = data.data;
+                                        var str = "";
+                                        for (var i = 0; i < dataList.length; i++) {
+                                            str += "<option value=" +
+                                                dataList[i].AccountID +
+                                                ">" +
+                                                dataList[i].Account +
+                                                blank1 +
+                                                dataList[i].Balance +
+                                                "&nbsp;$" +
+                                                "</option>";
+                                        }
+                                        str += "<option  value='000'>" + $("#demo").val() + blank2 + "</option>";
+                                        $("#InAccount").append(str);
+
+                                        var str2 = "<option  value=" +
+                                            $("#InAccount option:selected").val() +
+                                            ">" +
+                                            $("#demo").val() + blank2 +
+                                            "</option>";
+                                        $("#AccountID").append(str2);
+
+                                        $("#StreamType").val(3);
+
+                                        layui.form().render();
+                                    }
+                                });
+                            }
+
+                        });
+                    //转入账户 Select监听
+                    form.on('select(test2)',
+                        function(data) {
+                            if ($("#AccountID").val() == -1 || $("#AccountID option").eq(0).html() == '钱包' + blank2) {
+                                if (data.value == "000") {
+                                    $("#InAccount").empty();
+                                    $("#AccountID").empty();
+                                    $.ajax({
+                                        url: "/Web/FinaceManage/GetAccountList",
+                                        Type: "post",
+                                        data: {},
+                                        success: function(data) {
+                                            var dataList = data.data;
+                                            var str = "";
+                                            for (var i = 0; i < dataList.length; i++) {
+                                                str += "<option value=" +
+                                                    dataList[i].AccountID +
+                                                    ">" +
+                                                    dataList[i].Account +
+                                                    blank1 +
+                                                    dataList[i].Balance +
+                                                    "&nbsp;$" +
+                                                    "</option>";
+                                            }
+                                            str += "<option lang='wallet_balance' value='000'>" +
+                                                $("#demo").val() + blank2 +
+                                                "</option>";
+                                            $("#AccountID").append(str);
+
+                                            var str2 = "<option lang='wallet_balance' value='000'>" +
+                                                $("#demo").val() + blank2 +
+                                                "</option>";
+                                            $("#InAccount").append(str2);
+
+                                            $("#StreamType").val(4);
+
+                                            layui.form().render();
+                                        }
+                                    });
+                                } else {
+                                    $("#AccountID option:selected").val(data.value);
+                                    layui.form().render();
+                                }
+                            }
+                        });
+                });
+
+            $(function () {
+                //判断当前user是否为代理 若为代理 则自转内的全部为不可获取
+                if (@actiontype == 2) {
+                    $("#rotationbtn").attr("class", "layui-btn layui-btn-disabled");
+                    $("#rotationbtn").attr("onclick", "");
+                }
+               
+
+                //初始化下拉列表
+                var accId = $("#accId").val();
+                var type = $("#type").val();
+                var acc = $("#acc").val();
+                if (type == 1) { //点击转入
+                    $.ajax({
+                        url: "/Web/FinaceManage/GetAccountList",
+                        Type: "post",
+                        data: {},
+                        success: function(data) {
+                            var dataList = data.data;
+                            var str = "";
+                            for (var i = 0; i < dataList.length; i++) {
+                                if (dataList[i].AccountID == accId) {
+                                    str += "<option value=" +
+                                        dataList[i].AccountID +
+                                        " selected>" +
+                                        dataList[i].Account +
+                                        blank1 +
+                                        dataList[i].Balance +
+                                        "&nbsp;$" +
+                                        "</option>";
+                                } else {
+                                    str += "<option value=" +
+                                        dataList[i].AccountID +
+                                        ">" +
+                                        dataList[i].Account +
+                                        blank1 +
+                                        dataList[i].Balance +
+                                        "&nbsp;$" +
+                                        "</option>";
+                                }
+                            }
+                            str += "<option lang='wallet_balance' value='000'>" +
+                                $("#demo").val() +
+                                blank2 +
+                                "</option>";
+                            $("#InAccount").empty().append(str);
+
+                            var str2 = "<option lang='wallet_balance' value=" +
+                                $("#InAccount option:selected").val() +
+                                " selected>" +
+                                $("#demo").val() +
+                                blank2 +
+                                "</option>";
+                            $("#AccountID").empty().append(str2);
+
+                            $("#StreamType").val(3);
+
+                            layui.form().render();
+                        }
+                    });
+                } else if (type == 2) { //点击转出
+                    $.ajax({
+                        url: "/Web/FinaceManage/GetAccountList",
+                        Type: "post",
+                        data: {},
+                        success: function(data) {
+                            var dataList = data.data;
+                            var str = "";
+                            for (var i = 0; i < dataList.length; i++) {
+                                if (dataList[i].AccountID == accId) {
+                                    str += "<option value=" +
+                                        dataList[i].AccountID +
+                                        " selected>" +
+                                        dataList[i].Account +
+                                        blank1 +
+                                        dataList[i].Balance +
+                                        "&nbsp;$" +
+                                        "</option>";
+                                } else {
+                                    str += "<option value=" +
+                                        dataList[i].AccountID +
+                                        ">" +
+                                        dataList[i].Account +
+                                        blank1 +
+                                        dataList[i].Balance +
+                                        "&nbsp;$" +
+                                        "</option>";
+                                }
+                            }
+                            str += "<option lang='wallet_balance' value='000'>" +
+                                $("#demo").val() +
+                                blank2 +
+                                "</option>";
+                            $("#AccountID").append(str);
+
+                            var str2 = "<option lang='wallet_balance' value='000' selected>" +
+                                $("#demo").val() +
+                                blank2 +
+                                "</option>";
+                            $("#InAccount").append(str2);
+
+                            $("#StreamType").val(4);
+
+                            layui.form().render();
+                        }
+                    });
+                } else { //直接进入资金管理页面
+                    $.ajax({
+                        url: "/Web/FinaceManage/GetAccountList",
+                        Type: "post",
+                        data: {},
+                        success: function(data) {
+                            var dataList = data.data;
+                            var str = "";
+                            for (var i = 0; i < dataList.length; i++) {
+                                str += "<option value=" +
+                                    dataList[i].AccountID +
+                                    ">" +
+                                    dataList[i].Account +
+                                    blank1 + dataList[i].Balance + "&nbsp;$" +
+                                    "</option>";
+                            }
+                            str += "<option lang='wallet_balance' value='000'>" +
+                                $("#demo").val() +
+                                blank2 +
+                                "</option>";
+                            $("#AccountID").append(str);
+
+                            var str2 = "<option lang='wallet_balance' value='000'>" +
+                                $("#demo").val() +
+                                blank2 +
+                                "</option>";
+                            $("#InAccount").append(str2);
+
+                            $("#StreamType").val(4);
+
+                            layui.form().render();
+                        }
+                    });
+                }
+
+                //获取所有账户 下拉列表
+                $.ajax({
+                    url: "/Web/FinaceManage/GetOuterAccountList",
+                    Type: "post",
+                    data: {},
+                    success: function(data) {
+                        var dataList = data.data;
+                        var str = "";
+                        for (var i = 0; i < dataList.length; i++) {
+                            str += "<option value=" +dataList[i].UserID + ">" +dataList[i].Email +"</option>";
+                        }
+                        $("#OuterUserID").append(str);
+                        layui.form().render();
+                    }
+
+                });
+
+            });
+
+
+            //确定转账(自转)
+            function sure() {
+                var inAcc = $("#InAccount option:selected").val();
+                var outAcc = $("#AccountID option:selected").val();
+                var smoeny = $("#StreamMoney").val();
+                if (inAcc == -1 || outAcc == -1) {
+                    layer.msg($("#account_select").val());
+                    return;
+                }
+                if (smoeny == null || smoeny == "") {
+                    layer.msg($("#write_money").val());
+                    return;
+                } else {
+                    if (smoeny <= 0) {
+                        layer.msg($("#morethanzero").val());
+                        return;
+                    }
+                }
+                layer.confirm($("#confirm_change").val(),
+                    function() {
+                        var i;
+                        $.ajax({
+                            url: "/Web/FinaceManage/FinaceManage",
+                            type: "POST",
+                            data: $("#form").serialize(),
+                            success: function(data) {
+                                if (data.status == 1) {
+                                    //保存成功
+                                    layer.open({
+                                        content: data.msg,
+                                        yes: function(layero, index) {
+                                            //layer.load();
+                                            parent.location.reload();
+                                        }
+                                    });
+
+                                } else {
+                                    layer.msg(data.msg);
+                                }
+                            },
+                            beforeSend: function() {
+                                i = loading();
+                            },
+                            error: function(e, jqxhr, settings, exception) {
+                                loadOver(i);
+                            }
+                        });
+                    });
+
+            }
+
+            //确定转账(内转)
+            function OuterSure() {
+                var outAcc = $("#OuterUserID option:selected").val();
+                var smoeny = $("#OuterMoney").val();
+
+                if (outAcc == -1) {
+                    layer.msg($("#account_select").val());
+                    return;
+                }
+                if (smoeny == null || smoeny == "") {
+                    layer.msg($("#write_money").val());
+                    return;
+                } else {
+                    if (smoeny <= 0) {
+                        layer.msg($("#morethanzero").val());
+                        return;
+                    }
+                }
+                layer.confirm($("#confirm_change").val(),
+                    function () {
+                        var i;
+                        $.ajax({
+                            url: "/Web/FinaceManage/AddMoneyTake",
+                            type: "POST",
+                            data: $("#form2").serialize(),
+                            success: function (data) {
+                                if (data.status == 1) {
+                                    //保存成功
+                                    layer.open({
+                                        content: data.msg,
+                                        yes: function (layero, index) {
+                                            //layer.load();
+                                            parent.location.reload();
+                                        }
+                                    });
+
+                                } else {
+                                    layer.msg(data.msg);
+                                }
+                            },
+                            beforeSend: function () {
+                                i = loading();
+                            },
+                            error: function (e, jqxhr, settings, exception) {
+                                loadOver(i);
+                            }
+                        });
+                    });
+
+            }
+
+            //关闭弹窗
+            function closelayer() {
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭
+            }
+
+            //正在加载
+            function loading() {
+                return layer.msg($("#transfer").val(),
+                { icon: 16, shade: [0.5, '#f5f5f5'], scrollbar: false, offset: '', time: 100000 });
+            }
+
+            //加载完毕
+            function loadOver(index) {
+                layer.close(index);
+            }
+            $("table tr:nth-child(even)").css('background', '#f9f9f9');
+        </script>
+    }
+
+

@@ -1,0 +1,74 @@
+﻿@using MT.Areas.Admin.ViewModels
+@using MT.Common
+@using Services.UMService
+
+   @{
+        var a = "";
+        var b = "";
+        var name = Request.Url.LocalPath;
+        string[] namelist = name.Split('/');
+        if (namelist != null )
+        {
+            a = namelist[2];
+            b = namelist[3];
+        }
+
+        UserAuthModel auth = null;
+        UserSoapClient userSoap = new UserSoapClient();
+                    
+        #region 刷新当前用户权限信息
+                
+        IndexViewModel model = new IndexViewModel();
+        auth = userSoap.GetAuth(MTConfig.CurrentUserID.ToInt(), MTConfig.PlatformId.ToInt());
+        MTConfig.AuthInfo = auth.NodeList.ToList();
+        model.NodeList = MTConfig.AuthInfo;
+        MTConfig.CurrentRole = auth.RoleList.ToList();
+        MTConfig.CurrentUser = auth.User;
+        model.UserInfo = MTConfig.CurrentUser;
+        model.GroupList = auth.GroupList.ToList();
+
+        #endregion
+                    
+                    
+                    
+        var firstGroup = new GroupModel();
+        int i = 0;
+        string link;
+        foreach (GroupModel group in model.GroupList)
+        {
+
+            List<NodeModel> node2List = model.NodeList.Where(s => s.NodeLevel == 2 && s.Name == a && s.GroupId == group.Id.ToInt() ).ToList();
+
+            foreach (NodeModel node2 in node2List)
+            {
+
+                List<NodeModel> node3List = model.NodeList.Where(s => s.NodeLevel == 3 && s.Pid.ToString() == node2.Id && s.DisplayFlag == 1).ToList();
+
+                if (node3List.Count>1)
+                {
+                    @:<div class="f-cb mart20 marb10"><div class="tableqh2"><ul>
+                    foreach (NodeModel node in node3List)
+                    {
+                        if (node.Name==b)
+                        {
+                            @:<a ><li class="f-fl act33">@node.Title</li></a>  
+                        }
+                        else
+                        {
+                            link = "/Admin/" + node2.Name + "/" + node.Name;
+                            @:<a  href="@link" target="mainRigh"><li class="f-fl  ">@node.Title</li></a> 
+                        }
+                    }
+                        @:</ul></div></div>
+                }
+            }
+        }
+    }
+    
+
+
+
+
+
+
+

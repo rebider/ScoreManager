@@ -1,0 +1,116 @@
+﻿@model MT.Models.NoticeModel
+@using MT.Common
+
+@{
+    ViewBag.Title = "";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAjaxEdit.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+    <script src="~/Contents/ueditor/ueditor.all.js"></script>
+    <script src="~/Contents/ueditor/ueditor.config.js"></script>
+}
+<div class="m-content">
+    <div class="m-addeditform f-cb">
+        
+        @using (Html.BeginForm())
+        {
+            <dl class="f-cb">
+                <dt>接收人:</dt>
+                <dd>
+                    <input type="text" name="username" id="username" class="u-iptl" readonly="readonly" onclick="getuns()"/>
+                    <input type="hidden" name="userid" id="userid"/>
+                    @Html.ValidationMessageFor(model => model.UserId)
+                </dd>
+                <dt>@Html.LabelFor(model => model.Title):</dt>
+                <dd>
+                    @Html.EditorFor(model => model.Title)
+                    @Html.ValidationMessageFor(model => model.Title)
+                </dd>
+                <dt>@Html.LabelFor(model => model.Content):</dt>
+                <dd>
+                    @Html.EditorFor(model => model.Content)
+                    @Html.ValidationMessageFor(model => model.Content)
+                </dd>
+                <input type="hidden" name="CreateTime" value="@(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))"/>
+                <input type="hidden" name="CreateMan" value="@(MTConfig.CurrentUserID)"/>
+                <dt></dt>
+                <dd>
+                    <input type="button" value="保存" class="u-btnblue" onclick="addmodelmeg()"/>
+                </dd>
+            </dl>
+        }
+    </div>
+</div>
+@section foot
+{
+    <script type="text/javascript">
+
+        function getuns() {
+            top.art.dialog.open('/admin/@vs["controller"].ToString()/GetUser?id=' + $("#userid").val(),
+            {
+                id: 'getnuiv',
+                lock: true,
+                background: '#fff', // 背景色
+                opacity: 0.5, // 透明度
+                title: '选择接收人',
+                width: 800,
+                height: 500,
+                close: function() {
+                    var id = top.art.dialog.data['id'];
+                    var name = top.art.dialog.data['data'];
+                    if (typeof (id) != 'undefined' && id != '') {
+                        $("#username").val(name);
+                        $("#userid").val(id);
+                    } else {
+                        $("#username").val("");
+                        $("#userid").val("");
+                    }
+                    top.art.dialog.data['id'] = '';
+                    top.art.dialog.data['data'] = '';
+                }
+            });
+
+        }
+
+        function addmodelmeg() {
+            $.ajax({
+                url: "/Admin/@vs["controller"]/Add",
+                type: "POST",
+                data: $("form").serialize(),
+                success: function(data) {
+                    if (data.status == 1) {
+                        toptipfun("发送成功", function() {
+                            top.art.dialog.get('dig1').close();
+                        });
+                    }
+                }
+            });
+        }
+
+
+        $("#sumb").click(function() {
+            var typeList = $("#TypeList").val();
+            var id = $("#meg").val();
+            $.ajax({
+                type: 'Post',
+                url: '/Admin/Console/Add',
+                asnyc: false,
+                data: {
+                    id: id,
+                    type: typeList,
+                },
+                success: function(data) {
+                    var severData = data.split(':');
+                    if (severData[0] == "ok") {
+                        art.dialog.close();
+                    } else if (severData[0] == "no") {
+                        $("#error").text(severData[1]);
+                    }
+                },
+                error: function(xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+
+        });
+    </script>
+}

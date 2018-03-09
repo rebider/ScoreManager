@@ -1,0 +1,68 @@
+﻿@model MT.Models.UserInfoModel
+@{
+    ViewBag.Title = "编辑";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAjaxEdit.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;    
+}
+@section head{
+}
+<section class="layui-larry-box" style="min-width: 1000px;">
+    <div class="larry-personal">
+        <header class="larry-personal-tit">
+            <div>
+                <a onclick="javascript:history.go(-1)"><i class="layui-icon ">&#xe603;</i><span>返回上级列表</span></a>
+            </div>
+        </header>
+        <div class="larry-personal-body clearfix ">
+            <form action="/Admin/UserInfo/UserInfoEdit" method="post" class="layui-form" id="form">
+                <input type="hidden" name="UserID" id="UserID" value="@Model.UserID" />              
+                <fieldset class="layui-elem-field">
+                    <legend>基本信息</legend>
+                    <div class="layui-field-box">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" name="UserName" id="UserName" placeholder="姓名" value="@Model.UserNameCn" lay-verify="required"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">电话</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" name="Phone" id="Phone" placeholder="电话" value="@Model.Phone" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">邮箱</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" name="Email" id="Email" placeholder="邮箱" value="@Model.Email" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">性别</label>
+                            <div class="layui-input-inline">
+                                <input type="radio" name="sex" value="男" title="男">
+                                <input type="radio" name="sex" value="女" title="女" checked>
+                            </div>
+                        </div>                                                                                        
+                        <div class="layui-form-item ">
+                            <div class="layui-input-block f-fl">
+                                <input type="submit" lay-submit value="提交" class="layui-btn" />
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>          
+        </div>
+    </div>
+</section>
+@section foot
+{
+    <script>
+        $("#form").submit(function() {
+            editmodel("");
+            return false;
+        });
+    </script>
+   
+}
+

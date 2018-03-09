@@ -1,0 +1,190 @@
+﻿@model MT.Models.MoneyStreamModel
+@using MT.Common
+@using MT.Common.Helper
+@using MT.Models
+@{
+    ViewBag.Title = "编辑";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAjaxEdit.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+    UserInfoModel user = ViewBag.user;
+    List<AccountModel> account = new List<AccountModel>();
+}
+
+@section head{
+}
+
+
+<section class="layui-larry-box" style="padding:0px;">
+    <div class="larry-personal" >
+    
+        <div class="larry-personal-body clearfix " style="margin:0px;">
+            <form action="/Admin/@vs["controller"].ToString()/@vs["action"].ToString()" method="post" class="layui-form col-lg-5" id="form">
+                <input type="hidden" name="ID" id="ID" value="@Model.ID"/>
+                <input type="hidden" value="@user.UserID" name="UserID" id="UserID" />
+                <div class="f-fl" >
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:130px">姓名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="UserName" id="UserName" placeholder="姓名" value="@user.UserName @user.UserNameCn" disabled />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:130px">邮箱</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="Email" id="Email" placeholder="邮箱" value="@user.Email" disabled />
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:130px">钱包余额</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="UserMoney" id="UserMoney" placeholder="邮箱" value="@user.UserMoney" disabled />
+                        </div>
+                    </div>
+                   
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:130px">调整类型</label>
+                        <div class="layui-input-inline">
+                            <select name="StreamType" id="StreamType">
+                                <option value="">请选调整类型</option>
+                                <option value="1">入金</option>
+                                <option value="2">出金</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:130px">调整金额</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="StreamMoney" id="StreamMoney" placeholder="流水金额" />
+                        </div>
+                    </div>
+
+                   
+                </div>
+                <div class="f-fr" style="margin-right:30px">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:130px">电话</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="Phone" id="Phone" placeholder="中文姓名" value="@user.Phone" disabled />
+                        </div>
+
+                    </div>
+                   
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:130px">客户mt4显示备注</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="Remark_MT4" id="Remark_MT4" placeholder="客户mt4显示备注" />
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:130px">客户crm显示备注</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="Remark" id="Remark" placeholder="客户crm显示备注" />
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:130px">管理员备注</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="Remark_Admin" id="Remark_Admin" placeholder="管理员备注" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="display:none">
+                        <label class="layui-form-label" style="width:130px">序号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="SortNo" id="SortNo" placeholder="序号" value="1" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item" style="margin-left:180px">
+                    <div class="layui-input-block">
+                        <input type="button" onclick="saveMoneyStream()" lay-submit value="保存" class="layui-btn" />
+                        <input type="button" onclick="closelayer();" lay-submit value="关闭" class="layui-btn layui-btn-danger" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+@section foot
+{
+    <script>
+     
+        //调整金额
+        function saveMoneyStream() {
+            if (lock) return;
+            lock = true;
+            layer.confirm('您确定要调整吗?',
+                { icon: 3, title: '提示' },
+                function (index) {
+                    var loadIndex = layer.load(2);
+                    $.ajax({
+                        url: "/Admin/@vs["controller"]/MoneyStream",
+                        type: "POST",
+                        data: $("form").serialize(),
+                        success: function(data) {
+                            lock = false;
+                            layer.close(index);
+                            if (data.status == 1) {
+                                lock = false;
+                                //保存成功
+                                layer.open({
+                                   
+                                    content: data.msg,
+                                    yes: function(layero, index) {
+                                        parent.location.reload();
+                                    }
+                                });
+
+                            } else {
+                                layer.close(index);
+                                lock = false;
+                                layer.msg(data.msg);
+                            }
+                        }
+                        //beforeSend: function () {
+                        //    i = top.loading();
+                        //},
+                        //error: function (e, jqxhr, settings, exception) {
+                       
+                        //    loadOver(i);
+                        //    lock = false;
+                        //    layer.msg("请检查您的网络~");
+                        //}
+                    });
+                });
+        }
+
+        layui.use('form',
+            function() {
+            });
+
+        $("#form")
+            .submit(function() {
+                editmodel("");
+                return false;
+            });
+
+        function closelayer() {
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index); //再执行关闭 
+        }
+
+        //加载中
+        function loading() {
+            return layer.msg($("#submit").val(),
+            { icon: 16, shade: [0.5, '#f5f5f5'], scrollbar: false, offset: '', time: 100000 });
+        }
+
+        //加载完毕
+        function loadOver(index) {
+            layer.close(index);
+        }
+    </script>
+}
+
+

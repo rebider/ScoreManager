@@ -1,0 +1,250 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+<link href="../../../Styles/MoneyTakeIndex.css" rel="stylesheet" />
+<link href="../../../Styles/common.css" rel="stylesheet" />
+<link href="../../../Plugins/common/layui/css/layui.css" rel="stylesheet" />
+<link href="../../../Styles/Index.css" rel="stylesheet" />
+<style>
+    body{background:#16202f;margin-left:18px;}
+    .ad1:hover > a {
+        background:#004787 !important;
+        color:#ffffff !important;
+    }
+
+    .ad2:hover> a{background:#0288d1 !important;color:#ffffff !important;}
+    .ad3:hover> a{background:#e35205;color:#ffffff !important;}
+    .ad4:hover> a{background:#019cde;color:#ffffff !important;}
+    .ad5:hover> a{background:#f7941c;color:#ffffff !important;}
+    .ad6:hover> a{background:#036cb5;color:#ffffff !important;}
+</style>
+
+            <div style="margin-left:-5px;">
+    <div style="margin-top:20px;font-size:18px;font-family:Roboto;color: #cad4de;">
+        <div lang="golden"></div>
+    </div>
+    <fieldset class="layui-elem-field" style="margin-top:24px;margin-bottom:10px;padding-bottom:30px;border:0; width:100%;">
+        <div class="transfer">
+            <div class="outsourcing">
+                <div class="medium">
+                    <div>
+                        <div class="fig" style="background:#004787">
+                            <img src="~/Styles/Images/aaaa2.png" />
+                        </div>
+                        <div style="background:#1c283b;color:#cad4de;font-size:12px;line-height:23px;">
+                            <div class="content" lang="online"></div>
+                            <div style="width: 85%;margin: 0 auto 0;padding-top:10px;background:#1c283b" lang="online1"></div>
+                            <div style="width: 85%;margin: 0 auto 0;padding-top:10px;background:background:#1c283b" lang="online2"></div>
+                            <div style="margin-top:26px;height:88px"></div>
+                            <div class="ad1 btn-position">
+                                <a href="MoneyPayIndex?PayName=0">
+                                    <div lang="golden_bank_online" style="color:#cad4de;"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="medium">
+                    <div>
+                        <div class="fig" style="background:#0288d1">
+                            <img src="~/Styles/Images/aaa1.png" />
+                        </div>
+                        <div style="background:#1c283b;color:#cad4de;font-size:12px;line-height:23px;">
+                            <div class="content" lang="bank"></div>
+                            <div style="margin-top:20px;height:88px"></div>
+                            <div class="ad2 btn-position">
+                                <a href="MoneyPayTransfer">
+
+                                    <div lang="Telegraphictransfer"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="medium"></div>
+                    <div class="medium"></div>*@
+                <!--在线支付人民币-->
+                @*<div class="medium">
+                        <div>
+                            <div class="fig" style="background:#e35205">
+                                <img src="~/Styles/Images/aaa3.png" />
+                            </div>
+                            <div class="content" lang="master_card"></div>
+                            <div style="margin-top:20px;height:88px"></div>
+                            <div class="ad3 btn-position">
+                                <a href="javascript:pay()">
+                                    <div lang="golden_bank_card" style=""></div>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="medium">
+                        <div>
+                            <div class="fig" style="background:#019cde">
+                                <img src="~/Styles/Images/aaa4.png" />
+                            </div>
+                            <div class="content" lang="paypal"></div>
+                            <div style="margin-top:20px;height:88px"></div>
+                            <div class="ad4 btn-position">
+                                <a href="javascript:pay()">
+                                    <div lang="golden_bank_transfer"></div>
+                                </a>
+                            </div>
+                        </div>*@
+            </div>
+
+            @*<div class="trans">
+                    <a href="javascript:pay()">
+
+                        <div lang="golden_bank_transfer">golden Online banking transfer</div>
+                    </a>
+                    <a href="javascript:pay()">
+
+                        <div lang="golden_bank_card">golden credit card /debit card</div>
+                    </a>
+                    <a href="javascript:pay()">
+
+                        <div lang="golden_bank_card">golden credit card /debit card</div>
+                    </a>
+                </div>*@
+        </div>
+        @*<div class="outsourcing" style="margin-top:30px;">
+                <div class="medium">
+                    <div>
+                        <div class="fig" style="background:#f7941c">
+                            <img src="~/Styles/Images/aaa5.png" />
+                        </div>
+                        <div class="content" style="font-family:Roboto;">Fasaray is a fast,safe and affordable way to tranfser funds between parties without the need of a credit or debit card.A bank account is all that is required to become a member of FasaPay/’s growing payment network.</div>
+                        <div style="margin-top:20px;height:88px"></div>
+                        <div class="ad5 btn-position">
+                            <a href="javascript:pay()">
+                                <div lang="golden_bank_card"></div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="medium">
+                    <div>
+                        <div class="fig" style="background:#036cb5;">
+                            <img src="~/Styles/Images/aaa6.png" />
+                        </div>
+                        <div class="content" lang="Webmoney"></div>
+                        <div style="margin-top:20px;height:88px"></div>
+                        <div class="ad6 btn-position">
+                            <a href="javascript:pay()">
+                                <div lang="golden_bank_card"></div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="medium"></div>
+                <div class="medium"></div>
+            </div>*@
+    </fieldset>
+</div>
+<input type="hidden"   lang="paytypecannot" id="message"  />
+<input type="hidden"  btn-lang="paytypecannotinto" id="messageInfo" />
+<script>
+    function pay()
+    {
+        //layer.msg($("#message").html());
+        var title1 = "";
+        var ok11 = ""
+        if ($("#lang").val() == "En") {
+            title1 = "Message";
+            ok11 = "ok";
+        } else {
+            title1 = "提示";
+            ok11 = "确定";
+        }
+
+        layer.open({
+            btn: [ok11],
+            title: title1
+            , content: $("#messageInfo").val()
+            , area: ['500px', '380px']
+
+        });
+    }
+</script>
+    @*<div class="box"><img src="../../../Styles/Images/curve.png"/>
+    </div>*@
+
+
+@*<div class="takermb" style="float: left">
+    <form id="form1" method="post" action="/Web/MoneyPay/PayOrderMoney">
+        <div>
+            选择支付方式：<select name="bank_code" id="bank_code">
+
+                <option value="">宝付支付网关页面</option>
+                <option value="101">神州行</option>
+                <option value="1022">联通卡</option>
+                <option value="1033">电信卡</option>
+                <option value="111">盛大卡</option>
+                <option value="112">完美卡</option>
+                <option value="114">征途卡</option>
+                <option value="115">骏网一卡通</option>
+                <option value="116">网易卡</option>
+
+                <option value="1001">招商银行</option>
+                <option value="1002">工商银行</option>
+                <option value="1003">建设银行</option>
+                <option value="1004">浦发银行</option>
+                <option value="1005">农业银行</option>
+                <option value="1006">民生银行</option>
+                <option value="1009">兴业银行</option>
+                <option value="1020">交通银行</option>
+                <option value="1022">光大银行</option>
+                <option value="1026">中国银行</option>
+                <option value="1032">北京银行</option>
+                <option value="1035">平安银行</option>
+                <option value="1036">广发银行</option>
+                <option value="1039">中信银行</option>
+                <option value="1080">银联在线</option>
+
+                <option value="3001">招商银行(借)</option>
+                <option value="3002">工商银行(借)</option>
+                <option value="3003">建设银行(借)</option>
+                <option value="3004">浦发银行(借)</option>
+                <option value="3005">农业银行(借)</option>
+                <option value="3006">民生银行(借)</option>
+                <option value="3009">兴业银行(借)</option>
+                <option value="3020">交通银行(借)</option>
+                <option value="3022">光大银行(借)</option>
+                <option value="3026">中国银行(借)</option>
+                <option value="3032">北京银行(借)</option>
+                <option value="3035">平安银行(借)</option>
+                <option value="3036">广发银行(借)</option>
+                <option value="3039">中信银行(借)</option>
+
+                <option value="4001">招商银行(贷)</option>
+                <option value="4002">工商银行(贷)</option>
+                <option value="4003">建设银行(贷)</option>
+                <option value="4004">浦发银行(贷)</option>
+                <option value="4005">农业银行(贷)</option>
+                <option value="4006">民生银行(贷)</option>
+                <option value="4009">兴业银行(贷)</option>
+                <option value="4020">交通银行(贷)</option>
+                <option value="4022">光大银行(贷)</option>
+                <option value="4026">中国银行(贷)</option>
+                <option value="4032">北京银行(贷)</option>
+                <option value="4035">平安银行(贷)</option>
+                <option value="4036">广发银行(贷)</option>
+                <option value="4039">中信银行(贷)</option>
+            </select>
+            <br/>
+            <br/>
+            输入充值金额：<input type="text" name="displayAmountDst"/>元
+            <br/>
+            <br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="提交"/>&nbsp;<br/>
+        </div>
+    </form>
+</div>*@
+ 

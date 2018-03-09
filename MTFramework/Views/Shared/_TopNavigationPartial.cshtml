@@ -1,0 +1,14 @@
+﻿@using MT.Models
+@{
+    //类别绑定
+    List<ActivityTypeModel> activityTypeList = ViewBag.activityTypeList;
+}
+<div class=" m-nav f-cb mart40">
+    <div class="m-content">
+        <a href="/Index/Index">首页</a> <a>关于啪啦</a> 
+        @foreach (var item in activityTypeList)
+        {
+            <a href="/Search/Index?activitytype=@item.ID">@item.Name</a>    
+        }
+    </div>
+</div>

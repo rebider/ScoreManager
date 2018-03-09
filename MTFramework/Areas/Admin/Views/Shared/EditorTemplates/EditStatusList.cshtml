@@ -1,0 +1,46 @@
+﻿@{
+    bool editFlag = false;
+    if (ViewBag.EditFlag != null && ViewBag.EditFlag == true)
+    {
+        editFlag = true;
+    }
+
+    List<SelectListItem> items = new List<SelectListItem>();
+    
+    SelectListItem item1 = new SelectListItem();
+    item1.Value = "0";
+    item1.Text = "停用";
+
+    SelectListItem item2 = new SelectListItem();
+    item2.Value = "1";
+    item2.Text = "启用";
+
+    if (!editFlag)
+    {
+        SelectListItem item3 = new SelectListItem();
+        item3.Text = "全部";
+        item3.Value = "";
+        items.Add(item3);
+    }
+    
+    items.Add(item2);
+    items.Add(item1);
+
+    if (Model != null)
+    {
+        items.Where(s => s.Value.ToString() == Model.ToString()).FirstOrDefault().Selected = true;
+    }
+    
+    SelectList list = new SelectList(items);
+    
+}
+@{
+    if (editFlag)
+    {
+    @Html.DropDownListFor(model => model, items, new { @class = "layui-input layui-unselect" })   
+    }
+    else
+    {
+    @Html.DropDownListFor(model => model, items, new { @class = "layui-input layui-unselect" })   
+    }
+}

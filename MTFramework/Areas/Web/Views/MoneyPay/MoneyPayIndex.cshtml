@@ -1,0 +1,356 @@
+﻿
+@using MT.Common.Helper
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+    List<MT.Models.PayFeeModel> item = ViewBag.PayName;
+}
+
+<style>
+    body{background:#16202f;}
+    .bank-list {
+        max-width:1200px;
+        margin-top:20px
+    }
+    .bank-list:after {
+        content:"";
+        display:table;
+        clear:both;
+    }
+    .bank-detail {
+        position:relative;
+        float:left;
+        height:60px;
+        margin:0px 20px 20px 0px;
+        overflow:hidden;
+        cursor:pointer;
+    }
+    .bank-detail.active .template-radio-choose {
+        display:block;
+    }
+    .bank-detail img{
+        
+        border-radius:3px
+    }
+    .bank-clearfix:after {
+       content:"";
+       display:table;
+       clear:both;
+    }
+    #InMoney.warn-input {
+        border-color:red !important;
+    }
+.layui-form-select .layui-input{background-color:transparent;border-color:#232f41;outline:none;color:#cad4de;}
+.layui-btn-normal{background-color:#329ef4}
+    .template-radio {
+        position:relative;
+        display:inline-block;
+        width:16px;
+        height:16px;
+        margin-right:10px;
+        border:2px solid #333e4f;
+        border-radius:8px;
+    }
+    .template-radio .template-radio-choose {
+        position:absolute;
+        left:-2px; 
+        top:-2px;
+        width:16px;
+        height:16px;
+        background-color:#fff;
+        border:5px solid #329ef4;
+        border-radius:8px;
+        display:none;
+    }
+    .layui-form-select dl dd.layui-this {
+        background:#329ef4;
+
+    }
+</style>
+<section class="layui-larry-box" style="padding:17px 24px 14px 14px;">
+    <header class="larry-personal-tit">
+        <div ><a href="/web/MoneyPay/Index" style="color:#cad4de!important;font-size:14px;"><i class="layui-icon "><</i><span lang="return"></span></a></div>
+    </header>
+    <fieldset  style="margin-top:15px;margin-bottom:5px;color:#cad4de;font-size:18px;font-weight:lighter;">
+        <div lang="golden_bank_transfer"></div>
+    </fieldset>
+    <div style="margin-top:30px ;background:#1c283b;box-shadow:0 2px  0 #0e1621;">
+        <div lang="bank_transfer1" style="border-bottom:1px solid #232f41;height:45px;line-height:45px;padding-left:13px;color:#cad4de;font-size:16px;"></div>
+        <form method="post" class="layui-form" id="form" style="padding-left:13px;">
+            @*<div class="f-fl" style="padding:15px 0px 0px;">
+                <h2 class="h2" lang="chouse_bank" style="color:#cad4de;font-size:13px;"></h2>
+                <div class="bank-list">
+                    <div class="bank-detail" data-code="ICBC">
+                        <span class="template-radio">
+                            <span class="template-radio-choose"></span>
+                        </span>
+                        <img src="~/Styles/Images/gongshang.jpg" />
+                    </div>
+                    <div class="bank-detail" data-code="ABC">
+                        <span class="template-radio">
+                            <span class="template-radio-choose"></span>
+                        </span>
+                        <img src="~/Styles/Images/nongye.jpg" />
+                    </div>                   
+                    <div class="bank-detail" data-code="BOC">
+                        <span class="template-radio">
+                            <span class="template-radio-choose"></span>
+                        </span>
+                        <img src="~/Styles/Images/zhongguo.jpg" />
+                    </div>
+                    <div class="bank-detail" data-code="CNCB">
+                        <span class="template-radio">
+                            <span class="template-radio-choose"></span>
+                        </span>
+                        <img src="~/Styles/Images/zhongxin.jpg" />
+                    </div>
+                    <div class="bank-detail" data-code="CEB">
+                        <span class="template-radio">
+                            <span class="template-radio-choose"></span>
+                        </span>
+                        <img src="~/Styles/Images/guangda.jpg" />
+                    </div>
+                    <div class="bank-detail" data-code="SPDB">
+                        <span class="template-radio">
+                            <span class="template-radio-choose"></span>
+                        </span>
+                        <img src="~/Styles/Images/pufa.jpg" />
+                    </div>                    
+                    <div class="bank-detail" data-code="CMSB">
+                        <span class="template-radio">
+                            <span class="template-radio-choose"></span>
+                        </span>
+                        <img src="~/Styles/Images/minsheng.jpg" />
+                    </div>
+                    <div class="bank-detail" data-code="CCB">
+                        <span class="template-radio">
+                            <span class="template-radio-choose"></span>
+                        </span>
+                        <img src="~/Styles/Images/jianshe.jpg" />
+                    </div>
+                    <div class="bank-clearfix"></div>
+                  
+                    <input type="hidden" name="bank_code"/>
+                </div>
+            </div>*@
+            <div class="bank-clearfix"></div>
+            <div class="f-fl ">
+                <div class="layui-form-item" style="margin-top:20px;">
+                    <label class="layui-form-label" style="width:200px;color:#cad4de;" lang="wallet_bag"></label>
+                    <div class="layui-input-inline" style="color:#cad4de;">
+                        <input type="text" readonly name="Money" value="@ViewBag.Money" class="layui-input" style="background-color:transparent;border-color:#232f41;outline:none;"/>
+                    </div>
+                </div>
+                @*<div class="layui-form-item">
+                        <label class="layui-form-label" style="width:150px;">
+                            Westfield 银行
+                        </label>
+                        <div class="layui-input-inline">
+
+                            <select name="PayBank" id="PayBank">
+                                @for (int i=0;i< item.Length;i++)
+                                {
+                                    <option value="@item[i]">@item[i]</option>
+                                }
+                            </select>
+                        </div>
+                    </div>*@
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width:200px;color:#cad4de;" lang="currency_type"></label>
+                    <div class="layui-input-inline">
+                        <select name="MoneyType" id="MoneyType" style="background-color:transparent;border-color:#232f41;outline:none;" lay-filter='MoneyType' disabled="@ViewBag.Status" >
+                            @if (item != null)
+                            {
+                                for (int i = 0; i < item.Count; i++)
+                                {
+                                    <option  value="@item[i].MoneyType">@item[i].MoneyType</option>
+                                }
+                            }
+                        </select>
+                        @*@Html.Raw(DropDownListHelper.GetDropDownList("DDL_PayFeeMoneyType", "", "name='MoneyType' id='MoneyType' lay-filter='MoneyType' "))*@
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width:200px;color:#cad4de;" lang="amount_gold1"></label>
+                    <div class="layui-input-inline">
+                        <input type="text"  style="background-color:transparent;border-color:#232f41;outline:none;" onkeyup="Trans(this.value)" id="InMoney" name="InMoney" class="layui-input" placeholder="$"   autocomplete="off" @ViewBag.Status  /><div id="diverror" style="color:red"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width:200px;color:#cad4de;" lang="convert1"></label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="TransMoney" style="background-color:transparent;border-color:#232f41;outline:none;" name="TransMoney" readonly class="layui-input" lay-verify="required" placeholder="¥" @ViewBag.Status />
+                    </div>
+                </div>
+            </div>
+            <div class="bank-clearfix"></div>
+            <div class="f-fl" style="padding:15px;color:#8e949d;">
+                <h2 class="h2" lang="important_items" style="font-size:13px;"></h2>
+                <div style="margin:20px;"></div>
+                <div lang="important_items1" style="font-size:12px;"></div>
+                <div style="margin:10px;"></div>
+                <div lang="important_items2" style="font-size:12px;"></div>
+                <div style="margin:10px;"></div>
+                <div lang="important_items3" style="font-size:12px;"></div>
+            </div>
+            <div class="layui-form-item" style="margin-bottom:30px;padding-top:10px;padding:32px;">
+                <div class="layui-input-block" style="margin-left:206px;">
+                    <input type="button"  onclick="pay()" class="layui-btn layui-btn-normal" btn-lang="request" @ViewBag.Status />
+                    <input type="hidden" value="@ViewBag.Content" id="vbcontent" />
+                    <input type="hidden" value="@ViewBag.btn0" id="btn0" />
+                    <input type="hidden" value="@ViewBag.btn1" id="btn1" />
+                    <input type="hidden" value="@ViewBag.error" id="error" />
+                    <input type="hidden" value="@ViewBag.TranError" id="TranError" />
+                    <input type="hidden" value="@ViewBag.BackInformation" id="bankerror" />
+                    <input type="hidden" value="@ViewBag.One" id="One" />
+                    <input type="hidden" value="@ViewBag.Seven" id="Seven" />
+                    <input type="hidden" value="@ViewBag.checktwo" id="checktwo" />
+                    <input type="hidden" value="" id="rate" />
+                    @*<button class="y-btn ybtn-defult" href="javascript:;" onclick="a()">确定发送请求</button>*@
+                </div>
+            </div>
+            <input type="hidden" lang="golden_status" id="golden_status" />
+         
+        </form>
+    </div>
+</section>
+@section foot{
+    <script type="text/javascript">
+        layui.use('form', function() {
+            var form = layui.form();
+            form.on('select(MoneyType)', function(data) {
+                $("#TransMoney").val("");
+                $("#errmessage").val("");
+                $("#InMoney").val("");
+            });
+        });
+        $(".bank-list").on("click", ".bank-detail", function () {
+            var self = $(this);
+            var bank = self.data("code");
+
+            self.addClass("active").siblings().removeClass("active");
+            $("[name=bank_code]").val(bank);
+        })
+        function pay() {
+            //if ($("[name=bank_code]").val() == "" || $("[name=bank_code]").val() == null) {
+            //    layer.msg($("#bankerror").val());
+            //    return;
+            //}
+            if ($("#InMoney").val() < 100) {
+                layer.msg($("#One").val());
+                return;
+            }
+            if ($("#InMoney").val() > 7000) {
+                layer.msg($("#Seven").val());
+                return;
+            }
+            if ($("#TransMoney").val() == "" || $("#TransMoney").val() == "0.00") {
+                layer.msg($("#checktwo").val());
+                return;
+            }
+            var orderid = "";
+            $.ajax({
+                url: "/Web/MoneyPay/PayOrderMoney?displayAmountDst=" + $("#TransMoney").val() + "&bankCode=" + $("[name=bank_code]").val() + "&moneytype=" + $("#MoneyType").val() + "&product=入金网银转账" + "&inmoney=" + $("#InMoney").val() + "&rate=" + $("#rate").val(),
+                type: "POST",
+                success: function (data) {
+                    if (data.status == "1")
+                    {
+                        var newTab = window.open('about:blank');
+                        orderid = data.msg;
+                        //window.open("http://pay.sh有点科技.com/WJPayInterface/BeforeBuildRequest?bankCode=" + $("[name=bank_code]").val() + "&orderid=" + orderid);
+                        newTab.location.href = "http://pay.sh有点科技.com/WJPayInterface/BeforeBuildRequest?bankCode=" + $("[name=bank_code]").val() + "&orderid=" + orderid;
+                        layer.open({
+                            type: 1
+                            , title: false //不显示标题栏
+                            , closeBtn: false
+                            , area: '600px;'
+                            , shade: 0.8
+                            , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                            , resize: false
+                            , btn: [$("#btn1").val(), $("#btn0").val()]
+                            , btnAlign: 'c'
+                            , moveType: 1 //拖拽模式，0或者1
+                            , content: '<div style="padding: 30px; line-height: 22px; font-size:20px; font-weight: 300;">  <p> <span class="tt">' + $("#vbcontent").val() + '</p></div>'
+                            , yes: function (layero) {
+                                window.location.href = "/Web/MyAccount/MyAccountIndex";
+                            }
+                            , btn2: function () {
+                                window.location.href = "/Web/MoneyPay/Index";
+                            }
+                        });
+                    }
+                }
+            });
+            
+        }
+
+        
+        function Trans(money) {
+            if (!isNaN(money)) {
+               
+                var dot = money.indexOf(".");
+               
+                if (dot != -1) {
+                    var dotCnt = money.substring(dot + 1, money.length);
+
+                    if (dotCnt.length == 2) {
+
+                        $("#InMoney").attr("maxlength", money.length);
+                        $("#diverror").html("");
+                      
+                    }
+                    if (dotCnt.length > 2) {
+
+                        $("#diverror").html($("#checktwo").val() + "");
+                        return false;
+                    }
+                }
+            }
+
+                    if (money >= 100 && money <= 7000) {
+                        $("#InMoney").removeClass("warn-input");
+                        $("#InMoney").attr("maxlength", "");
+                        $("#diverror").html("");
+                        $.ajax({
+                            url: "/Web/MoneyPay/MoneyTransfer",
+                            type: "POST",
+                            data: { "money": money, "pmmoneytype": $("#MoneyType").val(), posttype: "pay" },
+                            success: function (data) {
+                                if (data.data != null) {
+                                    $("#TransMoney").val(data.data);
+                                    $("#rate").val(data.datas)
+                                    $("#diverror").html("");
+                                    //$("#errmessage").val("");
+                                } else {
+                                    $("#TransMoney").val("");
+                                    $("#rate").val("");
+                                    $("#diverror").html("");
+                                    //$("#errmessage").val(data.info);
+                                }
+                            }
+                        });
+                    }
+                    else {
+
+                        if (money < 100) {
+                            $("#diverror").html($("#One").val() + "");
+                            $("#InMoney").addClass("warn-input");
+
+                        }
+                        else if (money > 7000) {
+                            $("#InMoney").addClass("warn-input");
+                            $("#diverror").html($("#Seven").val() + "");
+                        }
+                        $("#TransMoney").val("0.00");
+                        //$("#InMoney").css("border-color", "red");
+                    }
+            
+            
+
+        }
+
+    </script>
+}

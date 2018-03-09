@@ -1,0 +1,304 @@
+﻿@using MT.Common
+@{
+    ViewBag.Title = "获取用户列表";
+    Layout = "~/Areas/Web/Views/Shared/_LayoutPage.cshtml";
+}
+
+@section head
+{
+    <style>
+        body {
+            background: #16202f;
+        }
+
+        .u-userdetail {
+            text-align: center;
+            border: 1px  #232f41 solid;
+            margin-left: 20px;
+            float: left;
+            overflow: hidden;
+            height: 45px;
+            float: left;
+            margin-top: 20px;
+            width: 29.7%;
+        }
+
+        .u-userdetail-yu {
+            color: #fff;
+            background: #26c7c7;
+            padding: 10px 0;
+            font-size: 18px;
+            width: 150px;
+            height: 100%;
+            float: left;
+        }
+
+        .u-userdetail-YU {
+            font-size: 14px;
+            float: left;
+            line-height: 45px;
+            padding: 0 40px;
+        }
+
+        .u-Userdetail {
+            float: left;
+            width: 22%;
+            height: 150px;
+        }
+
+        .u-Userdetail-yu {
+            color: #fff;
+            width: 100%;
+            padding: 10px 0;
+            font-size: 18px;
+        }
+
+        .u-Userdetail-Yu {
+            /*border-bottom: 1px #ccc solid;*/
+            padding: 8px 0 35px;
+            font-size: 20px;
+            color: #ffffff;
+            text-align:center
+        }
+
+        .u-Userdetail-Y {
+            /*border-bottom: 1px #ccc solid;*/
+            font-size: 20px;
+            height: 92px;
+            text-align:center
+        }
+
+        .u-Userdetail-g {
+            color: rosybrown;
+            line-height: 40px;
+            padding: 16px 0;
+        }
+
+        .u-Userdetail-xb {
+            height: 40px;
+            line-height: 40px;
+        }
+
+        .u-Userdetail-b {
+            color: rosybrown;
+            display: none;
+            padding: 16px 0;
+        }
+
+        .u-Userdetail-x {
+            color: rosybrown;
+        }
+
+            .u-Userdetail-x div {
+                height: 40px;
+                line-height: 40px;
+            }
+
+        .u-Userdetail-m:hover {
+            background: #efefef;
+            transition: 0.5s linear;
+        }
+
+        .u-Userdetail-m {
+            cursor: pointer;
+            color: #000000;
+        }
+
+        .web-switch {
+            border-left: 1px #232f41 solid;
+            height: 100%;
+            width: 70px;
+            line-height: 45px;
+            cursor: pointer;
+            color: #cad4de;
+        }
+
+      
+            .web-switch:hover, .web-switch:focus, .web-switch:active {
+                background: #202c3f;
+                transition: 0.5s #fff;
+                -webkit-animation-name: hvr-pulse;
+                animation-name: hvr-pulse;
+                -webkit-animation-duration: 1s;
+                animation-duration: 1s;
+                -webkit-animation-timing-function: linear;
+                animation-timing-function: linear;
+                -webkit-animation-iteration-count: infinite;
+                animation-iteration-count: infinite;
+            }
+
+        .ah1:hover {
+            -webkit-box-shadow: #57b6c8 0px 0px 10px;
+            -moz-box-shadow: #57b6c8 0px 0px 10px;
+            box-shadow: #57b6c8 0px 0px 10px;
+        }
+
+        .ah2:hover {
+            -webkit-box-shadow: #329ef4 0px 0px 10px;
+            -moz-box-shadow: #329ef4 0px 0px 10px;
+            box-shadow: #329ef4 0px 0px 10px;
+        }
+
+        .ah3:hover {
+            -webkit-box-shadow: #25c577 0px 0px 10px;
+            -moz-box-shadow: #25c577 0px 0px 10px;
+            box-shadow: #25c577 0px 0px 10px;
+        }
+
+        .ah4:hover {
+            -webkit-box-shadow: #f67467 0px 0px 10px;
+            -moz-box-shadow: #f67467 0px 0px 10px;
+            box-shadow: #f67467 0px 0px 10px;
+        }
+
+        .fa-mobile {
+            font-size: 28px !important;
+            vertical-align: middle;
+        }
+
+
+        .per {
+            border: 1px solid #232f41;
+        }
+
+            .per .log {
+                border: 1px solid #232f41;
+                height: 40px;
+                line-height: 40px;
+                /*background: #ffffff;*/
+                margin: 0 15px;
+                padding-left: 20px;
+                border-radius:3px;
+            }
+
+            .per .log1 {
+                border: 1px solid #232f41;
+                height: 40px;
+                line-height: 40px;
+                /*background: #ffffff;*/
+                padding-left: 20px;
+                margin-right: 15px;
+              border-radius:3px;
+            }
+
+        .content-span {
+            display:inline-block;
+            padding-top:14px;
+            /*padding-left: 8px;*/
+        }
+    </style>
+}
+<section class="layui-larry-box" style="background: #16202f;margin-left:14px;">
+    <div style="margin-bottom:-8px;font-size:20px;font-family:Roboto;color: #cad4de;margin-top:26px;">
+        <legend lang="user_info"></legend>
+    </div>
+    <div class="per" style="background:#16202f;width:98%;clear:both;color: #cad4de;">
+        <table style="width:100%;background:#1c283b;">
+            <tr>
+                <td colspan="3" lang="perInfo" style="font-size:16px;font-family:Roboto;padding-left:14px;height:45px;line-height:45px;border-bottom:1px solid #232f41;"></td>
+            </tr>
+            <tr style="height:45px;font-size:13px;">
+                <td lang="email" style="padding-left:14px;"></td>
+                <td lang="address"></td>
+                <td lang="nationality"></td>
+            </tr>
+            <tr style="">
+                <td><div class="log">1262298415@qq.com</div></td>
+                <td><div class="log1">青岛市北</div></td>
+                <td>
+                    <div class="log1">
+                        <div class="">中国</div>
+                    </div>
+                </td>
+        </tr>
+        <tr style="">
+            <td>
+                <div lang="language" style="padding:17px 0 5px 14px;"></div>
+            </td>
+            <td><div lang="ID_mumber" style="padding:17px 0 5px 0px;"></div></td>
+            <td><div lang="authentication" style="padding:17px 0 5px 0px;"></div></td>
+        </tr>
+        <tr style="height:70px;">
+            <td>
+                <div class="u-userdetail" style="position:relative;float:none;width:auto;margin:0px 15px;border-radius:3px;">
+                    <div id="langbef">
+                        <div class="u-userdetail-YU" lang="chinese" style="float:none;margin-left:-73px;"></div>
+                        <a id="updatelang" class="f-fr web-switch" lang="UserInfoedit" style="position:absolute;right:0px;top:0px;">
+                        </a>
+                    </div>
+                    <div style="display: none; width: 291px; height: 43px;" id="langrad">
+                        <div class="layui-form layui-form-item mart2 marl20 layui-block">
+                            @if (MTConfig.UserLang == "En")
+                            {
+                                if (MTConfig.CurrentUserInfo.Lang == "En")
+                                {
+                                    <div class="f-fl">
+                                        <input class="mar120" type="radio" name="lang" value="En" title="Engilsh" checked="checked" style="border:1px solid #eaeaea;" />
+                                    </div>
+                                    <div class="f-fl">
+                                        <input class="mar120  " type="radio" name="lang" value="Cn" title="Chinese" style="border:1px solid #eaeaea;" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="f-fl">
+                                        <input class="mar120  " type="radio" name="lang" value="En" title="Engilsh" style="border:1px solid #eaeaea;" />
+                                    </div>
+                                    <div class="f-fl">
+                                        <input class="mar120  " type="radio" name="lang" value="Cn" title="Chinese" checked="checked" style="border:1px solid #eaeaea;" />
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                if (MTConfig.CurrentUserInfo.Lang == "En")
+                                {
+                                    <div class="f-fl">
+                                        <input class="mar120  " type="radio" name="lang" value="En" title="英文" checked="checked" style="border:1px solid #eaeaea;" />
+                                    </div>
+                                    <div class="f-fl">
+                                        <input class="mar120  " type="radio" name="lang" value="Cn" title="中文" style="border:1px solid #eaeaea;" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="f-fl">
+                                        <input class="mar120  " type="radio" name="lang" value="En" title="英文" style="border:1px solid #eaeaea;" />
+                                    </div>
+                                    <div class="f-fl">
+                                        <input class="mar120  " type="radio" name="lang" value="Cn" title="中文" checked="checked" style="border:1px solid #eaeaea;" />
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <a class="f-fr web-switch" lay-submit id="savelang" lang="save" style="position:absolute;right:0px;top:0px;display:none" onclick="changelang()">
+                    </a>
+                </div>
+            </td>
+            <td>
+                <div class="log1" style="height:45px">12312312312321</div>
+            </td>
+        </tr>
+            <tr style="">
+                <td>
+                    <div lang="bank_type1" style="padding:17px 0 5px 14px;"></div>
+                </td>
+                <td><div lang="card_no1" style="padding:17px 0 5px 0px;"></div></td>
+                <td><div lang="bank_branc1" style="padding:17px 0 5px 0px;"></div></td>
+            </tr>
+           <tr style="height:70px;">
+            <td><div class="log">中国银行</div></td>
+            <td><div class="log1">123123123123123123</div></td>
+            <td>
+                <div class="log1">
+                    <div class="">山东路支行</div>
+                </div>
+            </td>
+            </tr>
+    </table>
+</div>
+</section>
+
+@section foot{
+}

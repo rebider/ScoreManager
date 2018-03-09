@@ -1,0 +1,132 @@
+﻿@using MT.Common
+@using MT.Models
+@{
+    ViewBag.Title = "首页";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head
+{ 
+    @*   @ResourceHelper.CreateScriptResourceUrl(new[] { "Common/xiaxue.js" })*@
+}
+<div class="m-content01">
+    <div class="h-top">
+        
+        <div class="m-content">
+            <div class="f-fl">
+                <img src="@ResourceHelper.CreateThemesImgUrl("bg_loglogo.png")" width="145" class="mart10">
+            </div>
+            <div class=" h-text f-fr">
+                <a>关于外教</a> <a>服务条款</a> <a>广告服务</a> <a>网站地图</a> <a>客服招聘</a> <a>联系我们</a>
+            </div>
+        </div>
+    </div>
+    <div class="h-banner">
+        <div class="h-lightl"></div>
+        <div class="h-lightr"></div>        
+        @*
+        圣诞节样式↓↓↓↓↓↓↓↓
+        *@
+        @*   <div class="sd-positionr" style="z-index: 9">
+            <div class="sd-xuehuatop sd-positiona">
+            </div>
+        </div>*@
+        @*
+        圣诞节样式↑↑↑↑↑↑↑↑
+        *@
+        <div class="m-content sd-positionr">
+            @*
+        圣诞节样式↓↓↓↓↓↓↓↓
+        *@
+            @*      <div class="sd-liwu sd-positiona"></div>
+            <div class="sd-xuehua1 sd-positiona"></div>
+            <div class="sd-xuehua2 sd-positiona"></div>
+            <div class="sd-xuehua3 sd-positiona"></div>
+            <div class="sd-xuehua4 sd-positiona"></div>*@
+            @*
+        圣诞节样式↑↑↑↑↑↑↑↑
+        *@
+            <div class="h-phone sd-positiona" style="z-index: 11">
+                <div class="h-monkeyt">
+                    <div class="tou"></div> 
+
+                </div>
+
+                <div class="h-phonediv">
+                    <div class="h-homel"></div>
+                    <div class="h-homer"></div>
+                </div>
+            </div>
+            <div class="h-rigth sd-positiona">
+                <div class="h-rrop">
+                </div>
+                <div class="mart45 sd-positionr">
+                    @*
+        圣诞节样式↓↓↓↓↓↓↓↓
+        *@
+                    @* <div class=" sd-positiona sd-maozi">
+                    </div>*@
+                    @*
+        圣诞节样式↑↑↑↑↑↑↑↑
+        *@
+                    <div class="f-fl marl20">
+                        <a class="h-ios" href="http://www.zhaowj.cn/Uploads/ZhaoWj.apk"><i class="icobotbg icoadd"></i>Android下载</a>
+                        <a class="h-android" href="https://itunes.apple.com/us/app/zhao-wai-jiao-xue-sheng-ban/id1061433084?l=zh&ls=1&mt=8"><i class="icobotbg icoios marl30"></i>IOS下载</a>
+                    </div>
+                    <div class="f-fl">
+                        <div class="h-erweima"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="h-footbtn">
+        <div class="m-content">
+            <div class="divico">
+                <div class="f-fl m81">
+                    <a class=" hf1"><i class="icobotbg iocsch01"></i></a>
+                    <span>搜索条件</span>
+                </div>
+                <div class="f-fl m170">
+                    <a class=" hf2"><i class="icobotbg iocsgle01 "></i></a>
+                    <span>填写需求单</span>
+                </div>
+                <div class="f-fl m170">
+                    <a class=" hf3"><i class="icobotbg iocfixed01 "></i></a>
+                    <span>拼单</span>
+                </div>
+                <div class="f-fl m170">
+                    <a class=" hf4"><i class="icobotbg iocfill01"></i></a>
+                    <span>定点课堂</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="h-foot">
+    <div class="m-content">
+        <div class="m-cright">Copyright © 2015-2016  All Rights Reserved  找外教zhaowj.cn  版权所有  鲁ICP备13022640号-10 </div>
+    </div>
+</div>
+
+
+
+@*<div class="m-box f-cb">
+  <div class="m-box m-tcrlogo"><img src="@ResourceHelper.CreateThemesImgUrl("logo.png")"></div>
+  <div class="m-ioncot">
+    <div class="m-twocode"> <img src="@ResourceHelper.CreateThemesImgUrl("erweima.png")"> </div>
+    <div class="m-rsgn">
+      <p><img src="@ResourceHelper.CreateThemesImgUrl("slogan.png")"></p>
+      <p class="mart60"><a class="u-btn01" href="http://www.zhaowj.cn/Uploads/ZhaoWj.apk"><i class="icobotbg icoadd"></i>Android下载</a><a class="u-btn03 marl20"><i class="icobotbg icoios"></i>ios下载</a></p>
+    </div>
+  </div>
+  <div class="m-ente"> <a class="marr110"><i class="icobotbg iocsch"></i>搜索条件</a><a class="marr110"><i class="icobotbg iocfill"></i>填写需求单</a><a class="marr110"><i class="icobotbg iocsgle"></i>拼单</a><a><i class="icobotbg iocfixed"></i>定点课堂</a> </div>
+</div>
+<div class="m-links">
+<div class="text">
+<a>关于外教</a><span>|</span><a>服务条款</a><span>|</span><a>广告服务</a><span>|</span><a>网站地图</a><span>|</span><a>客服招聘</a><span>|</span><a>联系我们</a>
+</div>
+ </div>
+ 
+ <div class="m-cright">Copyright © 2015-2016  All Rights Reserved  找外教zhaowj.cn  版权所有  鲁ICP备13022640号-10 </div>*@

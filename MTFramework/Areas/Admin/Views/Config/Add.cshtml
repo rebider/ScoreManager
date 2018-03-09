@@ -1,0 +1,49 @@
+﻿@model MT.Models.ConfigModel
+@using MT.Common
+
+@{
+    ViewBag.Title = "添加";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutEdit.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+}
+
+<div class="m-content">
+    <div class="m-addeditform f-cb">
+      @Html.AddOrEditNavHtml()
+        @using (Html.BeginForm())
+        {
+            <dl class="f-cb">
+                <dt>@Html.LabelFor(model => model.ConfigKey):</dt>
+                <dd>
+                    @Html.EditorFor(model => model.ConfigKey)
+                    @Html.ValidationMessageFor(model => model.ConfigKey)
+                </dd>
+                <dt>@Html.LabelFor(model => model.ConfigData):</dt>
+                <dd>
+                    @Html.EditorFor(model => model.ConfigData)
+                    @Html.ValidationMessageFor(model => model.ConfigData)
+                </dd>
+                <dt>@Html.LabelFor(model => model.ConfigType):</dt>
+                <dd>
+                    @Html.EditorFor(model => model.ConfigType)
+                    @Html.ValidationMessageFor(model => model.ConfigType)
+                </dd>
+
+                <dt></dt>
+                <dd>
+                    <input type="submit" value="保存" class="u-btnblue" />
+
+                </dd>
+            </dl>
+            <input type="hidden" name="CreateMan" value="@(MTConfig.CurrentUserID)" />
+            <input type="hidden" name="CreateTime" value="@(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))" />
+            <input type="hidden" name="DelFlag" value="0" />
+        }
+    </div>
+</div>
+
+

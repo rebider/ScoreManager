@@ -1,0 +1,199 @@
+﻿@using MT.Models
+@using MT.Common
+@model PetaPoco.Page<DemoModel>
+
+@{
+    ViewBag.Title = "列表";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            BindCheckAll();
+        });
+    </script>
+}
+
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <div class="">
+            <blockquote class="layui-elem-quote mylog-info-tit">
+                <div class="layui-form-item ">
+                    @using (Html.BeginForm(vs["action"].ToString(), vs["controller"].ToString(), FormMethod.Get, new { @class = "layui-form" }))
+                    {
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" placeholder="名称" data-val="true" name="Item_Name" id="Item_Name"  />
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" placeholder="单选" name="Item.DemoRediobutton" id="Item_DemoRediobutton" />
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" placeholder="多选" name="Item.DemoCheckbox" id="Item_DemoCheckbox" />
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" placeholder="下拉" name="Item.DemoSelected" id="Item_DemoSelected" />
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" placeholder="文本域" name="Item.DemoTextarea" id="Item_DemoTextarea" />
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" placeholder="文本框" name="Item.DemoText" id="Item_DemoText" />
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" placeholder="手机号码" name="Item.Phone" id="Item_Phone" />
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" placeholder="身份证" name="Item.Idcard" id="Item_Idcard" />
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            @Html.LabelFor(m => m.Item.DelFlag, new { @class = "layui-form-label" })
+                            <div class="layui-input-inline">
+                                @Html.EditorFor(m => m.Item.DelFlag)
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit"class="layui-btn"><i class="layui-icon">&#xe615;</i> 查询</button>
+                        </div>
+
+                        if (Html.IsAuth("Admin", vs["controller"].ToString(), "DemoTestEdit"))
+                        {
+                            <div class="layui-inline f-fr">
+                                <button type="button" class="layui-btn" onclick="goAdd()"><i class="layui-icon">&#xe608;</i> 添加</button>
+                            </div>
+                        }
+                        if (Html.IsAuth("Admin", vs["controller"].ToString(), "Delete"))
+                        {
+                            <div class="layui-inline f-fr">
+                                <button type="button" class="layui-btn btnDelete" ><i class="layui-icon">&#xe640;</i> 删除</button>
+                            </div>
+                        }
+                    }
+
+                </div>
+
+            </blockquote>
+        </div>
+
+
+        <div class="larry-personal-body clearfix">
+            <table border="0" class="layui-table">
+                <tr>
+                    <th><input type="checkbox" class="checkall" /></th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.Name)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.DemoRedioButton)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.DemoCheckBox)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.DemoSelected)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.DemoTextArea)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.DemoText)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.Phone)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.IDCard)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.CreateMan)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.Createtime)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m => m.Item.DelFlag)
+                    </th>
+
+                    <th>操作</th>
+                </tr>
+                @if (Model.Items.Count == 0)
+                {
+                    <tr>
+                        <td colspan="13">@MTConfig.ListNoData</td>
+                    </tr>
+                }
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td><input type="checkbox" class="checkone" value="@item.ID" /></td>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.DemoRedioButton
+                        </td>
+                        <td>
+                            @item.DemoCheckBox
+                        </td>
+                        <td>
+                            @item.DemoSelected
+                        </td>
+                        <td>
+                            @item.DemoTextArea
+                        </td>
+                        <td>
+                            @item.DemoText
+                        </td>
+                        <td>
+                            @item.Phone
+                        </td>
+                        <td>
+                            @item.IDCard
+                        </td>
+                        <td>
+                            @item.CreateMan
+                        </td>
+                        <td>
+                            @item.Createtime
+                        </td>
+                        <td>
+                            @item.DelFlag
+                        </td>
+                        <td>
+                            @if (Html.IsAuth("Admin", vs["controller"].ToString(), "DemoEdit"))
+                            {
+                                <a href="/Admin/@(vs["controller"])/@vs["controller"].ToString()Edit/@item.ID" class="f-oper"><i class="ico-edit"></i>编辑</a>
+                            }
+                            @if (Html.IsAuth("Admin", vs["controller"].ToString(), "Delete"))
+                            {
+                                <a class="f-oper" onclick="deletemodel('/Admin/@(vs["controller"])/Delete/@item.ID')"><i class="ico-del"></i>删除</a>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+            <div class="pageboder"> @Html.RenderPage(Model, "Admin") </div>
+        </div>
+    </div>
+</section>
+

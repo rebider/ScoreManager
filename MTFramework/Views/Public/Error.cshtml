@@ -1,0 +1,46 @@
+﻿@using MT.Common
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+@{
+    ViewBag.Title = "操作失败";
+    Layout = null;
+}
+<head>
+    @MT.Common.ResourceHelper.CreateStyleResourceUrl("Admin", new[] { "common", "backstage" })
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @ResourceHelper.CreateStyleResourceUrl("Home", new[] { "common", "home", "form" })
+</head>
+<body>
+    @Html.Partial("_TopPartial")
+    @Html.Partial("_SearchPartial")
+    @Html.Partial("_TopNavigationPartial")
+    <div class="m-opersf f-cb">
+        <dl>
+            <dt class="ico-fail"></dt>
+            <dd>
+                <h1 class="z-err">
+                    @ViewData["info"]</h1>
+                <p>
+                    将在<em class="z-err" id="time">@ViewData["time"].ToString()</em>秒后自动跳转，若不想等待，请<a href="javascript:history.go(-1);">点击此处</a>跳转
+                </p>
+                <p>
+                    <i class="z-err"></i>
+                </p>
+            </dd>
+        </dl>
+    </div>
+    <div class="mart80 f-cb"></div>
+    @Html.Partial("_FootPartial")
+    <script type="text/javascript">
+        var time = parseInt('@Convert.ToInt32(ViewData["time"])');
+        setInterval(function () {
+            time--;
+            document.getElementById('time').innerHTML = time;
+            if (time <= 0) {
+                history.go(-1);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

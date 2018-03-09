@@ -1,0 +1,30 @@
+﻿
+
+<div ng-controller="moneyTakea">
+    <table border="1" class="layui-table">
+        <thead>
+        <tr>
+            <th>编号</th>
+            <th>提现金额</th>
+            <th>提现币种</th>
+            <th>转换金额</th>
+            <th>收款信息</th>
+            <th>状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in MoneyTakeInfo">
+            <td>{{item.ID}}</td>
+            <td>{{item.TakeMoney}}</td>
+            <td>{{item.MoneyType}}</td>
+            <td>{{item.TransMoney}}</td>
+            <td>{{item.CardName}}{{item.BankName}}{{item.Email}}</td>
+            <td>{{item.BankName}}</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div ng-if="myPage.totalItems" my-pagination pg="myPage"></div>
+
+</div>

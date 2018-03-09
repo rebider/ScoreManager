@@ -1,0 +1,44 @@
+﻿
+    <div ng-controller="userlist">
+        <div ng-if="isShow">sfdasfdasfdasfdasfdasfd</div>
+        <table>
+            <thead>
+                <tr>
+                    <td>UserID</td>
+                    <td>Sex</td>
+                    <td>Country</td>
+                    <td>UserName</td>
+                    <td>UserNameCn</td>
+                    <td>Phone</td>
+                    <td>Email</td>
+                    <td>IB</td>
+                    <td>Password</td>
+                </tr>
+            </thead>
+            <tr ng-repeat="item in userInfo">
+                <td>{{item.UserID}}</td>
+                <td>{{item.Sex}}</td>
+                <td>{{item.Country}}</td>
+                <td>{{item.UserName}}</td>
+                <td>{{item.UserNameCn}}</td>
+                <td>{{item.Phone}}</td>
+                <td>{{item.Email}}</td>
+                <td>{{item.IB}}</td>
+                <td>{{item.Password}}</td>
+            </tr>
+        </table>
+        <div>性别 <input type="text" ng-model="userindodetail.Sex" /></div>
+        <div>居住国家/地区 <input type="text" ng-model="userindodetail.Country" /></div>
+        <div>名字 <input type="text" ng-model="userindodetail.UserName" /></div>
+        <div>姓氏 <input type="text" ng-model="userindodetail.UserNameCn" /></div>
+        <div>电话 <input type="text" ng-model="userindodetail.Phone" /></div>
+        <div>邮箱 <input type="text" ng-model="userindodetail.Email" /></div>
+        <div>IB <input type="text" ng-model="userindodetail.IB" /></div>
+        <div>密码 <input type="text" ng-model="userindodetail.Password" /></div>
+
+
+        <input type="button" ng-click="adduserinfo()" value="添加 add" />
+        <!--<input type="button" ng-click="updateuserinfo()" value="xiugai" />-->
+    </div>
+
+

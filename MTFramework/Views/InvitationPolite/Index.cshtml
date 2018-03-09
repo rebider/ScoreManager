@@ -1,0 +1,87 @@
+﻿@using MT.Models
+@using MT.Common
+@model VersionModel
+@{
+    Layout = "~/Areas/H5/Views/Shared/LayoutList.cshtml";
+    string code = ViewBag.code;
+}
+@section head{
+    <style>
+        body {
+            background: #fcfbf9;
+        }
+    </style>
+}
+<div>
+    <div class="iv-divw">
+        <div>
+            <img src="@ResourceHelper.CreateThemesImgUrlForH5("yaoqing.png")" width="100%" />
+        </div>
+        <div class="iv-money">
+            100
+        </div>
+        <div class="iv-downlod">
+            现在起使用手机下载找外教APP
+        </div>
+        <div class="iv-zhuce">
+            成功注册即可获得<span>100</span>元红包奖励。
+        </div>
+        <div class="iv-code">
+            @code
+        </div>
+        <div class="iv-copy">
+            长按复制，仅限新用户注册使用
+        </div>
+        <div class="iv-down" id="android">
+            找外教APP下载地址：<a href="http://dd.myapp.com/16891/FB4DD36A8A7F5B911FEAFFC8C0236FFF.apk?fsname=com.qdact.zhaowj_1.0.13_73.apk" style="text-decoration: underline; color: #0079ce">点此下载</a>  赶快行动吧！
+        </div>
+        <div class="iv-down ios" style="display: none">
+            找外教APP下载地址：<a href="https://itunes.apple.com/us/app/zhao-wai-jiao-xue-sheng-ban/id1061433084?l=zh&ls=1&mt=8" style="text-decoration: underline; color: #0079ce">点此下载</a>  赶快行动吧！
+        </div>
+        <div class="iv-down2 ios" style="display: none">
+            <div style="text-align: center;">
+                <div>
+                    <div  style="text-align: center;">提示：如果您是微信用户,请点击上方的···</div>
+                </div>
+                <div style="text-align: center;" class="f-cb">
+                    选择浏览器打开,然后进行下载。
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //判断访问终端
+    var browser = {
+        versions: function () {
+            var u = navigator.userAgent, app = navigator.appVersion;
+            return {
+                trident: u.indexOf('Trident') > -1, //IE内核
+                presto: u.indexOf('Presto') > -1, //opera内核
+                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1,//火狐内核
+                mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+                iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+                iPad: u.indexOf('iPad') > -1, //是否iPad
+                webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
+                weixin: u.indexOf('MicroMessenger') > -1, //是否微信 （2015-01-22新增）
+                qq: u.match(/\sQQ/i) == " qq" //是否QQ
+            };
+        }(),
+        language: (navigator.browserLanguage || navigator.language).toLowerCase()
+    };
+
+    $(function () {
+        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+            $("#android").hide();
+            $(".ios").show();
+
+        } else if (/(Android)/i.test(navigator.userAgent)) {
+            $("#android").show();
+            $(".ios").hide();
+        }
+    });
+
+</script>

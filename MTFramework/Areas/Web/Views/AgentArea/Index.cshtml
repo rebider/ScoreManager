@@ -1,0 +1,440 @@
+﻿@using MT.Models
+@using MT.Common
+@using MT.Common.Helper
+@model PetaPoco.Page<CommissionResultListModel>
+
+
+@{
+    ViewBag.Title = "代理专区";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+<link rel="stylesheet" type="text/css" href="~/Plugins/jquery-easyui-1/themes/default/easyui.css">
+
+<style>
+    html, body {
+        margin:0px;
+        padding:0px;
+        background-color:#16202f;
+    }
+    .page-title {
+        margin-bottom:30px;
+        font-size:20px;
+    }
+     .page-title1 {
+        margin-top:3px;
+        font-size:14px;
+        margin-left:15px;
+    }
+    .web-language2 {
+        float: left;
+        margin-left: 10px;
+        line-height: 70px;
+        position: relative;
+        text-align: left;
+    }
+    .datagrid-row{height: 39px;}
+    .datagrid-row:hover{background-color:#eee;transition: 0.5s linear;}
+    .datagrid-header-row{height:39px;background-color:#eee}
+    .panel-header, .panel-body{border-color: #eee}
+    .datagrid-cell {
+        font-weight:normal;
+        font-size:14px;
+        font-family: 'Helvetica Neue', 'Helvetica', 'PingFang SC', '微软雅黑', 'Tahoma', 'Arial', 'sans-serif';
+        font-style:normal;
+        font-variant: normal;
+        color:#666;
+    }
+    .white-bg {
+        background-color:#1c283b;
+    }
+    .layui-input, .layui-select {
+         background-color:transparent;
+        border-color:#232f41
+    }
+    .layui-table thead tr {
+        background-color:transparent
+    }
+    .layui-table tr {
+        transition:none;
+        -webkit-transition:none;
+    }
+    .layui-table thead tr th:first-child,
+    .layui-table thead tr th:last-child,
+    .layui-table tr td:first-child,
+    .layui-table tr td:last-child{
+       border-left:none;
+    }
+    .layui-table tr:hover th,
+    .layui-table tr:hover td {
+        background-color:#1b2638
+    }
+    .layui-table th,
+    .layui-table td {
+        padding-left:20px;
+        border:1px solid #232f41;
+        color:#cad4de;
+    }
+    .m-page a.z-dis, .m-page a.z-dis:hover, .m-page a.z-dis:active {
+        background-color:transparent
+    }
+    .m-page a {
+        background-color:#1c283b;
+        border:1px solid #232f41;
+        border-right:none;
+        color:#cad4de
+    }
+    .m-page a:hover {
+         background-color:#0176b4;
+         color:#cad4de
+    }
+    .m-page a.last {
+        border-right:1px solid #232f41
+    }
+    .m-page a.z-crt,
+     .m-page a.z-crt:hover{
+        background-color:#0176b4
+    }
+</style>
+<script src="~/Scripts/jquery-1.7.2.min.js"></script>
+<script src="~/Plugins/clipboard.min.js"></script>
+<script type="text/javascript" src="~/Plugins/jquery-easyui-1/jquery.easyui.min.js"></script>
+<section class="layui-larry-box" style="padding:30px 24px 64px 14px;">
+    <div style="overflow:hidden;color:#cad4de;">
+        <div lang="agency" class="page-title" style="float:left;"></div>
+        <div class="page-title1" style="float:left;color:#555f6d;float:left;">
+            <i style="font-style:normal;" lang="rebate_Type"></i><span>@(ViewBag.UserAgentName==null?"":ViewBag.UserAgentName)</span>
+        </div>
+    </div>
+    <input type="hidden" id="lang" value="@MTConfig.UserLang"/>
+    @*<div>
+        <span id="AgencyType">@(ViewBag.agentcyType==null?"": ViewBag.agentcyType)</span>
+    </div>*@
+    <div class="larry-personal">
+        
+
+        <div class="larry-personal-body clearfix " style="margin: 0px;">
+            <div class="white-bg">
+                @*<fieldset class="layui-elem-field layui-field-title" style="padding:0px;margin:0px;border:none;border-bottom:1px solid #eaeaea">
+                    <legend  style="margin-left:5px;line-height:44px;font-size:16px;color:#333"></legend>
+                </fieldset>*@
+                <blockquote class="layui-elem-quote layui-quote-nm" style="border: none; padding: 0px; overflow: hidden; margin-bottom: 0px;">
+                    <form method="post" class="layui-form col-lg-12" id="form" style="padding: 24px 0px;box-shadow:0px 1px 3px 0px #1c283b">
+                        <div class="layui-form-item" style="margin:0px">
+                            <label class="layui-form-label" style="width: 120px; padding-left: 10px; text-align: left; font-size: 14px;color:#cad4de" lang="link"></label>
+                            <!--代理种类-->
+                            @*<div class="layui-input-inline">
+                            <select name="AgentName" id="AgentName" lay-filter="test">
+                                <option value="-1">@agenttype</option>
+                            </select>
+                        </div>*@
+                            <div class="layui-input-inline" style="width: 40%;">
+                                <input class="layui-input font-family" data-english="yes" type="text" id="myUrl" style="width: 100%;color:#495362" readonly/>
+                            </div>
+                            <a href="javascript:;" style="background-color: #25c577" onclick="javascript: layer.msg($('#demo').val())" class="layui-btn copybtn layui-btn-warm" data-clipboard-action="copy" data-clipboard-target="#myUrl" lang="rep_link"><i class="fa fa-clone" aria-hidden="true"></i>&nbsp;</a>
+                            @*<a href="javascript:;" style="background-color: #f67467" onclick="ShowCode()" class="layui-btn layui-btn-danger" lang="two-dimensional"><i class="fa fa-qrcode" aria-hidden="true"></i>&nbsp;</a>*@
+                            @*<a href="~/web/AgentArea/BonusSettleIndex" class="layui-btn layui-btn-normal" lang="commission_transfer"><i class="fa fa-exchange"></i>&nbsp;</a>*@
+                            @*<a href="javascript:;" style="background-color:#f6ac67" onclick="CommisionSettle();" class="layui-btn layui-btn-normal" lang="commission_transfer"></a>*@
+                        </div>
+                    </form>
+                </blockquote>
+            </div>
+            <input type="hidden" id="demo" btn-lang="copy"/>
+            <div class="white-bg" style="margin-top: 32px;box-shadow:0px 1px 3px 0px #1c283b">
+                <fieldset class="layui-elem-field layui-field-title" style="width:100%;padding: 0px; margin: 0px; border: none;clear: both;line-height:48px;border-bottom:1px solid #232f41">
+                    <legend style="margin-left: 5px; font-size: 16px; color: #cad4de">@ViewBag.username :<span lang="offline_account"></span></legend>
+                </fieldset>
+                <div class="">
+                    <blockquote class="layui-elem-quote mylog-info-tit" style="background-color:transparent;border-left:none;padding:0px 15px;margin-bottom:0px">
+                        <div class="layui-form-item " style="margin-bottom:0px;">
+                            <form action="/Web/AgentArea/Index?IsFresh=1&&curId=@MTConfig.CurrentUserInfo.UserID&&subId=0" method="post" class="layui-form ">
+                                <div class="layui-form-pane" style="padding:24px 0px 19px;">
+                                    <div class="layui-form-item" style="margin-bottom:0px;">
+                                        <label class="layui-form-label" style="width: 100px;background-color:transparent;border:none;color:#cad4de" lang="date"></label>
+                                        <div class="layui-inline">
+                                            <input class="layui-input"  name="Item.LAY_demorange_s" id="LAY_demorange_s" value="@(ViewBag.beginTime=="1970-01-01 00:00:00"?"":ViewBag.beginTime)">
+                                        </div>
+                                        <div class="layui-inline">
+                                            <input class="layui-input"  name="Item.LAY_demorange_e" id="LAY_demorange_e" value="@(ViewBag.endTime=="2050-01-01 00:00:00"?"":ViewBag.endTime)">
+                                        </div>
+                                        <div class="layui-inline">
+                                            @{if (MTConfig.UserLang=="En")
+                                                {
+                                                    <input type="submit" class="layui-btn layui-btn-normal" value="Volume Search" style="background-color:#202c3f;border:1px solid #232f41;color:#cad4de">
+                                                }
+                                                else
+                                                {
+                                                    <input type="submit" class="layui-btn layui-btn-normal" value="交易量查询" style="background-color:#202c3f;border:1px solid #232f41;color:#cad4de">
+                                                }
+                                            }
+                            
+                                        </div>
+                                        <div class="layui-inline" style="float: right;margin-right:0px;">
+                                            <a href="javascript:;" style="float: right; margin-top: 3px; margin-right: 5px;background-color:#329ef4" onclick="CommisionSettle();" class="layui-btn layui-btn-normal" lang="commission_transfer"></a>
+                                            <a href="/Web/AgentArea/Index?IsFresh=1&&curId=@MTConfig.CurrentUserInfo.UserID" style="background-color: #f02a4a; float: right; margin-top: 3px; margin-right: 5px" class="layui-btn layui-btn-normal" lang="checkcommission"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </blockquote>
+                </div>
+       
+                @*<div class="layui-inline">
+        <a href="/Web/AgentArea/Index" style="background-color: #f6ac67; float: right; margin-top: 3px; margin-right: 5px" class="layui-btn layui-btn-normal" lang="checkcommission"></a>
+    </div>*@
+                <div>
+                    <table class="layui-table" style="margin-top:0px;background-color:transparent">
+                        <thead>
+                        @if (MTConfig.UserLang == "En")
+                        {
+                            <tr>
+                                <th>User</th>
+                                <th>AgencyNo</th>
+                                <th>AgencyLevel</th>
+                                <th>Commission</th>
+                                @*<th>净值</th>*@
+                                <th>TradeTimes</th>
+                                <th>Operation</th>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <th>用户名</th>
+                                <th>账户名称</th>
+                                <th>用户类型</th>
+                                <th>未结算佣金</th>
+                                @*<th>净值</th>*@
+                                <th>总交易量（手数）</th>
+                                <th>操作</th>
+                            </tr>
+                        }
+                        </thead>
+                        <tbody>
+                            @if (Model.Items.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="11" lang="nodata" align="center"></td>
+                                </tr>
+                            }
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td>@item.UserName</td>
+                                <td>@item.LoginName</td>
+                                @if (item.AgentLevelID > 0)
+                                {
+                                    <td>@item.AgentName</td>
+                                }
+                                else
+                                {
+                                    if (MTConfig.UserLang == "En")
+                                    {
+                                        <td>Personal</td>
+                                    }
+                                    else
+                                    {
+                                        <td>个人</td>
+                                    }
+
+                                }
+                                <td>@item.NoStBonus</td>
+                                @*<td>@item.Equity</td>*@
+                                <td>@item.TradeTimes</td>
+                                @if (item.AgentLevelID > 0)
+                                {
+                                    <td><a class="layui-btn layui-btn-small layui-btn-danger" href="javascript:void(0)" onclick="nextDetail(@MTConfig.CurrentUserInfo.UserID,@item.UserID)" lang="detail" style="background-color:#25c577"></a></td>
+                                }
+                                else
+                                {
+                                    <td><a class="layui-btn layui-btn-small layui-btn-danger" href="javascript:void(0)" onclick="accdetail(@item.UserID)" lang="accountInfo"></a></td>
+                                }
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                    <div class="pageboder-allTradeTimes" style="padding-right:10px;padding-bottom:30px;color:#cad4de">
+                        <div style="float:left;padding-left:20px;line-height:58px;">
+                            <span lang="allTradeTimes"></span><span>@(ViewBag.AllTradeTimes == null ? 0 : ViewBag.AllTradeTimes)</span>&nbsp; &nbsp; &nbsp; <span lang="allBonus"></span><span>@(ViewBag.AllBonus == null ? 0 : ViewBag.AllBonus)</span>
+                        </div>
+                        <div class="pageboder" style=""> @Html.ViewPage(Model, "Web") </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display: none; margin: 0 auto;" id="code">
+        <img src=""/>
+    </div>
+    <input value="@MTConfig.CurrentUserInfo.AgentLevelID" type="hidden" id="AgentLevelID"/>
+    <input value="@MTConfig.CurrentUserInfo.UserID" type="hidden" id="UserID"/>
+    <input type="hidden" btn-lang="confirm_settle" id="confirm_settle"/>
+    <input type="hidden" btn-lang="proxy_user" id="proxy_user"/>
+    <input type="hidden" btn-lang="personal_user" id="personal_user"/>
+    <input type="hidden" btn-lang="hands" id="hands"/>
+    <input type="hidden" btn-lang="times" id="times" style="" />
+</section>
+@section foot{
+    <script>
+        //||||||||||||||||||||剪切板测试代码 start||||||||||||||||||||||
+        layui.use('laydate',
+            function() {
+            var laydate = layui.laydate;
+            laydate.options = {
+
+            }
+            var start = {
+                    min: '1990-01-01 00:00:00',
+                    max: '2099-06-16 23:59:59',
+                    istoday: false,
+                    choose: function(datas) {
+                  end.min = datas; //开始日选好后，重置结束日的最小日期
+                  end.start = datas //将结束日的初始值设定为开始日
+              }
+            };
+            $(".layui-table tr").mouseleave(function () {
+                return false;
+            })
+            var end = {
+                    min: '1990-01-01 00:00:00',
+                    max: '2099-06-16 23:59:59',
+                    istoday: false,
+                    choose: function(datas) {
+                  start.max = datas; //结束日选好后，重置开始日的最大日期
+              }
+            };
+
+                document.getElementById('LAY_demorange_s').onclick = function() {
+                start.elem = this;
+                laydate(start);
+            }
+                document.getElementById('LAY_demorange_e').onclick = function() {
+                end.elem = this
+                laydate(end);
+            }
+
+        });
+        var clipboard = new Clipboard('.copybtn');
+
+        clipboard.on('success',
+            function(e) {
+            });
+
+        clipboard.on('error',
+            function(e) {
+            });
+        //||||||||||||||||||||剪切板测试代码 end||||||||||||||||||||||
+        var str = this.location.hostname;
+        //获取代理链接
+        $(function() {
+            $.ajax({
+                url: "/Web/AgentArea/GetAgentURL",
+                type: "post",
+                dataType: "Json",
+                data: { "str": str },
+                success: function(data) {
+                    $("#myUrl").val(data.info);
+                }
+            });
+        });
+
+        //账户详情
+        function accdetail(curid) {
+            //var index = parent.layer.load(2, { time: 10 * 100, shade: [0.6, '#f5f5f5'] });
+            var startime = $("#LAY_demorange_s").val();
+            var endtime = $("#LAY_demorange_e").val();
+            location.href = "/Web/AgentArea/Account?userid=" + curid + "&&startime=" + startime + "&&endtime=" + endtime;
+            //layer.close(index);
+        }
+        //下级详情
+        function nextDetail(curId, subid) {
+            //var index = parent.layer.load(2, { time: 10 * 100, shade: [0.6, '#f5f5f5'] });
+            var startime = $("#LAY_demorange_s").val();
+            var endtime = $("#LAY_demorange_e").val();
+            location.href = "/Web/AgentArea/Index?curId=" + curId + "&&subId=" + subid + "&&beginTime=" + startime + "&&endTime=" + endtime + "&&IsFresh=1";
+            //layer.close(index);
+        }
+        //显示二维码
+        function ShowCode() {
+            var urlStr = $("#myUrl").val();
+            $.post('/Web/AgentArea/CreateCode',
+                { "str": urlStr },
+                function(data) {
+                    $("#code").show();
+                    layer.open({
+                        type: 1,
+                        title: "QRCODE",
+                        content: "<div style='text-align:center;margin-top:20px;'><img src='../../../uploads/" +
+                            data.info +
+                            "'></div>",
+                        area: ['300px', '300px']
+                    });
+                });
+        }
+
+        //佣金结算
+        function CommisionSettle() {
+
+            //var title1 = "";
+            //var ok11 = ""
+            //if ($("#lang").val() == "En") {
+            //    title1 = "Message";
+            //    ok11 = "ok";
+            //} else {
+            //    title1 = "提示";
+            //    ok11 = "确定";
+            //}
+               
+            //layer.open({
+            //    btn: [ok11],
+            //    title: title1,
+            //    content: $("#sure_settle").val(),
+            //    area: ['500px', '200px']
+                
+            //});
+            
+            var index = layer.confirm($("#confirm_settle").val(),
+                function() {
+                    layer.close(index);
+                    //if ($("#LAY_demorange_s").val() > $("#LAY_demorange_e").val()) {
+                    //    layer.alert("开始日期必须小于结束日期");
+                    //    return false;
+                    //}
+                    //var starttime = $("#LAY_demorange_s").val();
+                    //var endtime = $("#LAY_demorange_e").val();
+                    //if (starttime != '' || starttime==undefined) {
+                    //    starttime = starttime + " 00:00:00";
+                    //}
+                    //if (endtime != '' || endtime == undefined) {
+                    //    endtime = endtime + " 23:59:59";
+                    //}
+                    $.ajax({
+                        url: "/Web/AgentArea/CommisionSettle",
+                        type: "post",
+                        data: {
+                            //"startTime": starttime,
+                            //"endtime": endtime
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            parent.layer.msg(data);
+                            window.location.reload();
+                        },
+                        beforeSend: function() {
+                            i = loading();
+                        },
+                        complete: function() {
+                            layer.close(i);
+                        }
+                    });
+                });
+        }
+
+        //加载中
+        function loading() {
+            return layer.load('', { icon: 1, shade: [0.5, '#f5f5f5'], time: 100000 });
+        }
+    </script>
+}

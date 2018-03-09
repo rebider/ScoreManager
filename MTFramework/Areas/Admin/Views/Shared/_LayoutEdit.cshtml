@@ -1,0 +1,90 @@
+﻿@using MT.Common
+@{
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link rel="icon" href="~/Styles/images/16.png" type="image/x-icon">
+    @ResourceHelper.CreateStyleResourceUrl("Admin", new[] { "common", "backstage", "Validate" })
+    @ResourceHelper.CreateScriptResourceUrl(new[] { "Common/jquery-1.7.2.min.js", "Common/jquery.validate.js", "Common/jquery.validate.unobtrusive.js", "Common/artdialog.js" })
+    @RenderSection("head", false)
+</head>
+<body>
+
+    @RenderBody()
+
+    @RenderSection("foot", false)
+</body>
+<script type="text/javascript">
+
+    $(function () {
+        
+        //监听回车按键
+        document.onkeydown = function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 13) {//大回车
+                return false;
+            } else if (e && e.keyCode == 108) {//数字键盘回车
+                return false;
+            }
+
+        }
+        $("label").each(function () {
+            var labelval = $(this).text();
+            if (labelval.length == 2) {
+                var stris = labelval.split('');
+                var dt = $(this).parent("dt");
+                var htm = "<span>" + stris.join("<span class='kongge'></span>") + "</span>:";
+                $(this).remove();
+                $(dt).html(htm);
+            }
+            if (labelval.length == 3) {
+                var stris3 = labelval.split('');
+                var dt2 = $(this).parent("dt");
+                var htm3 = "<span>" + stris3.join("<span class='kongge3'></span>") + "</span>:";
+                $(this).remove();
+                $(dt2).html(htm3);
+            }
+        });
+    });
+
+
+
+    function back(pn, params) {
+        var pathname = '/Admin/@vs["controller"]/Index';
+        if ((pn || '') != '') {
+            pathname = pn;
+        }
+        var keyValues = {};
+        var arr = (top.art.dialog.data[pathname.toLowerCase()] || '').split('&');
+        var i;
+        var keyValue;
+        for (i = 0; i < arr.length; i++) {
+            if (arr[i] == '' || arr[i].split('=').length < 2) {
+                continue;
+            }
+            keyValue = arr[i].split('=');
+            keyValues[keyValue[0]] = keyValue[1];
+        }
+        if ((params || '') != '') {
+            arr = params.split('&');
+            for (i = 0; i < arr.length; i++) {
+                if (arr[i] == '' || arr[i].split('=').length < 2) {
+                    continue;
+                }
+                keyValue = arr[i].split('=');
+                keyValues[keyValue[0]] = keyValue[1];
+            }
+        }
+        var parameters = new Array();
+        for (i in keyValues) {
+            parameters.push(i + '=' + keyValues[i]);
+        }
+        location.href = pathname + '?' + parameters.join('&');
+    }
+
+
+</script>
+</html>

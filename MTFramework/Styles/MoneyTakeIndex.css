@@ -1,0 +1,77 @@
+﻿body{ background: #f2f2f2;}
+/*首页*/
+.takermb{
+    width: 90%;box-shadow: -1px 5px 15px 0 rgba(57, 61, 73, 0.51);z-index: 100;position:absolute;margin-top: 0px;background: #fff;padding-top:10px;
+}
+.takermb p{ height: 75px;line-height: 75px;font-size: 14px;color: #333333;text-indent: 2em;}
+/*.transfer{padding: 0 0 0 22px;}*/
+.transfer .medium{ 
+   display:table-cell;width:410px;height:443px;
+
+}
+.transfer .medium > div {
+    position:relative;
+   height: 100%;margin-right: 24px;background:#1c283b;
+}
+.transfer .medium .btn-position {
+    position:absolute;
+    bottom:20px;
+    left:0px;
+    width:100%;
+    padding-top:20px;
+    text-align:center;
+    line-height:48px;
+    margin-top:20px;
+    border-top:1px solid #232f41;
+    
+}
+    .transfer .medium .btn-position > a {
+        display:inline-block;
+         border:1px solid #232f41;
+            width:86%;
+            background:#1c283b;color:#cad4de;font-size:12px;line-height:45px;
+    }
+
+.fig{ width: 100%;height: 118px;vertical-align:middle;text-align: center;line-height: 118px; }
+.box{position:relative;}
+.box img{ margin-bottom: 1px;position:absolute; left:0px; bottom:-800px;width: 100%}
+.content{ width: 85%;margin: 0 auto 0;padding-top:30px;background:#1c283b}
+
+
+.outsourcing{ overflow: hidden;width: 100%;}
+.trans{ width: 100%;height: 80px;overflow: hidden;}
+.trans div{width:26%;margin-right: 52px;height: 42px;background: #f59131;float: left;margin-top: 20px;margin-bottom: 20px;color: #fff;text-align: center;line-height: 42px;}
+
+
+/*入金 网银转账*/
+.ybtn{padding: 10px 60px;font-size: 14px;border-radius:0;outline:none;background-color:#EBEAEB;}
+.y-btn{padding: 20px 35px;font-size: 14px;border-radius:0;outline:none;}
+.ysbtn{padding: 10px 8px;font-size: 14px;border-radius:0;outline:none;}
+.ybtn-fca{background: #fff;border: 1px solid #808080;color: #333333;border-radius: 5px;}
+.ybtn-input{background: #fff;border: 1px solid #808080;color: #333333;border-radius: 5px;width:175px; }
+.ybtn-list{background: #fff;border: 1px solid #808080;color: #333333;border-radius: 5px;width:175px;margin-left:-30px; }
+.ybtn-fca:hover{border: 1px solid #601986;}
+.amount{margin-right: 30px;width: 45%;}
+.amount div{margin-top: 20px}
+.h2{ font-size: 14px;font-weight: bold;color: #e31a1a;margin-bottom: 50px;margin-top: 20px;}
+.important{ width: 45%;margin-left:30px}
+.important div{ margin-bottom: 35px;}
+.send{ width: 70%;text-align: center;margin:0px 45px;}
+.ybtn-defult{background: #d9d9d9;border: 0;border-radius: 5px;}
+.ybtn-defult:hover{background: #601986;color: #fff;}
+
+
+/*银行限额*/
+.bank{ border: 1px #601986 solid;width: 80%;float: left;padding: 5px 5px;}
+.bank ul{ width: 100%; height: 50px; line-height: 50px;overflow: hidden;}
+.bank ul li{ width: 12%;margin-left: 3px;float: left;}
+.bank ul li img{ width: 100%;height: 100%;}
+.bank ul li:hover{border: 1px #601986 solid;}
+.payment{width: 80%;float: left;}
+.construction{ width: 50%;margin:30px auto;}
+.construction p{ text-align: center;font-size: 16px;}
+.construction ul{overflow: hidden}
+.construction ul li{ float: right;background: #b889d3}
+.paragraph{width:100%;text-align: center;}
+.paragraph i{margin-right:30px;}
+.layui-input-block input{ text-align: right;}

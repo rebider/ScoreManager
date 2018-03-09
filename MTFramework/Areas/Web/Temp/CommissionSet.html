@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html ng-app="agentinfo">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>佣金结算</title>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<div ng-controller="getbonuslist">
+    <table>
+        <tr>
+            <td>订单编号</td>
+            <td>交易账户</td>
+            <td>交易类型</td>
+            <td>成交量</td>
+            <td>时间</td>
+            <td>返佣金额</td>
+        </tr>
+        <tr ng-repeat="item in bonuslist">
+            <td>{{item.OrderID}}</td>
+            <td>{{item.TradeAccount}}</td>
+            <td>{{item.Cmd}} {{item.Symbol}}</td>
+            <td>{{item.Volume}}</td>
+            <td>{{item.OpenTime}}</td>
+            <td>{{item.Bonus}}</td>
+        </tr>
+    </table>
+    <div ng-controller="getsumbonus">
+        未结算佣金<input ng-model="bonus" />USD
+        <input value="结算佣金" type="button" ng-click="settle()"/>
+    </div>
+   
+</div>
+</body>
+</html>
+<script src="../../../Plugins/angular-1.5.5/angular.js"></script>
+<script src="../../../Scripts/Controller/AgentInfoModel.js"></script>

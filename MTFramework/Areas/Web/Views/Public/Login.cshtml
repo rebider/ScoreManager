@@ -1,0 +1,356 @@
+﻿@using MT.Common
+@model MT.Models.UserInfoModel
+@{
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+    var plaEmail = "";
+    if (MTConfig.UserLang == "En")
+    {
+        plaEmail = "accountNumber";
+    }
+    else
+    {
+        plaEmail = "账号";
+    }
+
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>@MTConfig.WebTitle 登录中心</title>
+    @*<link rel="icon" href="@ResourceHelper.CreateThemesImgUrl("favicon.ico")" type="image/x-icon"/>*@
+    <meta property="qc:admins" content="204422114265135176536727"/>
+    <meta http-equiv=“X-UA-Compatible” content="IE =EmulateIE7" />
+    <link rel="icon" href="~/Styles/images/32.png" type="image/x-icon" />
+    <meta http-equiv=“X-UA-Compatible” content="IE =7" />
+    <link href="~/Styles/common.css" rel="stylesheet"/>
+    @*<link href="~/Styles/login-new.css" rel="stylesheet"/>*@
+    <link href="~/Styles/admin-login.css" rel="stylesheet" />
+
+    <link href="~/Plugins/common/layui/css/layui.css" rel="stylesheet" />
+
+    <link href="/Plugins/Font-Awesome-master/css/font-awesome.min.css" rel="stylesheet" />
+    <style>
+        .layui-layer-title1 {
+    padding: 0 80px 0 20px;
+    height: 42px;
+    line-height: 42px;
+    font-size: 14px;
+    color: #fff;
+    overflow: hidden;
+    border-radius: 2px 2px 0 0;
+}
+    </style>
+</head>
+<body @*ng-app="login"*@ class="layui-layout layui-layout-admin" id="layui_layout">
+<input type="hidden" value="@MTConfig.UserLang" id="lang" />
+    <input type="hidden" btn-lang="reset1" id="reset1" />
+    <input type="hidden" btn-lang="noemail" id="noemail" />
+<div class="logo">
+    <div class="logo-and">
+        <div class="f-fl">
+            <img src="~/Styles/Images/LOGO.png" style="margin-top: 10px;margin-left:26px;width:100%;"/>
+        </div>
+
+        @*<div class="f-fr">
+            <img src="~/Styles/Images/login-phone.png"/>
+            <span style="color:#fff;">+64 9368 7763</span>
+        </div>*@
+    </div>
+    <ul class="f-fr "style="margin-top: -70px;">
+        
+        <li class="web-language" style="position:relative">
+            <a href="#" class="logout" style="">
+                @if (MTConfig.UserLang == "En")
+                {
+                    <img src="~/Styles/Images/entb.jpg" />
+                    <span style="color:#cad4de;">English</span>
+                    <i class="fa fa-angle-down" style="color:#cad4de;"></i>
+                }
+                else
+                {
+                    <img src="~/Styles/Images/Flag.jpg" id="cimg" />
+                    <span id="clang" style="color:#cad4de;">中文</span>
+                    <i class="fa fa-angle-down" style="color:#cad4de;"></i>
+                }
+
+            </a>
+
+            <div class="web-language web-English-z" style="background:#fff;width: 110px;height: 70px;border-radius:3px;position:absolute;right:25px;">
+                <div style="">
+                    <a href="#" class="logout" style=" " onclick="setlang(2)">
+                        <img src="~/Styles/Images/Flag.jpg" />
+                        中文
+                    </a>
+                </div>
+                <div style="">
+                    <a href="#" onclick="setlang(1)"  style="color:#333!important;">
+                        <img src="~/Styles/Images/entb.jpg" />
+                        <span>English</span>
+                    </a>
+                </div>
+            </div>
+        </li>
+
+    </ul>
+
+</div>
+<div style="height: 150px"></div>
+<div class="fm-box" >
+    
+    <form class="fm-form" id="form">
+        <div class="fm-title" lang="LoginCenter">
+            
+        </div>
+        <div class="y-icon-Account">
+            <div class="f-fl public-mli" >
+                <i class="fa fa-user fa-fw"></i>
+            </div>
+            <input style="display:none" />
+            @{
+                if (MTConfig.UserLang == "En")
+                {
+                    <input type="text" placeholder="Your Email" value="" autocomplete="off" btn-lang="accountNumber" class="y-size"  name="email" style="text-indent: 0.5em;color: #aaa !important;" />
+                }
+                else
+                {
+                    <input type="text" placeholder="您的邮箱" value="" autocomplete="off" btn-lang="accountNumber" class="y-size"  name="email" style="text-indent: 0.5em;color: #aaa !important;" />
+                }
+            }
+        
+        </div>
+        <div class="y-Icon-Account">
+            
+            <div class="f-fl public-ico">
+                
+            </div>
+            
+            @{
+                if (MTConfig.UserLang == "En")
+                {
+                    <input type="password" placeholder="password" value="" autocomplete="off" class="y-size" name="password" style="text-indent: 0.5em;color: #aaa !important;" />
+                }
+                else
+                {
+                    <input type="password" placeholder="密码" value="" autocomplete="off" class="y-size" name="password" style="text-indent: 0.5em;color: #aaa !important;" />
+                }
+            }
+
+        </div>
+        <div class="y-con-Account">
+
+
+            <div class="public-mli1 f-fl" @*lang="asd"*@></div> 
+           
+
+            @{
+                if (MTConfig.UserLang == "En")
+                {
+                    <input type="text" placeholder="verify" name="verify" class="verification" style="color: #aaa !important;" />
+                }
+                else
+                {
+                    <input type="text" placeholder="验证码" name="verify" class="verification" style="color: #aaa !important;" />
+                }
+            }
+            <div class="f-fr public-ic">
+
+                <div class="f-fl" >
+                    <a id="GetVerifyCode"  onclick="CodeClick()">
+                        <img alt="验证码" id="verifyImg" class="verify" src="/web/Public/VerifyCode?r=@(new Random().Next(int.MaxValue))" height="40" width="30%" style="cursor: pointer; padding-left: 10px; height: 30px;margin-top: 3px;margin-right:5px;" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="fm-return" style="">
+            <div class="f-fl" style="line-height: 40px;color:#666;">
+                <input type="checkbox" name="rememberok" onchange="clickremember()" class="forget" /><span lang="NextAutoLogin"></span>
+            </div>
+            <div class="f-fr" style="line-height: 40px;">
+                <a href="javascript:openpage('/Web/Public/ForgetPassword');" lang="Forgetpassword" style="color:#666!important;"></a>
+            </div>
+        </div>
+        <div class="fm-log-in">
+
+         
+                <input type="button" id="submitBtn2" class="" btn-lang="Signin" onclick="login()" />
+                <input type="hidden" name="verify" />
+            </div>
+        <div style="height: 30px"></div>
+        <div class="fm-registered">
+            <a href="javascript:openpageEmail('/Web/Public/GetEmail');">
+                <div class="fm-immediately" lang="noemail"></div>
+            </a>
+            <input type="hidden" name="verify" />
+        </div>
+
+        
+        <div style="height: 40px"></div>
+        <div class="fm-registered">
+            <span lang="account_no"></span><a href="/Regist/RegistUser/lang=@MTConfig.UserLang" lang="go_register"></a>
+        </div>
+        <div style="height: 47px"></div>
+
+
+
+    </form>
+</div>
+    @*<div class="layui-layer layui-layer-iframe  layer-anim" id="layui-layer1" type="iframe" times="1" showtime="0" contype="object" style="z-index: 19891015; width: 460px; height: 300px; top: 325px; left: 501px;"></div>
+    <div style="width: 500px;position:fixed;z-index:10000;top:0;">
+        <div class="layui-layer-title1" style="cursor: move;">重置密码</div><span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a></span>
+        <form class="layui-form" style="width:100%;">
+            <div class="layui-form-item" style="margin-top: 50px;width:100%">
+                <label class="layui-form-label" style="width: 100px;" lang="logemail"></label>
+                <div class="layui-input-inline">
+                    <input type="text" autocomplete="off" class="layui-input" name="Email" id="Email" lay-verify="email" />
+                    <input type="hidden" id="surerest" btn-lang="reset_confirm" />
+                    <input type="hidden" id="restting" btn-lang="resetting" />
+                </div>
+                <a class="layui-btn layui-btn-normal" lay-submit=lay-submit id="reset" lay-filter="formDemo" lang="reset"></a>
+
+                <div class="layui-input-block" style="margin-top: 50px;margin-left:60px;margin-right:30px;">
+                    <div style="color: red;margin:0 auto;" lang="tip"></div>
+                </div>
+            </div>
+        </form>
+    </div>*@
+</body>
+</html>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Plugins/common/layui/layui.js"></script>
+<script src="~/Plugins/common/layui/lay/dest/layui.all.js"></script>
+@*<script src="~/Plugins/angular-1.3.20/angular.js"></script>*@
+@*<script src="~/Scripts/Apps/Controller.js"></script>*@
+<script src="~/Scripts/lang/selectlang.js"></script>
+<script type="text/javascript">
+    function setlang(type) {
+        $.ajax({
+            url: "/web/public/SetLang?type=" + type,
+            type: "post",
+            success: function (data) {
+                window.location.reload();
+            }
+        });
+    }
+    
+    //忘记密码
+    function openpage(url) {
+        layer.open({
+            title: $("#reset1").val(),
+            type: 2,
+            resize: false,
+            content: [url],
+            area: ['460px', '300px']
+            
+        });
+    }
+
+    //绑定邮箱
+    function openpageEmail(url) {
+        layer.open({
+            title: $("#noemail").val(),
+            type: 2,
+            resize: false,
+            content: [url],
+            area: ['455px', '400px']
+
+        });
+    }
+
+    function CodeClick() {       
+            document.getElementById('verifyImg').src = '/web/Public/VerifyCode?r=' + Math.random();      
+    }
+    $(function() {
+        $("body").height($(window).height());
+        //监听回车按键
+        document.onkeydown = function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 13) {//大回车
+                login();
+                return false;
+            } else if (e && e.keyCode == 108) {//数字键盘回车
+                login();
+                return false;
+            }
+        }
+    });
+    $(window).on("resize", function() {
+        $("body").height($(window).height());
+
+    });
+
+    function login() {
+        if ($("email").val() + "" == "") {
+            layer.msg("请填写登录邮箱！");
+        } else if ($("password").val() + "" == "") {
+            layer.msg("请填写密码！");
+
+        } else if ($("verify").val() + "" == "") {
+            layer.msg("请填写验证码！");
+
+        }
+        $.ajax({
+            url: "/web/Public/Login",
+            type: "post",
+            dataType: "json",
+            data: $("#form").serialize(),
+            success:function(data) {
+                if (data.status == 0) {
+                    if (data.msg == "验证码错误") {
+                        CodeClick();                      
+                        layer.msg(data.msg);
+                       
+                    } else {
+                        CodeClick();
+                        layer.msg(data.msg);
+                    }
+                    
+                } else {
+                    location.href = "/web/Public/Index";
+                 }   
+            }
+    });
+        //$http.post("/web/Public/Login", { Email: $("email").val(), Password: $("password").val(), verify: $("verify").val(), remember: $("remember").val() })
+        //.success(function (data) {
+        //    if (data.status == 0) {
+        //        layer.msg(data.msg);
+        //    } else {
+        //        location.href = "/web/Public/Index";
+
+        //    }
+        //});
+    }
+    //layui.config({
+    //    base: "/Plugins/admin/js/"
+    //}).use(["jquery", "element", "layer", "navtab"],
+    //function () {
+    //    window.jQuery = window.$ = layui.jquery;
+    //    window.layer = layui.layer;
+    //    var element = layui.element(),
+    //    navtab = layui.navtab({
+    //        elem: ".larry-tab-box"
+    //    });
+    //    if (document.readyState != "complete") {
+    //        $("#content").removeClass("fullwidth");
+    //        $("#content").removeClass("fullwidth").delay(10).queue(function (next) {
+    //            $(this).addClass("fullwidth");
+    //            next()
+    //        })
+    //    } else {
+    //        $("#content").hide()
+    //    }
+    //    $(window).on("resize",
+    //    function () {
+    //        var $content = $("#larry-tab .layui-tab-content");
+    //        $content.height($(this).height() - 80);
+    //        $content.find("iframe").each(function () {
+    //            $(this).height($content.height())
+    //        });
+    //        var larryFoot = $("#admin-footer").width();
+    //        $("#admin-footer p.p-admin").width(larryFoot - 300)
+    //    }).resize();
+
+    //});
+
+   
+</script>

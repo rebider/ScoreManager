@@ -1,0 +1,215 @@
+﻿
+@model MT.Models.DemoModel
+@using MT.Common
+@using MT.Common.Helper
+
+@{
+    ViewBag.Title = "编辑";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAjaxEdit.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+}
+
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <header class="larry-personal-tit">
+            <div><a onclick="back();"><i class="layui-icon ">&#xe603;</i><span>返回上级列表</span></a></div>
+        </header>
+        <div class="larry-personal-body clearfix ">
+
+            @using (Html.BeginForm(vs["action"].ToString(), vs["controller"].ToString(), FormMethod.Post, new { @class = "layui-form col-lg-5" }))
+            {
+
+                @Html.HiddenFor(model => model.ID)
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.Name, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.Name)
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.DemoRedioButton, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                      
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.DemoCheckBox, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="like[write]" title="写作">
+                        <input type="checkbox" name="like[read]" title="阅读" checked>
+                        <input type="checkbox" name="like[dai]" title="发呆">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.DemoSelected, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        @*<select name="DemoSelected" id="DemoSelected" lay-verify="required" lay-filter="DemoSelected">
+                            <option value=""></option>
+                            <option value="0">北京</option>
+                            <option value="1">上海</option>
+                            <option value="2">广州</option>
+                            <option value="3">深圳</option>
+                            <option value="4">杭州</option>
+                        </select>*@
+                        @Html.Raw(DropDownListHelper.GetDropDownList("DDL_SEX", "", " name='Item.DemoSelected' id='Item_DemoSelected' ", "全部",Model==null?"":Model.DemoSelected+""))
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.DemoText, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        <input type="hidden" name="DemoText" id="DemoText" class="layui-input"/>
+                        <img src="@ResourceHelper.CreateUploadImgUrl(Model.DemoText.ToInt(), 50, 50)" id="uploadsimg"/>
+                        <input type="file" name="DemoTextFile" id="DemoTextFile" class="layui-upload-file f-fl">
+                        <input type="text" name="DemoTextTxt" id="DemoTextTxt" disabled class="layui-input f-fl"/>
+
+                        @if (Model != null && !string.IsNullOrEmpty(Model.DemoText + ""))
+                        {
+                            <img src="@ResourceHelper.CreateUploadImgUrl(Model.DemoText.ToInt(), 100, 50)"/>
+                        }
+                    </div>
+
+                    <div class="layui-input-block">
+                        <input type="hidden" name="DemoText2" id="DemoText2" class="layui-input"/>
+                        <img src="@ResourceHelper.CreateUploadImgUrl(Model.DemoText.ToInt(), 50, 50)" id="uploadsimg2"/>
+                        <input type="file" name="DemoTextFile2" id="DemoTextFile2" class="layui-upload-file f-fl">
+                        <input type="text" name="DemoTextTxt2" id="DemoTextTxt2" disabled class="layui-input f-fl"/>
+
+                        @if (Model != null && !string.IsNullOrEmpty(Model.DemoText + ""))
+                        {
+                            <img src="@ResourceHelper.CreateUploadImgUrl(Model.DemoText.ToInt(), 100, 50)"/>
+                        }
+                    </div>
+
+       
+
+
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.Phone, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.Phone)
+                        @Html.ValidationMessageFor(model => model.Phone)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.IDCard, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        <input type="text" name="Idcard" id="Idcard" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+                        @Html.ValidationMessageFor(model => model.IDCard)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.DelFlag, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.DelFlag)
+                        @Html.ValidationMessageFor(model => model.DelFlag)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.DemoTextArea, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.DemoTextArea)
+                        @Html.ValidationMessageFor(model => model.DemoTextArea)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="submit"  value="保存" lay-submit class="layui-btn" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+@section foot
+{
+    <script>
+        $(function() {
+            $("#uploadsimg").click(function() {
+                $("#DemoTextFile").click();
+            });
+        });
+
+
+        layui.upload({
+            url: '/Admin/Public/Upload',
+            before: function(input) {
+                //返回的参数item，即为当前的input DOM对象
+                layer.msg('文件上传中');
+            },
+            success: function(res) {
+                $("#DemoTextTxt").val(res.name);
+                $("#DemoText").val(res.id);
+                $("#uploadsimg").attr("src", "http://localhost:5176/Home/Img?id=" + res.id + "&width=50&height=50");
+            }
+        });
+
+        layui.upload({
+            url: '/Admin/Public/Upload',
+            before: function (input) {
+                //返回的参数item，即为当前的input DOM对象
+                layer.msg('文件上传中');
+            },
+            success: function (res) {
+
+                if (res.status == 1) {
+                    $("#DemoTextTxt2").val(res.name);
+                    $("#DemoText2").val(res.id);
+                    $("#uploadsimg2").attr("src", "http://localhost:5176/Home/Img?id=" + res.id + "&width=50&height=50");
+                } else {
+                    layer.msg('文件上传中');
+                }
+              
+            }
+        });
+
+        //各种基于事件的操作，下面会有进一步介绍
+
+        layui.use(['form', 'layedit', 'laydate'], function() {
+            var form = layui.form(),
+                layer = layui.layer,
+                layedit = layui.layedit
+
+            //创建一个编辑器
+            var editIndex = layedit.build('DemoTextArea');
+
+            //自定义验证规则
+            form.verify({
+                title: function(value) {
+                    if (value.length < 5) {
+                        return '标题至少得5个字符啊';
+                    }
+                },
+                pass: [/(.+){6,12}$/, '密码必须6到12位'],
+                content: function(value) {
+                    layedit.sync(editIndex);
+                }
+            });
+
+
+            //监听提交
+            form.on('submit(demo1)', function(data) {
+                layer.alert(JSON.stringify(data.field), {
+                    title: '最终的提交信息'
+                })
+                return false;
+            });
+
+
+        });
+
+        $("#form").submit(function() {
+            editmodel("");
+            return false;
+        });
+
+    </script>
+}
+
+

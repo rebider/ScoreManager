@@ -1,0 +1,9 @@
+﻿@{
+}
+<script type="text/javascript">
+    //top.art.dialog.data[''] = '';
+    top.art.dialog.data['@(ViewBag.id)IsBring'] = 1;
+    top.art.dialog.data['@(ViewBag.id)FileId'] = '@ViewBag.fileId';
+    top.art.dialog.data['@(ViewBag.id)FileName'] = '@ViewBag.fileName';
+    top.art.dialog.get('@(ViewBag.id)').close();
+</script>

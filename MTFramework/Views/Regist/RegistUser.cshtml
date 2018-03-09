@@ -1,0 +1,700 @@
+﻿@using MT.Common
+@using MT.Models
+@using MT.Common.Helper
+
+@{
+    ViewBag.Title = "注册用户";
+    Layout = "~/Areas/web/Views/Shared/_LayoutRegist.cshtml";
+}
+
+
+<link href="~/Styles/bscommon.css" rel="stylesheet" />
+<link href="/Styles/common.css" rel="stylesheet" />
+<link href="~/Styles/backstage.css" rel="stylesheet" />
+
+<link href="~/Plugins/Font-Awesome-master/css/font-awesome.min.css" rel="stylesheet" />
+
+
+<style>
+    .layui-layout-admin .layui-main {
+        height:65px;
+        margin:0px 24px!important;
+    }
+    .z-hide {
+        display: none !important;
+    }
+
+    .web-language:hover .web-English {
+        display: block;
+    }
+
+    .web-zhm {
+        float: left;
+        margin: 0 10px;
+        line-height: 70px;
+    }
+
+    .logout {
+        color: #000;
+    }
+
+    .web-language {
+        float: right;
+        line-height: 72px;
+        position: relative;
+        width: 100px;
+        text-align: right;
+    }
+
+
+    .web-English-z {
+        height: 64px;
+        display: none;
+        z-index: 1000;
+        position: absolute;
+        background: #fff;
+        line-height: 30px;
+        cursor: pointer;
+        width: 110px;
+        left: -10px;
+        top:72px;
+        border-radius:3px;
+    }
+    .web-English-z > div:hover {
+        background-color:#f7f7f7
+    }
+    .web-English-z > div:first-child {
+        border-top-left-radius:3px;
+        border-top-right-radius:3px;
+    }
+    .web-English-z > div.english-div {
+        border-bottom-left-radius:3px;
+        border-bottom-right-radius:3px;
+    }
+
+    .crm-bg {
+        background: #131b26;
+        border-bottom: none;
+        height: 65px;
+    }
+
+    .crm-head {
+    }
+
+    .crm-register {
+        background: #16202f;
+        text-align: center;
+    }
+
+    .crm-left {
+        font-size: 36px;
+        color: #cad4de !important;
+        line-height: 122px;
+        text-align: center;
+        margin: 0 auto;
+        width: 500px;
+    }
+
+    .crm-content {
+        height: 199px;
+        border-bottom: 1px #202a39 solid;
+    }
+
+    .crm-right {
+        margin-bottom: 50px;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .crm-content1 {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .crm-btn-primary {
+        background: none;
+        padding: 10px;
+        border-radius: 3px;
+        border: 1px #eaeaea solid;
+        line-height: 36px;
+    }
+
+    .crm-btn-primary:hover {
+        background: #ec8f35;
+        color: #fff;
+    }
+    .layui-input,.layui-select {
+        background-color:transparent!important;
+        border-color:#232f41!important
+    }
+    .layui-form-select dl dd {
+        color:#333
+    }
+    .layui-form-select dl dd.layui-this {
+        background-color:#329ef4!important;
+    }
+    html, body {
+        height:100%;
+        background-color:#16202f!important;
+    }
+</style>
+<link href="/Styles/register.css" rel="stylesheet" />
+
+<!-- 用户语言设置 -->
+<input type="hidden" value="@MTConfig.UserLang" id="lang" />
+<div class="layui-layout layui-layout-admin" id="layui_layout" style="background: #fdfdfd;">
+    <!-- 顶部区域 -->
+    <div class="header header-demo crm-bg">
+        <div class="layui-main">
+            <!-- logo区域 -->
+
+            <a class="logo" href="#">
+                @*<img src="~/Plugins/common/images/logo1.png"/>*@
+                <img src="~/Styles/Images/LOGO.png" style="margin-top: 4px;" />
+                @*<img src="~/Plugins/common/images/logo.png" style="margin-top: 15px;" />*@
+                @*<img src="~/Styles/Images/ExP.png" style="margin-top: 15px;" />*@
+            </a>
+            <!-- 右侧导航 -->
+            <ul class="layui-nav admin-header-item" style="margin-top: -55px;">
+
+                <li class="web-language">
+                    <a href="#" class="logout" style="">
+                        @if (MTConfig.UserLang == "En")
+                        {
+                            <img src="~/Styles/Images/entb.jpg" />
+                            <span style="color:#fff">English</span>
+                        }
+                        else
+                        {
+                            <img src="~/Styles/Images/Flag.jpg" id="cimg" />
+                            <span id="clang" style="color:#fff">中文</span>
+                        }
+                        <i class="fa fa-angle-down" style="color:#888;"></i>
+                    </a>
+                    <div class="web-English web-English-z" style="text-align:left">
+                        <div style="border: 1px #fff solid;">
+                            <a href="#" class="logout" style="padding-left: 10px" onclick="setlang(2)">
+                                <img src="~/Styles/Images/Flag.jpg" />
+                                中文
+                            </a>
+                        </div>
+                        <div style="border: 1px #fff solid;">
+                            <a href="#" onclick="setlang(1)" style="padding-left: 10px">
+                                <img src="~/Styles/Images/entb.jpg" />
+                                <span>English</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+        @*<div id="content" class="fullwidth" style="display: none;"><span class="expand"></span></div>*@
+    </div>
+    <style>
+        .language:hover .English {
+            display: block;
+        }
+    </style>
+
+    <div class="crm-register" >
+        <div class="crm-head">
+            <div class="crm-content">
+                <div class="crm-left" lang="r_customer_registration"></div>
+                <div class="crm-right" lang="r_personal_information" style="color:#47515e;"></div>
+            </div>
+        </div>
+        @* <div class="neck" style="background-color:#ffffff;">
+
+            <div class="crm-content1" style="margin-top:30px;margin-bottom:30px;">
+
+                <div class="content" style="margin-right: -35px">
+
+                    <label class="layui-form-label" lang="regulator" style="width:200px;margin-top:27px;margin-left:40px"></label>
+                    <div class="layui-btn-group">
+                        <div class="layui-inline" style="width:300px;margin-top:27px;">
+                            <button id="msgBtn" lang="england_FSA" class="layui-btn layui-btn-primary" style="width:128px"></button>
+                            <button id="msgBtn1" lang="Nz" style="width:128px" class="layui-btn layui-btn-primary"></button>
+                        </div>
+                        <label class="layui-form-label" lang="regulator" style="width:200px;margin :0 auto;"></label>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+        <div style="width:100%;margin :0 auto;background:#fafafa;margin-top:20px;">
+            @*<div class="layui-inline" style="width:300px;padding:30px 0;">
+                    <button id="msgBtn" lang="england_FSA" class="crm-btn-primary" style="width:128px;margin-right:30px;"></button>
+                    <button id="msgBtn1" lang="Nz" style="width:128px" class=" crm-btn-primary"></button>
+                </div>*@
+
+        </div>
+        <form class="layui-form" action="" id="formuser" style="background-color:#16202f;padding-bottom:50px;color:#cad4de">
+            <input type="hidden" name="Lang" id="Lang" />
+            <input type="hidden" name="IsEmployee" id="IsEmployee" value="@ViewBag.IsEmployee" />
+            <div class="layui-elem-field" style="width: 1000px;margin: 0 auto;border:none;padding-bottom:9px;">
+                <div class="layui-field-box">
+                    <div class="layui-form-item">
+
+                        @{
+                            if (MTConfig.UserLang == "En")
+                            {
+                                <div class="layui-input-inline">
+                                    <label class="layui-form-label" style="width: 100%;float:none;text-align:left;margin-left: -14px;"><span style="color:red">*</span>Gender</label>
+                                    <div class="layui-input-block" style="width: 190px;margin-left:0px;">
+                                        <select name="Sex" lay-verify="required">
+                                            <option value="" selected="selected">Choose</option>
+                                            <option value="0">Female</option>
+                                            <option value="1" >Male</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="layui-input-inline">
+                                    <div class="layui-form-label" style="width: 100%;float:none;text-align:left;margin-left: -14px;"><span style='color:red;'>*</span> 性别</div>
+                                    <div class="layui-input-block" style="width: 190px;margin-left:0px;">
+                                        <select name="Sex" lay-verify="required">
+                                            <option value="" selected="selected">请选择</option>
+                                            <option value="0">女</option>
+                                            <option value="1" >男</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+
+                        @if (MTConfig.UserLang == "En")
+                        {
+                            <div class="layui-input-inline" style="margin-left:10px">
+                                <div class="layui-form-label" lang="r_username" style="width: 100%;float:none;text-align:left;margin-left: -12px;"></div>
+                                <div class="layui-input-block" style="width: 100%;float:none;text-align:left;margin-left:0px;">
+                                    <input type="text" id="UserNameE" lay-verify="required" name="UserName" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="layui-input-inline" style="margin-left:10px">
+                                <label class="layui-form-label" lang="r_username_cn" style="width: 100%;float:none;text-align:left;margin-left:-7px;"></label>
+                                <div class="layui-input-block" style="width: 100%;margin-left:0px;">
+                                    <input type="text" id="UserNameCn" name="UserNameCn" lay-verify="required" onblur="autoUserName()" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-input-inline" style="margin-left: 10px">
+                                <label class="layui-form-label" lang="r_username" style="width: 100%;float:none;text-align:left;margin-left:-7px;"></label>
+                                <div class="layui-input-block" style="width: 100%;margin-left:0px;">
+                                    <input type="text" id="UserNameC" lay-verify="required" name="UserName" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                        }
+
+                        <div class="layui-input-inline" style="width:300px;margin-left:10px">
+
+
+                            <label class="layui-form-label" lang="r_country" style="width: 100%;float:none;text-align:left;margin-left:-7px;"></label>
+
+                            @*<div class="layui-block f-fl" style="width: 530px;">
+                            @Html.Raw(DropDownListHelper.GetDropDownList("DDL_GETCOUNTRYLIST", "", " name='Country' id='Country'"))
+                        </div>*@
+                            <div class="layui-block">
+                                <div class="layui-blockl" style="width: 100%;margin-left:0px;">
+                                    @Html.Raw(DropDownListHelper.GetDropDownList("DDL_GETCOUNTRYLIST", "", " name='Country' id='Country'  lay-filter='Countrysele'  ", ""))
+
+
+                                    @*<input type="text" class="layui-input" name="Country" id="Country" placeholder="国家" value="@Model.Country"/>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @{ if (true)
+                        {
+                            <div class="layui-form-item" id="catydiv">
+                                <div class="layui-block">
+                                    <label class="layui-form-label" lang="r_Area" style="width: 100%;float:none;text-align:left;margin-left:-13px;"></label>
+                                    <div class="layui-input-inline">
+                                        <select name="Province" lay-filter="province" id="province">
+                                            <option value="">请选择省</option>
+                                        </select>
+                                    </div>
+                                    <div class="layui-input-inline" style="margin-left:10px">
+                                        <select name="City" lay-filter="city" id="city">
+                                            <option value="">请选择市</option>
+                                        </select>
+                                    </div>
+                                    <div class="layui-input-inline" style="margin-left:10px">
+                                        <select name="District" lay-filter="area" id="area">
+                                            <option value="">请选择县/区</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    <div class="layui-form-item" style=" width:190px;float:left;clear:none;">
+                        <label class="layui-form-label" lang="r_zip" style="width: 100%;float:none;text-align:left;margin-left:-13px;"></label>
+                        <div class="layui-input-block" style="width: 100%;margin-left:0px;">
+                            <input type="text" class="layui-input" name="Zip" id="Zip" lay-verify="number" />
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item" style="width:47%; float:left;clear:none;margin-left:20px;">
+                        <label class="layui-form-label" lang="r_address" style="width: 100%;float:none;text-align:left;margin-left:-13px;"></label>
+                        <div class="layui-input-block" style="width: 100%;margin-left:0px;">
+                            <input type="text" class="layui-input" name="Address" id="Address" lay-verify="required" />
+                        </div>
+                    </div>
+                </div>
+
+                @if (MTConfig.UserLang == "En")
+                {
+                    <div class="layui-form-item">
+                        <div class="layui-inline" style="margin-left:-54px">
+
+                            <label class="layui-form-label" lang="r_phone" style="width: 100%;float:none;text-align:left;margin-left: -7px;"></label>
+                            <span style="float:left;margin-left:60px;margin-top:-28px" id="phoneArea"></span>
+                            <div class="layui-input-block" style="width: 100%;margin-left:7px;">
+                                <input type="text" id="Phone" name="Phone" autocomplete="off" class="layui-input" lay-verify="phone|number" style="width:190px">
+                            </div>
+                        </div>
+                        <div class="layui-inline" style="">
+                            <label class="layui-form-label" lang="r_email" style="width: 100%;float:none;text-align:left;"></label>
+                            <div class="layui-input-block" style="width: 100%;margin-left:7px;">
+                                <input type="text" name="Email" id="email" autocomplete="off" class="layui-input" style="width:190px" lay-verify="requird">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 100%;float:none;text-align:left;margin-left: -7px;" lang="r_confirmemail"></label>
+                            <div class="layui-input-block" style="width: 100%;margin-left:7px;">
+                                <input type="text" name="cofmemail" autocomplete="off" class="layui-input" style="width:190px" lay-verify="requird">
+                            </div>
+
+                        </div>
+                        <div class="layui-inline">
+
+                            <div class="layui-input-block" style="width: 100%;margin-left:7px;margin-top: 57px;" lang="r_emailinfo" >
+
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+                    <div class="layui-form-item">
+                        <div class="layui-inline" style="margin-left:-125px">
+
+                            <label class="layui-form-label" lang="r_phone" style="width: 100%;float:none;text-align:left;margin-left: -7px;"></label><span style="float:left;margin-left:80px;margin-top:-28px" id="phoneArea">(+86)</span>
+                          
+                            <div class="layui-input-block" style="width: 100%;margin-left:7px;">
+                                <input type="text" id="Phone" name="Phone" autocomplete="off" class="layui-input" lay-verify="phone|number" style="width:190px">
+                            </div>
+                        </div>
+                        <div class="layui-inline" style="">
+                            <label class="layui-form-label" lang="r_email" style="width: 100%;float:none;text-align:left;margin-left:-9px"></label>
+                            <div class="layui-input-block" style="width: 100%;margin-left:7px;">
+                                <input type="text" name="Email" id="email" autocomplete="off" class="layui-input" style="width:190px" lay-verify="requird">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 100%;float:none;text-align:left;margin-left: -7px;" lang="r_confirmemail"></label>
+                            <div class="layui-input-block" style="width: 100%;margin-left:7px;">
+                                <input type="text" name="cofmemail" autocomplete="off" class="layui-input" style="width:190px" lay-verify="requird">
+                            </div>
+
+                        </div>
+                        <div class="layui-inline">
+
+                            <div class="layui-input-block" style="width: 100%;margin-left:7px;margin-top: 57px;" lang="r_emailinfo">
+
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+
+                
+            </div>
+            @*<div style="border-top: 1px #202a39 solid;border-bottom: 1px #202a39 solid;">
+                <div style="width:1000px;margin:0 auto;overflow:hidden;">
+                    <input type="hidden" name="IB" value="@ViewBag.RERegist" />          
+                    <div class="layui-elem-field" style="margin-top: 24px; width: 100%; float:left;clear:none;border:none;">
+                        <div class="layui-form-item f-fl" style="width:47%;clear:none;">
+                            <label class="layui-form-label" style="width: 100%; float:left;text-align:left;" lang="r_password"></label>
+                            <div class="layui-input-inline" style="width: 100%;clear:none;padding: 9px 15px;">
+                                <input type="password" id="pwd1" lay-verify="password" name="Password" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item f-fl" style="width:47%;clear:none;">
+                            <label class="layui-form-label" style="width:100%; float:left;text-align:left;" lang="r_confirmpassword"></label>
+                            <div class="layui-input-inline" style="width: 100%;padding: 9px 15px;">
+                                <input type="password" lay-verify="password" id="pwd2" name="cofmpassword" autocomplete="new-password" class="layui-input">
+                            </div>
+                        </div>
+                    </div>          
+                </div>
+            </div>*@
+            <div style="border-top: 1px #202a39 solid;border-bottom: 1px #202a39 solid;">
+                <div style="width:1000px;margin:0 auto;overflow:hidden;">
+                    @*@if (ViewBag.RERegist != "")
+                        {*@
+                        <div class="layui-elem-field " style="margin-top:24px;margin-bottom:0px;border:none;overflow:hidden">
+                            <div class="layui-form-item f-fl" style="width:47%;margin-bottom:0px;clear:none;">
+                                <label class="layui-form-label" style="width: 100%; float:left;text-align:left;" lang="r_password"></label>
+                                <div class="layui-input-inline" style="width: 100%;clear:none;padding: 9px 15px;">
+                                    <input type="password" id="pwd1" lay-verify="password" name="Password" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item f-fl" style="width:47%;margin-bottom:0px;clear:none;">
+                                <label class="layui-form-label" style="width:100%; float:left;text-align:left;" lang="r_confirmpassword"></label>
+                                <div class="layui-input-inline" style="width: 100%;padding: 9px 15px;">
+                                    <input type="password" lay-verify="password" id="pwd2" name="cofmpassword" autocomplete="new-password" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-elem-field " style="border:none">
+                            <div class="layui-field-box " style="padding-left:8px">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label" style="width: 100%;float:none;text-align:left;margin-left:-7px;" lang="introducing_broker"></label>
+                                    <div class="layui-input-inline" style="width: 100%;margin-left:7px;clear:none;">
+                                        <input type="number" name="IB" value="@ViewBag.RERegist" autocomplete="off" class="layui-input"  style="width:440px">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    @*}
+                    else
+                    {
+                        <input type="hidden" name="IB" value="@ViewBag.RERegist" />
+                        <div class="layui-elem-field" style="margin-top: 24px; width: 100%; float:left;clear:none;border:none;">
+                            <div class="layui-form-item f-fl" style="width:47%;clear:none;">
+                                <label class="layui-form-label" style="width: 100%; float:left;text-align:left;" lang="r_password"></label>
+                                <div class="layui-input-inline" style="width: 100%;clear:none;padding: 9px 15px;">
+                                    <input type="password" id="pwd1" lay-verify="password" name="Password" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item f-fl" style="width:47%;clear:none;">
+                                <label class="layui-form-label" style="width:100%; float:left;text-align:left;" lang="r_confirmpassword"></label>
+                                <div class="layui-input-inline" style="width: 100%;padding: 9px 15px;">
+                                    <input type="password" lay-verify="password" id="pwd2" name="cofmpassword" autocomplete="new-password" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    }*@
+                </div>
+            </div>
+            
+            <div style="padding-top:50px;">
+                <button type="submit" lay-submit class="layui-btn" style="width:250px; background:#329ef4;font-size:14px;" lang="open_account"></button>
+              
+            </div>
+        </form>
+    </div>
+                   
+
+                    <link href="/Plugins/common/layui/css/layui.css" rel="stylesheet" />
+                    <script src="/Plugins/common/layui/layui.js"></script>
+                    <script src="/Plugins/common/layui/lay/dest/layui.all.js"></script>
+                    <script src="~/Scripts/lang/selectlang.js"></script>
+                    <script src="~/Scripts/layverify.js"></script>
+                    <script src="~/Scripts/getarea.js"></script>
+                    @section foot
+{
+                        <script type="text/javascript">
+
+                            //$("#email").blur(function () {
+                            //    CheckEmail($("#email").val());
+                            //});
+                            //$("#cofmpassword").onclick(function () {
+                            //    $("#cofmpassword").val() = "";
+                            //});
+
+
+                            //右上角选择链接
+                            $("#msgBtn").click(function () {
+                                $(this).toggleClass("layui-btn layui-btn-primary").toggleClass("layui-btn layui-btn-normal");
+                                $("#msgBtn1").attr("class", "layui-btn layui-btn-primary");
+                            });
+                            $("#msgBtn1").click(function () {
+                                $(this).toggleClass("layui-btn layui-btn-primary").toggleClass("layui-btn layui-btn-normal");
+                                $("#msgBtn").attr("class", "layui-btn layui-btn-primary");
+                            });
+
+                            //语言加载
+                            function setlang(type) {
+                                $.ajax({
+                                    url: "/web/public/SetLang?type=" + type,
+                                    type: "post",
+                                    success: function (data) {
+                                        window.location.reload();
+                                    }
+                                });
+                            }
+
+
+
+                            layui.use(['jquery', 'form'],
+                                function () {
+                                    var form = layui.form();
+                                    form.on('select(Countrysele)',
+                                        function (agent) {
+                                            if (agent.value != 1) {
+                                                $("#catydiv").addClass("layui-hide");
+                                                $("#province").val();
+                                                $("#city").val();
+                                                $("#area").val();
+                                              
+                                               
+                                                $("#phoneArea").text(getPhoneArea(agent.value)) ; 
+                                            } else {
+                                                $("#catydiv").removeClass("layui-hide");
+                                               
+                                            }
+                                        });
+                                    //省市级联
+                                    loadProvince(form);
+
+                                });
+                            //根据国家id获取手机号码前缀
+
+                            function getPhoneArea(id) {
+                                var str = "";
+                                $.ajax({
+                                    type: 'POST',
+                                    async: false, //false是同步，true是异步
+                                    url: "/Regist/GetPhoneArea",
+                                    data: { "countryId": id },
+                                    success: function (data) {                                     
+                                        if (data.status == 1) {                                          
+                                            str += "(+" + data.data.AreaCode + ")";                                       
+                                        }
+                                    }
+                                });
+                                
+                                return str;
+                            }
+                            $("#formuser").submit(function () {
+                                if ($("#Country").val() == 1) {
+                                    var area = $("#area").val();
+                                    if ($("#area").val() == null || $("#area").val() == "" || $("#area").val() == undefined) {
+                                        layer.msg("请选择城市区县！");
+                                        return false;
+                                    }
+
+                                }
+                                var userlang = $("#lang").val();
+                                // 两次密码是否一致
+                                if ($("#pwd1").val() != $("#pwd2").val()) {
+
+                                    var msgTit = "";
+                                    if (userlang == "En") {
+                                        msgTit = "Two passwords are inconsistent";
+
+                                    } else {
+                                        msgTit = "两次密码不一致";
+                                    }
+                                    layer.msg(msgTit);
+                                    return false;
+                                }
+
+                                //密码中必须包含数字和字母
+                                if (CheckPassWord($("#pwd1").val()) == false || CheckPassWord($("#pwd2").val()) == false) {
+
+                                    var msgTit = "";
+                                    if (userlang == "En") {
+                                        msgTit = "The 6-20 password must contain numbers and letters";
+
+                                    } else {
+                                        msgTit = "6-20密码必须包含数字和字母";
+                                    }
+                                    layer.msg(msgTit);
+                                    return false;
+                                }
+
+                                adduser();
+                                return false;
+                            });
+                            function CheckPassWord(password) {
+
+                                if (password == null || password.length < 5 || password.length > 21) {
+
+                                    return false;
+                                }
+
+                                if (password.match(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/)) {
+
+                                    return true;
+                                } else {
+
+                                    return false;
+                                }
+
+                            }
+                            function adduser() {
+                                var index = layer.load(1, {
+                                    shade: [0.5, '#000'] //0.1透明度的白色背景
+                                });
+                                var userlang = $("#lang").val();
+                                var title = "";
+                                if (userlang == "En") {
+
+                                    title = "Message";
+
+                                } else {
+                                    title = "消息";
+                                }
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "/Regist/RegistUser",
+                                    data: $('#formuser').serialize(),
+                                    success: function (data) {
+                                        if (data.status == 1) {
+                                            lock = false;
+
+                                            layer.open({
+                                                title: title,
+                                                content: data.msg,
+                                                yes: function (index, layero) {
+                                                    location.href = "/Web/public/login";
+                                                    layer.close(index); //如果设定了yes回调，需进行手工关闭
+                                                    layer.closeAll("loading");
+                                                }
+                                            });
+                                        } else {
+                                            layer.open({
+                                                title: title,
+                                                content: data.msg
+                                            });
+                                            layer.closeAll("loading");
+                                        }
+                                    }
+                                });
+                            }
+
+                            function autoUserName() {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "/Regist/AutoUserName",
+                                    data: { "namecn": $("#UserNameCn").val() },
+                                    success: function (data) {
+                                        if (data.status == 1) {
+                                            $("#UserNameC").val(data.data);
+                                        }
+                                    }
+                                });
+                            }
+
+                        </script>
+                    }
+

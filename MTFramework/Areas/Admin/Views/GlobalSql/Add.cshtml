@@ -1,0 +1,93 @@
+﻿@model MT.Models.GlobalSqlModel
+@using MT.Common
+
+@{
+    ViewBag.Title = "添加";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAjaxEdit.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+@section head{
+}
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <header class="larry-personal-tit">
+            <div><a onclick="back('/Admin/@vs["controller"]/Index');"><i class="layui-icon ">&#xe603;</i><span>返回上级列表</span></a></div>
+        </header>
+        <div class="larry-personal-body clearfix ">
+            @using (Html.BeginForm())
+            {
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.SQLKey, new {@class = "layui-form-label"})
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.SQLKey)
+                        @Html.ValidationMessageFor(model => model.SQLKey)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.SQLContent, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.SQLContent)
+                        @Html.ValidationMessageFor(model => model.SQLContent)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.SqlConnection, new {@class = "layui-form-label"})
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.SqlConnection)
+                        @Html.ValidationMessageFor(model => model.SqlConnection)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.Remark, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.Remark)
+                        @Html.ValidationMessageFor(model => model.Remark)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="button" onclick="editmodeluser()" value="保存" class="layui-btn" />
+                    </div>
+                </div>
+                <input type="hidden" name="CreateMan" value="@(MTConfig.CurrentUserID)" />
+                <input type="hidden" name="CreateTime" value="@(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))" />
+                <dl class="f-cb">
+                    <dt></dt>
+                    <dd>
+                    </dd>
+                </dl>
+            }
+        </div>
+    </div>
+</section>
+<script>
+
+    function editmodeluser() {
+        var url = '/Admin/@vs["controller"]/Index';
+        $.ajax({
+            url: "/Admin/@vs["controller"]/Add",
+            type: "POST",
+            data: $("form").serialize(),
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.open({
+                        content: "保存成功",
+                        yes: function (index, layero) {
+                            location.href = url;
+                            layer.close(index); //如果设定了yes回调，需进行手工关闭
+                        }
+                    });
+
+                } else {
+                    layer.open({
+                        content: data.msg,
+                        yes: function (index, layero) {
+                            layer.close(index); //如果设定了yes回调，需进行手工关闭
+                        }
+                    });
+                }
+            }
+        });
+    }
+</script>

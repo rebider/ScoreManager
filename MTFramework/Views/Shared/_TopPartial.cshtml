@@ -1,0 +1,51 @@
+﻿@using MT.Common
+@using MT.Models
+
+@if (MTConfig.CurrentUser == null || MTConfig.CurrentXUser == null)
+{
+    <div class="m-top f-cb">
+        <div class="m-content">
+            <span class="a">Hi ，</span><span class="a">欢迎来啪啦网！
+            </span><span class="a4">|</span><a class="a" href="/Login/Index?returnUrl=@HttpContext.Current.Request.Url.AbsoluteUri">登录</a><span class="a4">|</span> <a
+                class="a2" href="/Register/Index?returnUrl=@HttpContext.Current.Request.Url.AbsoluteUri">注册</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="m-top f-cb">
+        <div class="m-content">
+            <span class="a">Hi ，</span><span class="a3">@MTConfig.CurrentUser.Name</span>
+            <span class="a">欢迎来啪啦网！</span>
+            <span class="a4">|</span>
+            @if (MTConfig.CurrentUser.UserType == MTConfig.UserType.Administrator)
+            {
+                <a class="a" href="/Admin/Public/Index">我的啪啦</a>
+            }
+            else
+            {
+                if (MTConfig.CurrentXUser != null)
+                {
+                    if (MTConfig.CurrentXUser.UserType == MTConfig.UserType.NormalUser)
+                    {
+                        <a class="a" href="/My/Index/Index">我的啪啦</a>
+                    }
+                    else if (MTConfig.CurrentXUser.UserType == MTConfig.UserType.CompanyUser)
+                    {
+                        <a class="a" href="/Admin/Public/Index">我的啪啦</a>
+                    }
+                    else if (MTConfig.CurrentXUser.UserType == MTConfig.UserType.Administrator)
+                    {
+                        <a class="a" href="/Admin/Public/Index">我的啪啦</a>
+                    }
+                    else
+                    {
+                        <a class="a" href="/My/Index/Index">我的啪啦</a>
+                    }
+                }
+            }
+            <span class="a4">|</span> <a
+                class="a2" href="/Logout/Index?returnUrl=@HttpContext.Current.Request.Url.AbsoluteUri">退出</a>
+        </div>
+    </div>
+}

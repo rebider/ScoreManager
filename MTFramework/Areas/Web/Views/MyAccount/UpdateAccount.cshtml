@@ -1,0 +1,115 @@
+﻿@model MT.Models.AccountModel
+@using MT.Common
+@using MT.Common.Helper
+@using MT.Models
+@{
+    ViewBag.Title = "编辑";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+
+}
+
+@section head{
+}
+
+<section class="layui-larry-box" style="margin-top:20px;">
+    <div class="larry-personal">
+
+        <div class="larry-personal-body clearfix " style="margin-left:4%;">
+            <form method="post" class="layui-form col-lg-5" id="form">
+                <input type="hidden" name="AccountID" value="@Model.AccountID" />
+                <div class="layui-form-item">
+                    <label class="layui-form-label" lang="trading_accountname" style="width:120px;"></label>
+                    <div class="layui-input-inline">
+                        <input type="text" readonly name="NowMt4Name" style="background-color:#dbd5d5" value="@Model.Mt4Name" class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" lang="trading_accountNewname" style="width:120px;"></label>
+                    <div class="layui-input-inline">
+                        <input type="text"  name="Mt4Name"  value="" class="layui-input" />
+
+                    </div>
+
+                </div>
+                <div class="layui-form-item" style="margin-bottom:2%">
+                    <div class="layui-input-block">
+                        <input type="button" onclick="sureChange();" lay-submit btn-lang="save" class="layui-btn" />
+                        <input type="button" onclick="closelayer();" lay-submit btn-lang="close" class="layui-btn layui-btn-danger" />
+                        <input type="hidden" id="saving" btn-lang="saving" />
+                        <input type="hidden" id="confirm_change" btn-lang="confirm_change" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+@section foot
+{
+    <script>
+
+        //修改用户名
+        function sureChange() {
+            layer.confirm($("#confirm_change").val(),
+                { icon: 3, title: '修改Mt4账户名' },
+                function (index) {
+                    var i;
+                    $.ajax({
+                        url: "/Web/MyAccount/UpdateAccount",
+                        type: "POST",
+                        data: $("#form").serialize(),
+                        success: function(data) {
+                            if (data.status == 1) {
+                                //保存成功
+                                layer.open({
+                                    content: data.msg,
+                                    yes: function (layero, index) {
+                                        layer.load();
+                                        parent.location.reload();
+                                    }
+                                });
+
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        beforeSend: function () {
+                            i = loading();
+                        },
+                        error: function (e, jqxhr, settings, exception) {
+                            loadOver(i);
+                        }
+                    });
+                });
+        }
+
+        //关闭弹窗
+        function closelayer() {
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index); //再执行关闭
+        }
+
+        //正在加载
+        function loading() {
+            return layer.msg($("#saving").val(), { icon: 16, shade: [0.5, '#f5f5f5'], scrollbar: false, offset: '', time: 100000 });
+        }
+
+        //加载完毕
+        function loadOver(index) {
+            layer.close(index);
+        }
+
+        layui.use('form',
+            function () {
+            });
+
+        $("#form")
+            .submit(function () {
+                editmodel("");
+                return false;
+            });
+
+    </script>
+}
+
+

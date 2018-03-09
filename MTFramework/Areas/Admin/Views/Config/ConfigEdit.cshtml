@@ -1,0 +1,87 @@
+﻿
+@model MT.Models.ConfigModel
+@using MT.Common
+
+@{
+    ViewBag.Title = "编辑";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAjaxEdit.cshtml";
+	RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+}
+
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <header class="larry-personal-tit">
+            <div><a onclick="back();"><i class="layui-icon ">&#xe603;</i><span>返回上级列表</span></a></div>
+        </header>
+        <div class="larry-personal-body clearfix ">
+   <form action="/Admin/@vs["controller"].ToString()/@vs["action"].ToString()" method="post" class="layui-form col-lg-5"  id="form">
+        <input type="hidden"  name="ID" id="ID" value="@Model.ID" />
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">配置名</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="ConfigKey" id="ConfigKey"  placeholder="配置名" value="@Model.ConfigKey"/>
+            </div>
+        </div>
+        
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">配置值</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="ConfigData" id="ConfigData"  placeholder="配置值" value="@Model.ConfigData"/>
+            </div>
+        </div>
+        
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">配置类型</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="ConfigType" id="ConfigType"  placeholder="配置类型" value="@Model.ConfigType"/>
+            </div>
+        </div>
+        
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">是否废弃 1：是； 0 ：否（默认0）</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="DelFlag" id="DelFlag"  placeholder="是否废弃 1：是； 0 ：否（默认0）" value="@Model.DelFlag"/>
+            </div>
+        </div>
+        
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">创建人</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="CreateMan" id="CreateMan"  placeholder="创建人" value="@Model.CreateMan"/>
+            </div>
+        </div>
+        
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">创建时间</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="CreateTime" id="CreateTime"  placeholder="创建时间" value="@Model.CreateTime"/>
+            </div>
+        </div>
+        
+       <div class="layui-form-item">
+            <div class="layui-input-block">
+                <input type="submit"  lay-submit value="保存" class="layui-btn" />
+            </div>
+        </div>
+    </form>
+	</div>
+</div>
+</section>
+@section foot
+{
+  <script>
+    layui.use('form', function () {
+    });
+
+    $("#form").submit(function () {
+        editmodel("");
+        return false;
+    });
+</script>
+}
+
+

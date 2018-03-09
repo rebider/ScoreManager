@@ -1,0 +1,22 @@
+.fcb{clear: both;}
+body{background-color: #f2f2f2;}
+.head{width:100%;height: 88px;background-color: #303032;}
+.head .content{margin: 0 auto;width: 1000px;color: #ffffff;}
+.head .content .left{float: left;font-weight: bold!important;font-size: 36px;padding-top: 17px;}
+.head .content .right{float: right;font-size: 16px;padding-top: 35px;}
+.neck{width:100%;height: 82px;background-color: #f2f2f2;}
+.neck .content{margin: 0 auto;width: 1000px;color: #ffffff;position: relative;}
+.neck .content .left{color: #8c26c7;float: left;font-family: Aparajita;}
+.neck .content .left h2{font-size: 36px;position: absolute;top: 7px;left: 30px;}
+.neck .content .left p{font-size: 14px;position: absolute;top: 50px;}
+.neck .content .right{color: #333333;width: 433px;padding: 0 0 0 500px;position: relative;}
+.neck .content .point1 .login_btn {position: absolute;left:696px;top: 21px;  margin: 0 auto;border-radius: 5px;display: block;width: 131px;height: 40px;line-height: 25px;text-align: center;font-size: 16px;font-family: Microsoft YaHei;background-color: #ffffff;border: 1px solid #808080;cursor: pointer;outline:none;}
+.neck .content .point2 .login_btn {position: absolute;left:855px;top: 21px; margin: 0 auto;border-radius: 5px;display: block;width: 131px;height: 40px;line-height: 25px;text-align: center;font-size: 16px;font-family: Microsoft YaHei;background-color: #ffffff;border: 1px solid #808080;cursor: pointer;outline:none;}
+.neck .content .right p{font-size: 16px;position: absolute;top: 30px;left: 555px;font-family: 微软雅黑 ;}
+.next{width:100%;height: 70px;background-color: #b487cf;}
+.soma{background-color: #f2f2f2;}
+.soma .content{margin: 0 auto;width: 1000px;}
+.soma .content1{margin: 30px 0 30px 0;border: 1px solid #808080;height: 550px;color: #333333;}
+.soma .content2{margin: 25px 22px 20px 18px;}
+.soma .content2 h2{font-size: 18px;font-weight: bolder;}
+.foot{width: 100%;height: 70px;background-color: #e6e6e6;}

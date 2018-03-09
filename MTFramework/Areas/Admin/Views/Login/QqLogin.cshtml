@@ -1,0 +1,23 @@
+﻿@using MT.Common
+@{
+    ViewBag.Title = "QQ联合登录";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta property="qc:admins" content="204422114260117516375" />
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="@MTConfig.AppId" data-redirecturi="www.macmagnus.org" charset="utf-8"></script>
+</head>
+    <body>
+        正在跳转，请稍后...
+        <script type="text/javascript">
+            if (QC.Login.check()) {
+                QC.Login.getMe(function (openId, accessToken) {
+                    location.href = '@ViewBag.redirectUrl?access_token=' + accessToken + '&openid=' + openId;
+                });
+            }
+        </script>
+    </body>
+</html>

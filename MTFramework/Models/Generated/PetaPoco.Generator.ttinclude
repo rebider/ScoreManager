@@ -1,0 +1,78 @@
+<#
+if (string.IsNullOrEmpty(Namespace)) Namespace=ConnectionStringName;
+if (string.IsNullOrEmpty(RepoName) && !string.IsNullOrEmpty(ConnectionStringName)) RepoName=ConnectionStringName + "DB";
+if (string.IsNullOrEmpty(Namespace)) Namespace="PetaPoco";
+if (string.IsNullOrEmpty(RepoName)) RepoName="PetaPocoDB";
+#>
+using System;
+using System.Collections.Generic;
+using PetaPoco;
+
+namespace <#=Namespace #>
+{
+
+<# if (GeneratePocos) { #>
+<#
+foreach(Table tbl in from t in tables where !t.Ignore select t)
+{
+#>
+    
+	[TableName("<#=tbl.Name#>")]
+<# if (tbl.PK!=null && tbl.PK.IsAutoIncrement) { #>
+<# if (tbl.SequenceName==null) { #>
+	[PrimaryKey("<#=tbl.PK.Name#>")]
+<# } else { #>
+	[PrimaryKey("<#=tbl.PK.Name#>", sequenceName="<#=tbl.SequenceName#>")]
+<# } #>
+<# } #>
+<# if (tbl.PK!=null && !tbl.PK.IsAutoIncrement) { #>
+	[PrimaryKey("<#=tbl.PK.Name#>", autoIncrement=false)]
+<# } #>
+	[ExplicitColumns]
+    public partial class <#=ConvertTableName(tbl.ClassName)#>Model <# if (GenerateOperations) { #>: Record<<#=ConvertTableName(tbl.ClassName)#>Model> <# } #> 
+    {
+<#
+foreach(Column col in from c in tbl.Columns where !c.Ignore select c)
+{
+		// Column bindings
+#>
+<# if (TrackModifiedColumns) { #>
+<# if (col.Name!=col.PropertyName) { #>
+        [Column("<#=col.Name#>")] 
+<# } else { #>
+        [Column("<#=col.Name#>")] 
+<# } #>
+		public <#=col.PropertyType #><#=CheckNullable(col)#> <#=col.PropertyName #> 
+		{ 
+			get
+			{
+				return _<#=col.PropertyName #>;
+			}
+			set
+			{
+				_<#=col.PropertyName #> = value;
+				MarkColumnModified("<#=col.Name#>");
+			}
+		}
+		<#=col.PropertyType #> _<#=ConvertColumnName(col.PropertyName) #>;
+
+<# } else { #>
+<# if (col.Name!=col.PropertyName) { #>
+<# if(tbl.PK.Name==col.Name||col.Name=="Create_Man"||col.Name=="Modify_Man" || col.Name == "CREATE_MAN" || col.Name == "MODIFY_MAN"){ #>
+		[Column("<#=col.Name#>")] public string <#=ConvertColumnName(col.PropertyName) #> { get; set; }
+<#}else{#>
+		[Column("<#=col.Name#>")] public <#=col.PropertyType #> <#=ConvertColumnName(col.PropertyName) #> { get; set; }
+<#}#>
+<# } else { #>
+<# if(tbl.PK.Name==col.Name||col.Name=="Create_Man"||col.Name=="Modify_Man" || col.Name == "CREATE_MAN" || col.Name == "MODIFY_MAN"){ #>
+		[Column("<#=col.Name#>")] public string <#=ConvertColumnName(col.PropertyName) #> { get; set; }
+<#}else{#>
+		[Column("<#=col.Name#>")] public <#=col.PropertyType #> <#=ConvertColumnName(col.PropertyName) #> { get; set; }
+<#}#>
+<# } #>
+<# } #>
+<# } #>
+	}
+<# } #>
+<# } #>
+}

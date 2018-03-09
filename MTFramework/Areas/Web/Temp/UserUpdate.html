@@ -1,0 +1,45 @@
+﻿
+    <div ng-controller="userupdate">
+        <div ng-if="isShow">sfdasfdasfdasfdasfdasfd</div>
+        <table>
+            <thead>
+                <tr>
+                    <td>UserID</td>
+                    <td>UserName</td>
+                    <td>UserNameCn</td>
+                    <td>Birthday</td>
+                    <td>AccountCount</td>
+                    <td>UserMoney</td>
+                    <td>CardNo</td>
+                    <td>Country</td>
+                    <td>Lang</td>
+                    <td>Email</td>
+                    <td>Phone</td>
+                    <td>Address</td>
+                    <td>IdCard</td>
+                    <td>VerifyStatus</td>
+                </tr>
+            </thead>
+            <tr>
+                <td>{{userInfo.UserID}}</td>
+                <td>{{userInfo.UserName}}</td>
+                <td>{{userInfo.UserNameCn}}</td>
+                <td>{{userInfo.Birthday | date:'yyyy-MM-dd'}}</td>
+                <td>{{userInfo.AccountCount}}</td>
+                <td>{{userInfo.UserMoney}}</td>
+                <td>{{userInfo.CardNo}}</td>
+                <td>{{userInfo.Country}}</td>
+                <td>{{userInfo.Lang}}</td>
+                <td>{{userInfo.Email}}</td>
+                <td>{{userInfo.Phone}}</td>
+                <td>{{userInfo.Address}}</td>
+                <td>{{userInfo.IDcard}}</td>
+                <td>{{userInfo.VerifyStatus}}</td>
+            </tr>
+        </table>
+        <div>邮箱 <input type="text" ng-model="Email" /></div>
+        <div>电话 <input type="text" ng-model="Phone" /></div>
+        <div>银行卡号 <input type="text" ng-model="CardNo" /></div>
+
+        <input type="button" ng-click="updateuserinfo()" value="修改update" />
+    </div>

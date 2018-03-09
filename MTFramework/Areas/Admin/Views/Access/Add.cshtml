@@ -1,0 +1,77 @@
+﻿
+@model MT.Models.AccessModel
+
+@{
+    ViewBag.Title = "添加";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutEdit.cshtml";
+	RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+}
+
+<div class="mainContent">
+	@Html.RenderNavHtml()
+  <div class="clear02"></div>
+	<div class="mainContent">
+			<div class="mainRighTitle textAlignC fontWeight"></div>
+	<div class="clear01"></div>
+	<div class="clear02"></div>
+@using (Html.BeginForm()) {
+	<table border="0" class="searchTable borderNone">
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.Id):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.Id)
+            @Html.ValidationMessageFor(model => model.Id)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.RoleId):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.RoleId)
+            @Html.ValidationMessageFor(model => model.RoleId)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.NodeId):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.NodeId)
+            @Html.ValidationMessageFor(model => model.NodeId)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.DelFlag):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.DelFlag)
+            @Html.ValidationMessageFor(model => model.DelFlag)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.CreateMan):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.CreateMan)
+            @Html.ValidationMessageFor(model => model.CreateMan)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.CreateTime):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.CreateTime)
+            @Html.ValidationMessageFor(model => model.CreateTime)
+			</td>
+		</tr>
+        <tr>
+          <td></td>
+		  <td>
+            <input type="submit" value="保存" class="botton" />
+			<input type="button" value="返回" class="botton" onclick="location.href='/Admin/@vs["controller"].ToString()/Index';" />
+		  </td>
+        </tr>
+	</table>
+}
+	</div>
+</div>
+
+

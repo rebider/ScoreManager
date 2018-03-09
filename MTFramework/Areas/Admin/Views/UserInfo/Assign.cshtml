@@ -1,0 +1,171 @@
+﻿@model MT.Models.UserInfoModel
+@using MT.Common
+@using MT.Common.Helper
+@using MT.Models
+
+@{
+    ViewBag.Title = "编辑";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAjaxEdit.cshtml";
+}
+
+
+@section head{
+}
+
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <div class="larry-personal-body clearfix ">
+            <form action="/Admin/Userinfo/Assign" method="post" class="layui-form col-lg-5" id="form">
+                <input type="hidden" name="UserID" id="UserID" value="@Model.UserID"/>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">职位</label>
+                    <div class="layui-input-inline">
+                        @Html.Raw(DropDownListHelper.GetDropDownList("DDL_GETROLELIST", "", " name='Role' id='Role'  lay-filter='Role' ", "", ""))
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户</label>
+                    <div class="layui-input-inline">
+                        <select id="User">
+                            <option>请选择</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="button" onclick="saveagent()" value="保存" class="layui-btn"/>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</section>
+@section foot
+{
+    <script>
+        @*function saveagent() {
+            if (lock) return;
+            lock = true;
+            $.ajax({
+                url: "/Admin/@vs["controller"]/AgentManager",
+                type: "POST",
+                data: $("form").serialize(),
+                success: function(data) {
+                    lock = false;
+                    if (data.status == 1) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.location.reload();
+                        parent.layer.close(index); //再执行关闭
+                    }
+                    else {
+                        layer.msg(data.msg);
+                    }
+                },
+                error: function() {
+                    lock = false;
+                }
+            });
+        }
+
+
+        $(function() {
+            var id = $("#Agent").val();
+            if (id != "" && id != null && id != "undefined") {
+                $.ajax({
+                    url: "/Admin/UserInfo/GetAgentRenark?id=" + id,
+                    data: "",
+                    type: "GET",
+                    success: function(data) {
+                        $("#Remark").html(data.msg);
+                    }
+                });
+            } else {
+                $("#Remark").html("111111111");
+            }
+
+
+            $.ajax({
+                url: "/Admin/@vs["controller"]/GetAgentTypeList",
+                data: { "AgentLevelID": $("#AgentLevelID").val() },
+                type: "post",
+                success: function(data) {
+                    console.log(data);
+                    //拼写option
+                    var strhtml = "";
+                    $.each(data, function(index, content) {
+                        if (data[index].AgentID == $("#AgentUserID").val()) {
+                            strhtml += "<option value='" + data[index].AgentID + "' selected='selected'>" + data[index].AgentName + "</option>";
+                        } else {
+                            strhtml += "<option value='" + data[index].AgentID + "'>" + data[index].AgentName + "</option>";
+                        }
+
+                    });
+                    //初始化省数据
+                    $("#AgentType").empty().append(strhtml);
+                    layui.form().render();
+                }
+            });
+        });*@
+
+
+        //代理名称下拉选监听
+        layui.use(['jquery', 'form'],
+            function() {
+                var form = layui.form();
+                form.on('select(Role)',
+                    function(data) {
+                        //获取部门下拉选
+                        $.ajax({
+                            url: "/Admin/UserInfo/GetUserList",
+                            data: { "RoleId": data.value },
+                            type: "post",
+                            success: function (data) {
+                                //拼写option
+                                var strhtml = "";
+                                if (data.value=="") {
+                                    strhtml += "<option value='0' >请选择类型</option>";
+                                } else {
+                                    if (data.length == 0) {
+                                        strhtml = "<option>无用户</option>";
+                                    } else {
+                                        $.each(data, function (index, content) {
+                                            strhtml += "<option value='" + data[index].ID + "'>" + data[index].NickName + "</option>";
+                                        });
+                                    }
+                                }
+                               
+                                //初始化省数据
+                                $("#User").empty().append(strhtml);
+                                layui.form().render();
+                            }
+                        });
+                    });
+            });
+
+        //layui.use('form', function () {
+        //    var form = layui.form();
+        //    form.on('select(Agent)', function (agent) {
+        //        if (agent.value != "" && agent.value != null && agent.value != "undefined") {
+        //            $.ajax({
+        //                url: "/Admin/UserInfo/GetAgentRenark?id=" + agent.value,
+        //                data: "",
+        //                type: "GET",
+        //                success: function (data) {
+        //                    $("#Remark").html(data.msg);
+        //                }
+        //            });
+        //        } else {
+        //            $("#Remark").html("111111111");
+        //        }
+        //    });
+        //});
+
+        $("#form").submit(function() {
+            editmodel("");
+            return false;
+        });
+    </script>
+}
+
+

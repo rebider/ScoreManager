@@ -1,0 +1,110 @@
+﻿@model  MT.Areas.Admin.ViewModels.UserProductViewModel
+@using MT.Common
+@using MT.Common.Helper
+@{
+    ViewBag.Title = "用户添加";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAjaxEdit.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <header class="larry-personal-tit">
+            <div><a onclick="back('/Admin/@vs["controller"]/Index');"><i class="layui-icon ">&#xe603;</i><span>返回上级列表</span></a></div>
+        </header>
+        <div class="larry-personal-body clearfix ">
+            @using (Html.BeginForm(vs["action"].ToString(), vs["controller"].ToString(), FormMethod.Post, new { @class = "layui-form col-lg-5" }))
+            {
+
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.User.Name, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.User.Name)
+                        @Html.ValidationMessageFor(model => model.User.Name)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.User.NickName, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.User.NickName)
+                        @Html.ValidationMessageFor(model => model.User.NickName)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.User.Password, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.User.Password)
+                        @Html.ValidationMessageFor(model => model.User.Password)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.User.UserType, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        @Html.Raw(DropDownListHelper.GetDropDownList("DDL_USER_TYPE", "", " name='User.UserType' id='UserType'  lay-filter='Countrysele' ", "", Model.User == null ? "" : Model.User.UserType + ""))
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所属角色</label>
+                    <div class="layui-input-block">
+                        @for (int i = 0; i < Model.RoleList.Count; i++)
+                        {
+                            int count = 0;
+                            if (Model.UserRoleList != null)
+                            {
+
+
+                                foreach (var v in Model.UserRoleList)
+                                {
+                                    if (Model.RoleList[i].ID == v.RoleID + "")
+                                    {
+                                        count++;
+                                        <div class="f-fl marl20">
+                                            <div><input type="checkbox" value="@Model.RoleList[i].ID" name="roleIds" checked="checked" title="@Model.RoleList[i].Name"></div>
+                                        </div>
+                                    }
+                                    break;
+                                }
+                            }
+                            if (count == 0)
+                            {
+                                <div class="f-fl marl20">
+                                    <input type="checkbox" value="@Model.RoleList[i].ID" name="roleIds" title="@Model.RoleList[i].Name">
+                                </div>
+
+                            }
+
+                        }
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="button" onclick="editmodeluser()" value="保存" class="layui-btn" />
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.User.ID)
+            }
+        </div>
+    </div>
+</section>
+<script>
+
+    function editmodeluser() {
+        var url = '/Admin/@vs["controller"]/Index';
+        $.ajax({
+            url: "/Admin/@vs["controller"]/Edit",
+            type: "POST",
+            data: $("form").serialize(),
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.open({
+                        content: "保存成功",
+                        yes: function (index, layero) {
+                            location.href = url;
+                            layer.close(index); //如果设定了yes回调，需进行手工关闭
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+</script>

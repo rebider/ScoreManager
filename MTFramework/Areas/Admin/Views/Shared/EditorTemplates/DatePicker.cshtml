@@ -1,0 +1,25 @@
+﻿@{
+    bool editFlag = false;
+    if (ViewBag.EditFlag != null && ViewBag.EditFlag == true)
+    {
+        editFlag = true;
+    }
+
+    string className = "Wdate u-iptm";
+    if (editFlag)
+    {
+        className = "Wdate u-iptl";
+    }
+    
+    FieldTemplateMetadata metaData = ViewData.ModelMetadata as FieldTemplateMetadata;
+    System.ComponentModel.DataAnnotations.UIHintAttribute attribute = (metaData != null) ? metaData.Attributes.OfType<System.ComponentModel.DataAnnotations.UIHintAttribute>().SingleOrDefault() : null;
+
+    if (attribute != null)
+    {
+    @Html.TextBoxFor(Model => Model, new { onclick = attribute.ControlParameters.Values.FirstOrDefault(), @class = className })
+    }
+    else
+    {
+    @Html.DisplayForModel()
+    }
+}

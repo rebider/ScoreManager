@@ -1,0 +1,33 @@
+﻿@using MT.Common
+@using MT.Models
+@{
+    List<HotWordModel> hotWordList = HotWordModel.Fetch(" where del_flag = 0 order by sort_no desc ");
+    List<AreaModel> areaList = AreaModel.Fetch("where del_flag = 0 order by sort_no desc");
+}
+<div class="m-content f-cb">
+    <div class="m-logo">
+        <img src="@ResourceHelper.CreateThemesImgUrl("logo.png")" />
+    </div>
+    <div class="m-search">
+        <form id="searchForm" action="/Search/Index" method="GET">
+            <div class="f-fl mart10 marr10">
+                <select name="area">
+                    @foreach (var item in areaList)
+                    {
+                        <option value="@item.ID">@item.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="m-searchborder">
+                
+                <input type="text" class="keyword" name="keyword" autocomplete="off" placeholder="输入关键字" />
+                @foreach (var item in hotWordList)
+                {
+                    <a class="hotword" href="/Search/Index?keyword=@item.Name">@item.Name</a>
+                }
+            </div>
+            <a class="submit" onclick="$('#searchForm').submit();"><i class="icobg ico-search"></i></a>
+            @*<a class="highsearch" href="/Search/Index">高级搜索</a>*@
+        </form>
+    </div>
+</div>

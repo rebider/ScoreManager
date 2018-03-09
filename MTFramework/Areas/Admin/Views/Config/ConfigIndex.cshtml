@@ -1,0 +1,105 @@
+﻿@using MT.Models
+@using MT.Common
+@model PetaPoco.Page<ConfigModel>
+
+@{
+    ViewBag.Title = "列表";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+	RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+<script type="text/javascript">
+    $(document).ready(function () {
+        BindCheckAll();
+    });
+</script>
+}
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <div class="">
+            <blockquote class="layui-elem-quote mylog-info-tit">
+                <div class="layui-form-item ">
+                      <form action="/Admin/@vs["controller"].ToString()/@vs["action"].ToString()" method="get" class="layui-form ">
+                           <div class="layui-inline">
+                                 <input type="text" class="layui-input"   placeholder="配置名"  name="Item.ConfigKey" id="Item_ConfigKey" value="@(Model.Item == null ? "" : Model.Item.ConfigKey + "")"/>
+                           </div>
+                           <div class="layui-inline">
+                                 <input type="text" class="layui-input"   placeholder="配置值"  name="Item.ConfigData" id="Item_ConfigData" value="@(Model.Item == null ? "" : Model.Item.ConfigData + "")"/>
+                           </div>
+                           <div class="layui-inline">
+                                 <input type="text" class="layui-input"   placeholder="配置类型"  name="Item.ConfigType" id="Item_ConfigType" value="@(Model.Item == null ? "" : Model.Item.ConfigType + "")"/>
+                           </div>
+                           <div class="layui-inline">
+                                 <button type="submit"class="layui-btn "> 查询</button>
+                           </div>
+                          @if (Html.IsAuth("Admin", vs["controller"].ToString(), "ConfigEdit"))
+                        {
+                           <div class="layui-inline">
+                                    <button type="button" class="layui-btn  layui-btn-normal" onclick="goAdd()">添加</button>
+                           </div>
+                        }
+                     
+                       
+                     </form>
+                 </div>
+            </blockquote>
+        </div>
+    <div class="larry-personal-body clearfix">
+            <table border="0" class="layui-table">
+                <tr>
+                    <th>
+                        @Html.LabelFor(m=>m.Item.ConfigKey)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m=>m.Item.ConfigData)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m=>m.Item.ConfigType)
+                    </th>
+
+            		<th>操作</th>
+                </tr>
+            @if(Model.Items.Count == 0){
+            	<tr>
+            		<td colspan="8">@MTConfig.ListNoData</td>
+            	</tr>
+            }
+            @foreach (var item in Model.Items) {
+                <tr>
+                    <td>
+                        @item.ConfigKey
+                    </td>
+                    <td>
+                        @item.ConfigData
+                    </td>
+                    <td>
+                        @item.ConfigType
+                    </td>
+               
+                    <td>
+                      @if (Html.IsAuth("Admin", vs["controller"].ToString(), "ConfigEdit"))
+                    {
+                    <a href="/Admin/@(vs["controller"])/ConfigEdit/@item.ID" class="layui-btn layui-btn-small layui-btn-normal">编辑</a>
+                    }
+                        @if (Html.IsAuth("Admin", vs["controller"].ToString(), "Delete"))
+                    {
+                    <a onclick="deletemodel('/Admin/@(vs["controller"])/Delete/@item.ID')" class="layui-btn layui-btn-small layui-btn-danger" >删除</a>
+                     }
+                    </td>
+                </tr>
+            }
+
+            </table>
+    
+           <div class="pageboder"> @Html.RenderPage(Model, "Admin") </div>
+       </div>
+    </div>
+</section>
+@section foot{
+<script type="text/javascript">
+
+</script>
+}
+

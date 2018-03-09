@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html ng-app="agentinfo">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>代理专区</title>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<div ng-controller="getacclist">
+    <table>
+        <tr>
+            <td>账号</td>
+            <td>交易账号</td>
+            <td>账号性质</td>
+            <td>交易笔数</td>
+            <td>成交量</td>
+            <td>余额</td>
+        </tr>
+        <tr ng-repeat="item in acclist">
+            <td>{{item.UserName}}</td>
+            <td>{{item.Mt4Name}}</td>
+            <td>{{item.TypeName}}</td>
+            <td>{{item.TradeHands}}</td>
+            <td>{{item.TradeTimes}}</td>
+            <td>{{item.Balance}}</td>
+        </tr>
+    </table>
+</div>
+<div ng-controller="getagenturl">
+    我的代理链接：<input ng-model="agenturl"/>
+    <div>
+        <img ng-src="../../../Upload/{{filename}}" style="width:200px;height:200px;">
+        <input ng-model="filename"/>
+    </div>
+    <input type="button" value="生成二维码" ng-click="showcode()" />
+</div>
+
+</body>
+</html>
+<script src="../../../Plugins/angular-1.5.5/angular.js"></script>
+<script src="../../../Scripts/Controller/AgentInfoModel.js"></script>

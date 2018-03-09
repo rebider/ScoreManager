@@ -1,0 +1,36 @@
+﻿@using MT.Common
+@model MT.Models.UserModel
+@{
+    ViewBag.Title = "添加";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutEdit.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+@section head{
+}
+<div class="m-content">
+    <div class="m-form f-cb">
+        @Html.RenderNavHtml()
+        @using (Html.BeginForm(actionName:"UpdatePas",controllerName:"User"))
+        {
+            <dl class="f-cb">
+                <dt>当前密码:</dt>
+                <dd>
+                     <input type="password" name="pass" class="u-iptl" />
+                </dd>
+                <dt>新密码:</dt>
+                <dd>
+                    <input type="password" name="pass1"  id ="pass1"  class="u-iptl"/>
+                </dd>
+                <dt>确认新密码:</dt>
+                <dd>
+                <input type="password" name="pass2" id="pass2"   class="u-iptl"/>
+                </dd>
+                <dt></dt>
+                <dd>
+                    <input type="submit" value="保存" class="u-btnblue"  />
+                </dd>
+            </dl>
+        }
+    </div>
+</div>
+

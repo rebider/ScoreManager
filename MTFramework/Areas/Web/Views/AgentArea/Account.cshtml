@@ -1,0 +1,99 @@
+﻿@using MT.Models
+@using MT.Common
+@using MT.Common.Helper
+@model List<AccountModel>
+
+
+@{
+    ViewBag.Title = "代理专区";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+<style>
+    html, body {
+        background-color:#16202f
+    }
+    .layui-table ,
+    .layui-table thead tr{
+        background-color:#1c283b;
+    }
+     .layui-table thead tr th {
+        background-color:transparent
+    }
+    .layui-table tr {
+        transition:none;
+        -webkit-transition:none;
+    }
+    .layui-table thead tr th:first-child,
+    .layui-table thead tr th:last-child,
+    .layui-table tr td:first-child,
+    .layui-table tr td:last-child{
+       border-left:none;
+    }
+    .layui-table tr:hover th,
+    .layui-table tr:hover td {
+        background-color:#1b2638
+    }
+    .layui-table th,
+    .layui-table td {
+        padding-left:20px;
+        border:1px solid #232f41;
+        color:#cad4de;
+    }
+</style>
+<section class="layui-larry-box" style="padding: 30px 24px 0px 14px;background-color:#16202f">
+    <div class="larry-personal">
+        <div class="larry-personal-body clearfix " style="margin: 0px;">
+            <input type="hidden" value="@(string.IsNullOrEmpty(ViewBag.startime) == true ? "" : ViewBag.startime)" id="startime"/>
+            <input type="hidden" value="@(string.IsNullOrEmpty(ViewBag.endtime) == true ? "" : ViewBag.endtime)" id="endtime"/>
+            <fieldset class="layui-elem-field layui-field-title" style="padding: 0px 0px 28px 0px; margin: 0px; border: none;clear: both;">
+                    <legend  style="padding:0px; margin:0px; font-size: 16px; color: #cad4de">@ViewBag.username</legend>
+                </fieldset>
+            <table class="layui-table" style="box-shadow:0px 1px 3px 0px #1c283b">
+                <thead>
+                <tr>
+                    <th lang="mt4_Account"></th>
+                    <th lang="golden"></th>
+                    <th lang="withdraw"></th>
+                    <th lang="balance"></th>
+                    <th lang="free_margin"></th>
+                    <th lang="equity"></th>
+                    <th lang="pro_money"></th>
+                    <th lang="operate"></th>
+                </tr>
+                </thead>
+                <tbody>
+                @if (Model.Count == 0)
+                {
+                    <tr><td colspan="8"></td></tr>
+                }
+                else
+                {
+                     foreach (var item in Model)
+                     {
+                    <tr>
+                        <td>@item.Account</td>
+                        <td>@item.InMoney</td>
+                        <td>@item.OutMoney</td>
+                        <td>@item.Balance</td>
+                        <td>@item.Margin</td>
+                        <td>@item.Equity</td>
+                        <td>@item.Profit</td>
+                        <td><a href="javascript:void(0)" onclick="orderdetail(@item.Account)" class="layui-btn layui-btn-small layui-btn-danger" lang="trade_record"></a></td>
+                    </tr>
+                     }
+                }
+               
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<script>
+    //交易记录详情
+    function orderdetail(account) {
+        var startime = $("#startime").val();
+        var endtime = $("#endtime").val();
+        location.href = "/Web/AgentArea/TradeOrder?account="+account+"&&startime="+startime+"&&endtime="+endtime;
+    }
+</script>

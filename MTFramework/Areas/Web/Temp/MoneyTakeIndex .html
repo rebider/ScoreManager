@@ -1,0 +1,78 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link href="../../../Styles/MoneyTakeIndex.css" rel="stylesheet" />
+    <link href="../../../Styles/common.css" rel="stylesheet" />
+    <link href="../../../Plugins/common/layui/css/layui.css" rel="stylesheet" />
+    <link href="../../../Styles/Index.css" rel="stylesheet" />
+</head>
+<body ng-app>
+    <div>
+        <div class="layui-form-item" style="margin-top: 30px">
+            <div class="layui-input-block">
+                <div class="layui-box layui-upload-button" style="height: 66px; border: none;">
+                    <img src="../../../Styles/Images/Avatar.png" style="width: 66px; height: 66px; border-radius: 25px;" />
+                    <form target="layui-upload-iframe" method="post" key="set-mine" enctype="multipart/form-data" action="/Admin/Public/Upload">
+                        <input type="file" name="DemoTextFile" id="DemoTextFile" class="layui-upload-file f-fl">
+                    </form>
+                </div>
+                <div style="height: 30px; line-height: 30px;">JianBing Lin</div>
+            </div>
+        </div>
+        <div class="takermb">
+            <p>入金选择</p>
+            <div class="transfer">
+                <div class="outsourcing">
+                    <div class="medium">
+                        <div class="fig">
+                            <img src="../../../Styles/Images/BANK.jpg"/>
+                        </div>
+                        <div class="content">这种方式可以从您的银行账户中直接汇款给我们的账户。银行电汇允许您存入您的本地货币。然后由收款银行转换为您为存款选定接受的货币。</div>
+                    </div>
+                    <div class="medium">
+                        <div class="fig">
+                            <img src="../../../Styles/Images/VISA.jpg"/>
+                        </div>
+                        <div class="content">使用信用卡/借记卡付款是将资金存入您交易账户简单且安全的方式。</div>
+                    </div>
+                    <div class="medium">
+                        <div class="fig">
+                            <img src="../../../Styles/Images/Master.jpg"/>
+                        </div>
+                        <div class="content">使用信用卡/借记卡付款是将资金存入您交易账户简单且安全的方式。</div>
+                    </div>
+                </div>
+                <div class="trans">
+                    <a href="#"><div>入金 银行转账</div></a>
+                    <a href="#"><div>入金 信用卡/借记卡</div></a>
+                    <a href="#"><div>入金 信用卡/借记卡</div></a>
+                </div>
+                <div class="outsourcing">
+                    <div class="medium">
+                        <div class="fig">
+                            <img src="../../../Styles/Images/PayPal.jpg" />
+                        </div>
+                        <div class="content">通货膨胀在一个小时内计入您的账户。请确定您使用的Paypal账户是您用实名注册且您的Paypal邮件地址已经加入到您的交易账户记录。</div>
+                    </div>
+                    <div class="medium">
+                        <div class="fig">
+                            <img src="../../../Styles/Images/fasa.jpg" />
+                        </div>
+                        <div class="content">Fasaray is a fast,safe and affordable way to tranfser funds between parties without the need of a credit or debit card.A bank account is all that is required to become a member of FasaPay/’s growing payment network.</div>
+                    </div>
+                    <div class="medium">
+                        <div class="fig">
+                            <img src="../../../Styles/Images/WedMdney.jpg" />
+                        </div>
+                        <div class="content">Webmoney是一种世界范围的电子钱包，提供了快速而简单的方式让您可以将资金存入Fxpro账户。</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="box"><img src="../../../Styles/Images/curve.png" /></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+﻿@{
+    bool editFlag = false;
+    if (ViewBag.EditFlag != null && ViewBag.EditFlag == true)
+    {
+        editFlag = true;
+    }
+    if (!editFlag)
+    {
+    @Html.TextBoxFor(model => model, new { @class = "u-iptm", maxlength = 20 })
+    }
+    else
+    {
+    @Html.TextAreaFor(model => model, new { @class = "u-taal" })
+    }
+}

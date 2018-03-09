@@ -1,0 +1,459 @@
+﻿@{
+    ViewBag.Title = "财务报表";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAjaxEdit.cshtml";
+}
+<script src="~/Scripts/Reports/echarts.js"></script>
+<script src="~/Scripts/Reports/Reports.js"></script>
+<script src="~/Scripts/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        checkRadio();
+        BindRadioShift();
+    });
+
+    function  checkRadio() {
+        var flag = GetQueryString("flag");
+        if (flag =="day"||flag==null) {
+            $("#dayCount").attr("checked", "checked");
+        } else if (flag =="month") {
+            $("#monCount").attr("checked", "checked");
+        } else {
+            $("#yearCount").attr("checked", "checked");
+        }
+        layui.form().render();
+    }
+    //绑定你的radio切换的事件
+    function BindRadioShift() {
+        $("#radioContainer input").click(function() {
+            console.log("i'am in~");
+            if ($(this).attr('id')=='dayCount') {
+                console.log("day");
+                window.location.href = "/Admin/Reports/Finance?flag=day";        
+            } else if ($(this).attr('id')=='monCount') {
+                console.log("month");
+                window.location.href = "/Admin/Reports/Finance?flag=month";      
+            }else {
+                console.log("year");
+                window.location.href = "/Admin/Reports/Finance?flag=year";  
+            }
+        });
+    }
+    function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+</script>
+
+<div>
+    <div id="radioContainer" class="layui-form-item layui-form" style="margin-left: 10px; text-align: center;">
+        <input type="radio" id="dayCount" name="statistics" lay-filter="statistics" value="0" title="按日统计" checked="checked" />
+        <input type="radio" id="monCount" name="statistics" lay-filter="statistics" value="1" title="按月统计" />
+        <input type="radio" id="yearCount" name="statistics" lay-filter="statistics" value="2" title="按年统计" />
+    </div>
+</div>
+<div style="margin:15px auto"></div>
+<div>
+    <div>
+        <div id="Money" style="width:1000px; height: 480px; padding:20px; padding-bottom:35px; margin: 0 auto; box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);"></div>
+    </div>
+    <div style="margin:30px auto"></div>
+    <div>
+        <div id="UserInfo" style="width: 1000px; height: 480px; padding:20px;margin: 0 auto;box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);"></div>
+    </div>
+    <div style="margin:30px auto"></div>
+    <div>
+        <div id="Account" style="width: 1000px; height: 480px;padding:20px; margin: 0 auto;box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);"></div>
+    </div>
+</div>
+@*出入金对比统计图*@
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('Money'));
+    option = {
+        title: {
+            text: '出入金及盈利统计',
+            x: 'center',
+            top:0
+        },
+       
+        //背景颜色
+        backgroundColor: new echarts.graphic.RadialGradient(0.3,0.3,0.8,
+            [{
+               offset: 0,
+               color: '#fafafa'
+              }, {
+                offset: 1,
+                color: '#ffffff'
+               }
+            ]),
+
+        tooltip: {
+            trigger: 'axis'
+        },
+        //工具
+        toolbox: {
+            feature: {
+                dataView: { show: true, readOnly: false },
+                magicType: { show: true, type: ['line', 'bar'] },
+                saveAsImage: { show: true }
+            }
+        },
+        legend: { 
+            top:35,
+            show: true,
+            data: ['入金', '出金', '利润']          
+        },
+        xAxis: [
+            {
+                type: 'category',
+                name:'日期',
+                axisLine: {
+                    lineStyle: {
+                        color:'#fffff'
+                    }  
+                   
+                },
+                data:@Html.Raw(ViewBag.Times),
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                },
+                scale: true
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                axisLine: {
+                    lineStyle: {
+                        color:'#fffff'
+                    }  
+                   
+                },
+                name: '金额',
+                axisLabel: {
+                    formatter: '{value} 元'
+                },
+                splitLine: {
+                    lineStyle: {
+                        
+                        type: 'dashed'
+                    }
+                },
+                scale: true
+            }
+        ],
+        dataZoom: [{
+            start : 0,
+            bottom:0, 
+            height:20,
+            end :100, 
+            
+            textStyle: {
+                color: '#8392A5'
+                
+            },
+           
+            handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+            handleSize: '80%',
+            dataBackground: {
+                areaStyle: {
+                    color: '#8392A5'
+                },
+                lineStyle: {
+                    opacity: 0.8,
+                    color: '#8392A5'
+                }
+            },
+            handleStyle: {
+                color: '#fff',
+                shadowBlur: 5,
+                shadowColor: 'rgba(0, 0, 0, 0.6)',
+                shadowOffsetX: 2,
+                shadowOffsetY: 2
+            }
+        }, {
+            type: 'inside'          
+        }],
+        series: [
+            {
+                 name: '入金',
+                 data:@Html.Raw(ViewBag.InMoney),
+                     itemStyle:{
+                         normal:{color:'#00AAEF'}
+                      },
+                
+                 type:'line'
+            },
+            {
+                name: '出金',              
+                data: @Html.Raw(ViewBag.OutMoney),
+                type: 'line',
+                itemStyle: { normal: { color: "#FF650B" } }
+            },
+            {
+                name: '利润',
+                data: @Html.Raw(ViewBag.Money),
+                type: 'line',
+                itemStyle: { normal: { color: "#44C719" } }
+               
+            }
+        ]
+
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+@*用户注册统计图*@
+<script type="text/javascript">
+    var UserChart = echarts.init(document.getElementById('UserInfo'));
+    option = {
+        title: {
+            text: '平台用户注册信息',
+            x: 'center'
+        },       
+        backgroundColor: new echarts.graphic.RadialGradient(0.3,
+            0.3,
+            0.8,
+            [
+                {
+                    offset: 0,
+                    color: '#f7f8fa'
+                }, {
+                    offset: 1,
+                    color: '#ffffff'
+                }
+            ]),
+        tooltip: {
+            trigger: 'axis'
+        },
+        toolbox: {
+            feature: {
+                dataView: { show: true, readOnly: false },
+                magicType: { show: true, type: ['line', 'bar'] },
+                saveAsImage: { show: true }
+            }
+        },      
+        xAxis: [
+            {
+                type: 'category',
+                axisLine: {
+                    lineStyle: {
+                        color:'#fffff'
+                    }                    
+                },
+                name:'日期',
+
+                data: @Html.Raw(ViewBag.RegistTime),
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                },
+                scale: true
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                axisLine: {
+                    lineStyle: {
+                        color:'#fffff'
+                    }                     
+                },
+                name: '注册人数',
+                axisLabel: {
+                    formatter: '{value} 人'
+                },
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                },
+                scale: true
+            }
+        ],
+        dataZoom: [{
+            start : 0,
+            bottom:0, 
+            height:20,
+            end :100, 
+            textStyle: {
+                color: '#8392A5'
+            },
+            handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+            handleSize: '80%',
+            dataBackground: {
+                areaStyle: {
+                    color: '#8392A5'
+                },
+                lineStyle: {
+                    opacity: 0.8,
+                    color: '#8392A5'
+                }
+            },
+            handleStyle: {
+                color: '#fff',
+                shadowBlur: 3,
+                shadowColor: 'rgba(0, 0, 0, 0.6)',
+                shadowOffsetX: 2,
+                shadowOffsetY: 2
+            }
+        }, {
+            type: 'inside'
+        }],
+        series: [
+            {
+                name: '用户注册人数',
+                type:'line',
+                data: @Html.Raw(ViewBag.People),
+                itemStyle:{normal:{color:"#00AAEF"}}
+            }
+        ]
+
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    UserChart.setOption(option);
+</script>
+@*交易数量统计图*@
+<script type="text/javascript">
+
+    var AccountChart = echarts.init(document.getElementById('Account'));
+    option = {
+        title: {
+            text: '交易账户注册情况',
+            x: 'center'
+        },
+        //圆角
+        itemStyle: {
+
+            normal: {
+                barBorderRadius: 5
+            },
+            emphasis: {
+                barBorderRadius: 10
+            }
+        },
+        backgroundColor: new echarts.graphic.RadialGradient(0.3,
+            0.3,
+            0.8,
+            [
+                {
+                    offset: 0,
+                    color: '#f7f8fa'
+                }, {
+                    offset: 1,
+                    color: '#ffffff'
+                }
+            ]),
+        tooltip: {
+            trigger: 'axis'
+        },
+        toolbox: {
+            feature: {
+                dataView: { show: true, readOnly: false },
+                magicType: { show: true, type: ['line', 'bar'] },
+                saveAsImage: { show: true }
+            }
+        },      
+        xAxis: [
+            {
+                type: 'category',
+                axisLine: {
+                    lineStyle: {
+                        color:'#fffff'
+                    }
+
+                },
+                name:'日期',
+                data: @Html.Raw(ViewBag.AcTimes),
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                },
+                scale: true
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                axisLine: {
+                    lineStyle: {
+                        color:'#fffff'
+                    }
+                },
+                name: '人数',
+
+                axisLabel: {
+                    formatter: '{value} 人'
+                },
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                },
+                scale: true
+            }
+        ],
+        dataZoom: [{
+            start : 0,
+            bottom:0, 
+            height:20,
+            end :100, 
+            textStyle: {
+                color: '#8392A5'
+            },
+            handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+            handleSize: '80%',
+            dataBackground: {
+                areaStyle: {
+                    color: '#8392A5'
+                },
+                lineStyle: {
+                    opacity: 0.8,
+                    color: '#8392A5'
+                }
+            },
+            handleStyle: {
+                color: '#fff',
+                shadowBlur: 3,
+                shadowColor: 'rgba(0, 0, 0, 0.6)',
+                shadowOffsetX: 2,
+                shadowOffsetY: 2
+            }
+        }, {
+            type: 'inside'
+        }],
+        series: [
+        {
+            name: '交易账户数',
+            type:'line',
+            data: @Html.Raw(ViewBag.AcCount),
+            itemStyle:{normal:{color:"#00AAEF"}}
+        }]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    AccountChart.setOption(option);
+</script>
+@section foot
+{
+    <script>
+        layui.use([ 'form'],
+           function() {
+               var form = layui.form();
+               form.on('radio(statistics)', function(data) {
+                   if (data.value == '0') {
+                       window.location.href = "/Admin/Reports/Finance?flag=day";
+                   } else if (data.value == '1') {
+                       window.location.href = "/Admin/Reports/Finance?flag=month";
+                   } else {
+                       window.location.href = "/Admin/Reports/Finance?flag=year";
+                   }
+               });
+           });
+
+</script>
+}

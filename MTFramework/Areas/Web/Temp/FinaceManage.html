@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html ng-app="accountinfo">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>资金管理</title>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<div ng-controller="moneystream">
+    转入账户<input ng-model="inmoney" />
+    转出账户<input ng-model="outmoney" />
+    金额<input ng-model="money" />
+    <input type="button" value="确认" ng-click="change()"/>
+</div>
+<div ng-controller="moneystreamlist">
+    <table>
+        <tr>
+            <td>时间</td>
+            <td>类型</td>
+            <td>方式</td>
+            <td>原账户</td>
+            <td>目标账户</td>
+            <td>资金</td>
+        </tr>
+        <tr ng-repeat="item in mslist">
+            <td>{{item.InsTime|date}}</td>
+            <td>{{item.StreamType==3 || item.StreamType==4?"内转":"非内转"}}</td>
+            <td>支付宝</td>
+            <td>{{item.StreamType==3?item.UserID:item.AccountID}}</td>
+            <td>{{item.StreamType!=3?item.UserID:item.AccountID}}</td>
+            <td>{{item.StreamMoney}}</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
+<script src="../../../Plugins/angular-1.5.5/angular.js"></script>
+<script src="../../../Scripts/Controller/AccountInfoModel.js"></script>

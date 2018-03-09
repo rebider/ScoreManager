@@ -1,0 +1,23 @@
+﻿@using MT.Common
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>找外教</title>
+    <link rel="icon" href="@ResourceHelper.CreateThemesImgUrl("zhaowj3.ico")" type="image/x-icon">
+    <meta name="keywords" content="@ViewBag.Keywords" />
+    <meta name="description" content="@ViewBag.Description" />
+    @ResourceHelper.CreateStyleResourceUrl("Home", new[] { "common", "home", "form" })
+    @ResourceHelper.CreateScriptResourceUrl(new []{"Common/jquery-1.7.2.min.js"})
+    @RenderSection("head", false)
+</head>
+<body>
+    @RenderBody()
+    @RenderSection("foot", false)
+</body>
+</html>

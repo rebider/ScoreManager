@@ -1,0 +1,134 @@
+﻿@model  MT.Areas.Admin.ViewModels.UserProductViewModel
+@using MT.Common
+@{
+
+    ViewBag.Title = "用户添加";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAjaxEdit.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <header class="larry-personal-tit">
+            <div><a onclick="back();"><i class="layui-icon ">&#xe603;</i><span>返回上级列表</span></a></div>
+        </header>
+        <div class="larry-personal-body clearfix ">
+
+            @using (Html.BeginForm("Add", "User", FormMethod.Post, new { @class = "layui-form col-lg-5" }))
+            {
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.User.Name, new { @class = "layui-form-label" })
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.User.Name)
+                        @Html.ValidationMessageFor(model => model.User.Name)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.User.Password, new {@class = "layui-form-label"})
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.User.Password)
+                        @Html.ValidationMessageFor(model => model.User.Password)
+                    </div>
+                </div>
+             
+
+
+
+                        <div class="layui-form-item">
+                            @Html.LabelFor(model => model.User.UserType, new { @class = "layui-form-label" })
+                            <label class="layui-form-label">所属角色</label>
+                            <div class="layui-input-block">
+                                @for (int i = 0; i < Model.RoleList.Count; i++)
+                                {
+                                    <div class="f-fl marl20">
+                                        @Model.RoleList[i].Name<input type="checkbox" value="@Model.RoleList[i].ID" name="roleIds">
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <input type="button" onclick="editmodel()" value="保存" class="layui-btn" />
+                                </div>
+                            </div>
+
+                            @*<dl class="f-cb">
+                                    <dt>@Html.LabelFor(model => model.User.Name):</dt>
+                                    <dd>
+                                        @Html.EditorFor(model => model.User.Name)
+                                        @Html.ValidationMessageFor(model => model.User.Name)
+                                    </dd>
+                                    <dt>@Html.LabelFor(model => model.User.Password):</dt>
+                                    <dd>
+                                        @Html.EditorFor(model => model.User.Password)
+                                        @Html.ValidationMessageFor(model => model.User.Password)
+                                    </dd>
+                                    <dt>@Html.LabelFor(model => model.User.NickName):</dt>
+                                    <dd>
+                                        @Html.EditorFor(model => model.User.NickName)
+                                        @Html.ValidationMessageFor(model => model.User.NickName)
+                                    </dd>
+                                    <dt>@Html.LabelFor(model => model.User.Sex):</dt>
+                                    <dd>
+                                        @Html.EditorFor(model => model.User.Sex)
+                                        @Html.ValidationMessageFor(model => model.User.Sex)
+                                    </dd>
+                                    <dt>@Html.LabelFor(model => model.User.UserType):</dt>
+                                    <dd>
+                                        @Html.EditorFor(model => model.User.UserType)
+                                        @Html.ValidationMessageFor(model => model.User.UserType)
+                                    </dd>
+                                    <dt>@Html.LabelFor(model => model.User.UserDepartment):</dt>
+                                    <dd>
+                                        @Html.EditorFor(model => model.User.UserDepartment)
+                                        @Html.ValidationMessageFor(model => model.User.UserDepartment)
+                                    </dd>
+                                    <dt>@Html.LabelFor(model => model.User.CompanyId):</dt>
+                                    <dd>
+                                        @Html.EditorFor(model => model.User.CompanyId)
+                                        @Html.ValidationMessageFor(model => model.User.CompanyId)
+                                    </dd>
+                                    <dt>@Html.LabelFor(model => model.User.Telephone):</dt>
+                                    <dd>
+                                        @Html.EditorFor(model => model.User.Telephone)
+                                        @Html.ValidationMessageFor(model => model.User.Telephone)
+                                    </dd>
+                                    <dt>@Html.LabelFor(model => model.User.Mobile):</dt>
+                                    <dd>
+                                        @Html.EditorFor(model => model.User.Mobile)
+                                        @Html.ValidationMessageFor(model => model.User.Mobile)
+                                    </dd>
+                                    <dt>@Html.LabelFor(model => model.User.Email):</dt>
+                                    <dd>
+                                        @Html.EditorFor(model => model.User.Email)
+                                        @Html.ValidationMessageFor(model => model.User.Email)
+                                    </dd>
+                                    <dt>@Html.LabelFor(model => model.User.Address):</dt>
+                                    <dd>
+                                        @Html.EditorFor(model => model.User.Address)
+                                        @Html.ValidationMessageFor(model => model.User.Address)
+                                    </dd>
+                                    <dt>@Html.LabelFor(model => model.User.DelFlag):</dt>
+                                    <dd>
+                                        @Html.EditorFor(model => model.User.DelFlag)
+                                        @Html.ValidationMessageFor(model => model.User.DelFlag)
+                                    </dd>
+                                    <dt>所属角色:</dt>
+                                    <dd>
+                                        @for (int i = 0; i < Model.RoleList.Count; i++)
+                                        {
+                                            <div class="f-fl marl20">
+                                                @Model.RoleList[i].Name<input type="checkbox" value="@Model.RoleList[i].Id" name="roleIds">
+                                            </div>
+                                        }
+                                    </dd>
+
+                                    <dt></dt>
+                                    <dd>
+                                        <input type="button" onclick="addmodel()" value="保存" class="u-btnblue" />
+                                </dl>*@
+            }
+        </div>
+    </div>
+</section>

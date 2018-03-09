@@ -1,0 +1,169 @@
+﻿@charset "utf-8";
+/* CSS Document */
+body{background:url(Images/login-new.jpg) center center}
+.bodybackground{ background:#eae8e5 url(Images/loginbg.png) top center no-repeat;margin: 0 auto;}
+.bodybackground2{ background:#f9f9f9 url(Images/loginbg2.jpg) top center no-repeat;margin: 0 auto;}
+.bodybackground3{ background:#0e2b67 url(Images/loginbg3.png) top center no-repeat;margin: 0 auto;}
+.m-logo{ width: 351px;height: 120px;margin: 130px auto 0;}
+.m-login{width: 753px;height: 60px; margin: 145px auto 0;}
+.m-autologin{width: 126px;height: 32px; margin: 20px auto 0;font-size: 14px;color: #fff;}
+.m-otherlogin{width: 190px;height: 36px; margin: 33px auto 0;font-size: 15px;color: #6a2ea0;font-weight: bold;}
+.m-otherlogin span,.m-otherlogin a{ display: inline-block;float: left;}
+.m-otherlogin span{ line-height: 36px;}
+
+.m-dialog{ width: 337px;height: 211px;position: absolute;top: 300px;left: 40%;right: 50%;background: #fff;display: none;}
+.m-dialog label{ line-height: 35px; }
+.m-dialog .title{ background: rgb(238, 238, 238);font-size: 15px;color: #717171;text-indent: 15px;height: 45px;line-height: 45px;border: 0;}
+.m-dialog .row{ width: 300px;font-size: 15px;color: #717171;margin: 31px 0 15px 23px;}
+.m-dialog .row2{ width: 300px;font-size: 15px;color: #717171;margin: 15px 15px 0;}
+.m-dialog .quan{ width: 104px;height: 35px;border: 1px solid rgb(221, 221, 221);}
+.m-dialog .hquan{display: inline-block; width: 104px;height: 35px;border: 1px solid rgb(221, 221, 221);background: rgb(237, 237, 237);border-left: none;}
+.m-dialog .verify{ margin: 8px 23px;}
+.u-ipt{ width: 280px;height: 53px;background: rgb(15, 6, 24);border: 1px solid rgb(151, 114, 186);font-size: 17px;color: #989898;padding: 0 15px;}
+.u-btn{ background: rgb(59, 58, 183);border: 1px solid rgb(59, 58, 183);width: 114px;height: 54px;font-size: 24px;color: #f2f2f2;text-align: center;vertical-align: -2px;}
+.u-btngreen{text-align: center; background: rgb(0, 196, 88);letter-spacing: 5px;height: 37px;line-height: 37px;padding: 0 25px 0 28px;color: #fff;border: 1px solid rgb(0, 161, 74);margin: 0 0 0 65px;}
+.u-btnblue{ color: #0082dd;font-size: 14px;color: #0082dd;margin: 0 0 0 15px;}
+.icobg{ background: url(Images/icoLogan.png);display: inline-block;}
+.ico-qq{ background-position: -10px -10px;width: 28px;height: 30px;}
+.ico-sina{ background-position: -56px -10px;width: 39px;height: 35px;}
+.ico-renren{ background-position: -114px -10px;width: 46px;height: 31px;}
+.ico-close{ background-position: -183px -23px;width: 17px;height: 17px;float: right;margin-right: 10px;margin-top: 12px;cursor: pointer;}
+.lg-inputdiv{width: 80%;height: 40px;border: 1px solid #fff;border-radius: 7px;background: #fff;font-size: 14px;margin: 0 auto;}
+.lg-inputdiv input{width: 195px;height: 40px;border: 0;background: #fff;margin-left: 10px;color: #989898}
+.lg-inputdiv2{width: 320px;height: 45px;border: 1px solid #fff;border-radius: 10px;background: #d2dae5;float: left;font-size: 17px;}
+.lg-inputdiv2 input{width: 300px;height: 45px;border: 0;background: #d2dae5;margin-left: 10px;color: #5f7a86}
+.lg-inputdiv3{width: 320px;height: 45px;border: 1px solid #fff;border-radius: 10px;background: #142a5e;float: left;font-size: 17px;}
+.lg-inputdiv3 input{width: 300px;height: 45px;border: 0;background: #142a5e;margin-left: 10px;color: #a9becc}
+
+/*.marl35{ margin-left: 35px;}*/
+
+input:-webkit-autofill { box-shadow: 0 0 0px 1000px #4c4b4b inset;}
+
+
+.houtai-title{margin: 45px auto; width: 290px; margin: 200px auto 0 auto; height: 35px; font-size: 26px; color: #0099cb}
+.houtai-title2{margin: 45px auto; width: 290px; margin: 200px auto 0 auto; height: 35px; font-size: 26px; color: #b3becb}
+.houtai-title3{margin: 45px auto; width: 290px; margin: 200px auto 0 auto; height: 35px; font-size: 26px; color: #fafafa}
+.btnlogin{border-radius: 10px; width: 100px; height: 45px; background: #f0cdf1; color: #333; font-size: 22px;}
+.btnlogin2{border-radius: 10px; width: 100px; height: 45px; background: #5192d6; color: #fff; font-size: 22px;}
+.btnlogin3{border-radius: 10px; width: 100px; height: 45px; background: #2c9be8; color: #fff; font-size: 22px;}
+.m-copyright{width: 460px;height: 25px;margin: 200px auto 0 auto; font-size: 13px;color: #989898;}
+.m-copyright2{width: 460px;height: 25px;margin: 200px auto 0 auto; font-size: 13px;color: #b3becb;}
+.m-copyright3{width: 460px;height: 25px;margin: 200px auto 0 auto; font-size: 13px;color: #fafafa;}
+
+
+
+
+
+
+/*登录页*/
+.logo{ width: 100%;height: 70px;background:#131b26;}
+.logo-and{ width: 100%;height: 100%;margin: 0 auto;overflow: hidden;text-align: center;}
+.logo-and div{ line-height: 80px;vertical-align: middle;display: block;width: 150px;height: 100%;}
+.fm-box{ width: 50%;margin: 0 auto 56.5px;}
+.fm-title{font-size: 30px;color: #c8d2dd;text-align: center;padding-top: 40px;font-family: Aparajita;}
+.fm-form{ width: 380px;border-radius: 5px;background:#1c283b;margin:0 auto;}
+
+.y-icon-Account {
+    width: 85%;
+    margin: 30px auto 0;
+    overflow: hidden;
+        line-height: 40px;
+        border:1px #232f41 solid;
+        border-radius:3px;
+}
+.public-mali{ font-size: 16px;margin-right: 10px;margin-left: 3px;width: 50px;float: left;text-align: right;}
+.public-mli{ font-size: 16px;margin-right: 0px;margin-left: 10px;width: 32px;float: left;color:#666;border-right:1px #232f41 solid;}
+.public-mli i{height:100%;line-height:37px;font-size:18px;}
+
+.public-mli1 {
+    font-size: 16px;
+   
+   
+    width: 43px;
+    height:35px;
+    float: left;
+    color: #666;
+    border-right: 1px #232f41 solid;
+    background: url('Images/icon.png') no-repeat center center;
+}
+
+
+.public-mal{
+    font-size: 16px;
+    margin-right: 8px;
+    margin-left: 8px;
+    width: 50px;
+    float: left;
+    text-align: right;
+}
+.y-size {
+    width: 70%;
+    height: 100%;
+    border:0;
+    outline: none;
+    height: 30px;
+    margin-top:5px;
+   
+    background:0;
+}
+.y-Icon-Account {
+    width: 85%;
+    margin: 15px auto;
+    overflow: hidden;
+        line-height: 40px;
+        border:1px #232f41 solid;
+         border-radius:3px;
+}
+/*.y-Icon-Account  div{font-size: 16px;margin-right: 20px;margin-left: 10px;width: 50px;float: left;text-align: right;}*/
+.y-con-Account {
+    width: 85%;
+     margin: 15px auto 0;
+     line-height: 40px;
+    overflow: hidden;
+    border:1px #232f41 solid;
+     border-radius:3px;
+}
+/*.y-con-Account div {line-height: 30px;margin-right: 15px;font-size: 16px;float: left;
+    text-align: right;
+    width: 61px;}*/
+    
+.y-con-Account  div input{ width: 140px;height: 25px;float: left;}
+.y-con-Account  div img{ width:70px;height: 25px; }
+.fm-log-in{width: 85%;height: 40px;margin: 0 auto;}
+.fm-registered{width: 85%;height: 40px;margin: -11px auto;text-align:center;}
+.fm-registered a{color:#6b7685!important;}
+.fm-log-in input{background: #329ef4;width: 100%;height: 100%;border-radius: 3px;color: #fff;}
+.fm-registered input{background: #d9d9d9;width: 100%;height: 100%;border-radius: 5px;color: #000;}
+.fm-immediately{width: 100%;height: 40px; text-align: center;line-height: 40px;background: #f02a4a;border-radius: 3px;color:#fff;}
+.fm-return{width: 85%;height: 40px;margin: 3px auto 10px;overflow: hidden;}
+
+body{ background: url('Images/Tiling.jpg')  repeat-x;min-height: 760px;}
+
+
+
+.fm-bottom{ width: 100%;}
+.fm-bottom img{ width: 100%;height:236px; }
+  .web-zhm{float: left; margin: 0 10px; line-height: 70px;}
+    /*.logo img{width: 100px; height: 35px;}*/
+    .logout{color: #333;}
+    .web-English div{border:1px #fff solid;padding-left: 2px!important;}
+    .web-English div:hover{border:1px #ccc solid;}
+   .web-language{float: left; margin: 0 10px; line-height: 70px; position: relative; width: 100px;text-align: left}
+    .web-English-z{height: 30px; display: none; z-index: 1000; position: absolute; background: #fff; margin-top: -12px; line-height: 30px; cursor: pointer; width: 110px; padding-left: 10px; left: -20px;}
+    .web-language:hover .web-language{ display: block!important;}
+.public-icon {
+    height:26px;
+    float: right;
+    margin-top: 3px;background: url('Images/account-number.png');
+    width:26px;
+    margin-bottom:5px
+}
+     .public-i{ margin-top: 6px;}
+.public-ico {
+    background: url('Images/password.png') no-repeat center center;
+    width:44px;
+    height:35px;
+   border-right:1px #232f41 solid;
+}
+.verification{float: left; height: 35px; width: 165px;border:0; text-indent: 0.5em;background:0;line-height:40px;}
+

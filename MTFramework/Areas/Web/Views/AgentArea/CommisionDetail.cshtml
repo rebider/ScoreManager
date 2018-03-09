@@ -1,0 +1,79 @@
+﻿@using MT.Models
+@using MT.Common
+@model PetaPoco.Page<TradeOrderModel>
+
+@{
+    ViewBag.Title = "返佣详情";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+}
+<style>
+    html, body {
+        margin: 0px;
+        padding: 0px;
+        background-color: #fafafa;
+    }
+
+    .white-bg {
+        background-color: #fff;
+        border: 1px solid #eaeaea;
+        margin-left:10px;
+        margin-right:10px
+    }
+</style>
+<section class="layui-larry-box" style="padding: 0px;">
+    <div style="margin-bottom:30px;margin-left:10px;">
+        <a onclick="javascript: window.history.go(-1);"><i class="layui-icon " style="color:#333"></i><span style="color: #333; font-family: '微软雅黑'" lang="return">back</span></a>
+    </div>
+    <div class="white-bg">
+        <fieldset class="layui-elem-field layui-field-title" style="width:100%;float:none;padding:0px;margin:0px;border:none;border-bottom:1px solid #eaeaea">
+            <legend lang="agentarea" style="margin-left:5px;line-height:44px;font-size:16px;color:#333"></legend>
+        </fieldset>
+        <div class="larry-personal">
+            <div class="larry-personal-body clearfix ">
+                <table class="layui-table" lay-skin="line">
+                    <thead>
+                        @if (MTConfig.UserLang == "En")
+                        {
+                            <tr>
+                                <td style="padding-left:14px">User</td>
+                                <td>Transaction Type</td>
+                                <td>Profit</td>
+                                <td>Transaction Number</td>
+                                <td>Commissions Received</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td style="padding-left:14px">用户</td>
+                                <td>交易品种</td>
+                                <td>收益</td>
+                                <td>交易手数</td>
+                                <td>获取佣金</td>
+                            </tr>
+                        }
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td style="padding-left:14px">@item.UserName</td>
+                                <td>@item.Symbol</td>
+                                <td>@item.SumProfit</td>
+                                <td>@item.SumVolume</td>
+                                <td>@item.SumBonus</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="pageboder"> @Html.ViewPage(Model, "Web") </div>
+                <input type="hidden" btn-lang="confirm_settle" value="" id="confirm_settle" />
+                <input type="hidden" btn-lang="nobonus" value="" id="nobonus" />
+            </div>
+        </div>
+        </div>
+</section>
+@section foot{
+    <script>
+    </script>
+}

@@ -1,0 +1,139 @@
+﻿
+@model MT.Models.NodeModel
+
+@{
+    ViewBag.Title = "添加";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutEdit.cshtml";
+	RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+}
+
+<div class="mainContent">
+     @Html.AddOrEditNavHtml()
+  <div class="clear02"></div>
+	<div class="mainContent">
+			<div class="mainRighTitle textAlignC fontWeight"></div>
+	<div class="clear01"></div>
+	<div class="clear02"></div>
+@using (Html.BeginForm()) {
+	<table border="0" class="searchTable borderNone">
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.ID):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.ID)
+            @Html.ValidationMessageFor(model => model.ID)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.Name):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.Title):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.Title)
+            @Html.ValidationMessageFor(model => model.Title)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.DisplayFlag):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.DisplayFlag)
+            @Html.ValidationMessageFor(model => model.DisplayFlag)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.Pid):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.Pid)
+            @Html.ValidationMessageFor(model => model.Pid)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.NodeLevel):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.NodeLevel)
+            @Html.ValidationMessageFor(model => model.NodeLevel)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.Link):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.Link)
+            @Html.ValidationMessageFor(model => model.Link)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.GroupID):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.GroupID)
+            @Html.ValidationMessageFor(model => model.GroupID)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.Target):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.Target)
+            @Html.ValidationMessageFor(model => model.Target)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.DelFlag):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.DelFlag)
+            @Html.ValidationMessageFor(model => model.DelFlag)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.SortNo):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.SortNo)
+            @Html.ValidationMessageFor(model => model.SortNo)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.CreateMan):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.CreateMan)
+            @Html.ValidationMessageFor(model => model.CreateMan)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.CreateTime):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.CreateTime)
+            @Html.ValidationMessageFor(model => model.CreateTime)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.ModifyMan):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.ModifyMan)
+            @Html.ValidationMessageFor(model => model.ModifyMan)
+			</td>
+		</tr>
+		<tr>
+			<td class="width20p textAlignR">@Html.LabelFor(model => model.ModifyTIme):</td>
+			<td class="width80p">
+			@Html.EditorFor(model => model.ModifyTIme)
+            @Html.ValidationMessageFor(model => model.ModifyTIme)
+			</td>
+		</tr>
+        <tr>
+          <td></td>
+		  <td>
+            <input type="submit" value="保存" class="botton" />
+		  </td>
+        </tr>
+	</table>
+}
+	</div>
+</div>
+
+

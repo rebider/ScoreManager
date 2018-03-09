@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Convert";
+}
+
+<script src="/FlexPaper/js/swfobject.js"></script>
+<script src="/FlexPaper/js/jquery.min.js"></script>
+<script src="/FlexPaper/js/flexpaper.js"></script>
+<script src="/FlexPaper/js/flexpaper_handlers.js"></script>
+
+<div id="documentViewer" class="flexpaper_viewer" style="width: 770px; height: 500px"></div>
+
+<script type="text/javascript">
+    var startDocument = "";
+    var params = {
+        SwfFile: "/FlexPaper/Paper.swf",
+        Scale: 0.6
+    };
+    swfobject.embedSWF("/FlexPaper/FlexPaperViewer.swf", "documentViewer", "500", "500", "9.0.0", "/FlexPaper/js/expressInstall.swf", params);
+</script>

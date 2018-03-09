@@ -1,0 +1,74 @@
+﻿@model MT.Models.RoleModel
+@{
+    ViewBag.Title = "角色添加";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAjaxEdit.cshtml";
+
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+@section head{
+}
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <header class="larry-personal-tit">
+            <div>
+                <a onclick="back('/Admin/@vs["controller"]/Index');"><i class="layui-icon ">&#xe603;</i><span>返回上级列表</span></a>
+            </div>
+        </header>
+        <div class="larry-personal-body clearfix ">
+            @using (Html.BeginForm(vs["action"].ToString(), vs["controller"].ToString(), FormMethod.Post, new { @class = "layui-form col-lg-5" }))
+            {
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.Name, new {@class = "layui-form-label"})
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.Name)
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.SortNo, new {@class = "layui-form-label"})
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.SortNo)
+                        @Html.ValidationMessageFor(model => model.SortNo)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    @Html.LabelFor(model => model.Remark, new {@class = "layui-form-label"})
+                    <div class="layui-input-block">
+                        @Html.EditorFor(model => model.Remark)
+                        @Html.ValidationMessageFor(model => model.Remark)
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="button" onclick="roleadd()" value="保存" class="layui-btn" />
+                    </div>
+                </div>
+                @Html.HiddenFor(m => m.ProductId)
+            }
+        </div>
+    </div>
+</section>
+@section foot
+{
+    <script>
+
+        function roleadd() {
+            $.ajax({
+                url: "/Admin/Role/Add",
+                type: "POST",
+                data: $("form").serialize(),
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.open({
+                        content: "保存成功",
+                        yes: function(index, layero) {
+                            location.href = '/Admin/@vs["controller"]/Index';
+                            layer.close(index); //如果设定了yes回调，需进行手工关闭
+                        }
+                    });
+                }
+            }
+        });
+        }
+    </script>
+}

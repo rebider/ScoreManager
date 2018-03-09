@@ -1,0 +1,88 @@
+﻿@using MT.Models
+@using MT.Common
+@using MT.Common.Helper
+@model PetaPoco.Page<TradeOrderModel>
+
+
+@{
+    ViewBag.Title = "代理专区";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+<style>
+    html, body {
+        background-color: #16202f;
+    }
+
+    .layui-table,
+    .layui-table thead tr {
+        background-color: #1c283b;
+    }
+
+        .layui-table thead tr th {
+            background-color: transparent;
+        }
+
+        .layui-table tr {
+            transition: none;
+            -webkit-transition: none;
+        }
+
+            .layui-table thead tr th:first-child,
+            .layui-table thead tr th:last-child,
+            .layui-table tr td:first-child,
+            .layui-table tr td:last-child {
+                border-left: none;
+            }
+
+            .layui-table tr:hover th,
+            .layui-table tr:hover td {
+                background-color: #1b2638;
+            }
+
+        .layui-table th,
+        .layui-table td {
+            padding-left: 20px;
+            border: 1px solid #232f41;
+            color: #cad4de;
+        }
+</style>
+<section class="layui-larry-box" style="padding: 30px 24px 0px 14px;background-color:#16202f">
+    <div class="larry-personal">
+        <div class="larry-personal-body clearfix " style="margin: 0px;">
+             <fieldset class="layui-elem-field layui-field-title" style="padding: 0px 0px 28px 0px; margin: 0px; border: none;clear: both;">
+                    <legend  style="padding:0px; margin:0px; font-size: 16px; color: #cad4de">@ViewBag.username</legend>
+                </fieldset>
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th lang="mt4_Account"></th>
+                        <th lang="transaction_type"></th>
+                        <th lang="trade_kinds"></th>
+                        <th lang="pro_money"></th>
+                        <th lang="hands_account"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if (Model.Items.Count == 0)
+                {
+                    <tr><td colspan="5"></td></tr>
+                }
+                else
+                {
+                    foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>@item.Account</td>
+                            <td>@item.Cmd</td>
+                            <td>@item.Symbol</td>
+                            <td>@item.Profit</td>
+                            <td>@item.Volume</td>
+                        </tr>
+                    } 
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

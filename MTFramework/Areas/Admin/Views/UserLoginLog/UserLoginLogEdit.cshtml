@@ -1,0 +1,104 @@
+﻿
+@model MT.Models.UserLoginLogModel
+@using MT.Common
+
+@{
+    ViewBag.Title = "编辑";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAjaxEdit.cshtml";
+	RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+}
+
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <header class="larry-personal-tit">
+            <div><a onclick="back('/Admin/@vs["controller"]/UserLoginLogIndex');"><i class="layui-icon ">&#xe603;</i><span>返回上级列表</span></a></div>
+        </header>
+        <div class="larry-personal-body clearfix ">
+   <form action="/Admin/@vs["controller"].ToString()/@vs["action"].ToString()" method="post" class="layui-form col-lg-5"  id="form">
+        <input type="hidden"  name="ID" id="ID" value="@Model.ID" />
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">用户编号</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="UserID" id="UserID"  placeholder="用户编号" value="@Model.UserID"/>
+            </div>
+        </div>
+        
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">登录时间</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="LoginTime" id="LoginTime"  placeholder="登录时间" value="@Model.LoginTime"/>
+            </div>
+        </div>
+        
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">登录ip</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="LoginIp" id="LoginIp"  placeholder="登录ip" value="@Model.LoginIp"/>
+            </div>
+        </div>
+        
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">登录设备编号</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="DeviceID" id="DeviceID"  placeholder="登录设备编号" value="@Model.DeviceID"/>
+            </div>
+        </div>
+        
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">手机操作系统</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="DeviceOS" id="DeviceOS"  placeholder="手机操作系统" value="@Model.DeviceOS"/>
+            </div>
+        </div>
+        
+		 <div class="layui-form-item">
+            <label  class="layui-form-label">APP版本</label>
+            <div class="layui-input-block">
+               <input type="text" class="layui-input" name="AppVersion" id="AppVersion"  placeholder="APP版本" value="@Model.AppVersion"/>
+            </div>
+        </div>
+        
+       <div class="layui-form-item">
+            <div class="layui-input-block">
+                <input type="submit"  lay-submit value="保存" class="layui-btn" />
+            </div>
+        </div>
+    </form>
+	</div>
+</div>
+</section>
+@section foot
+{
+  <script>
+      layui.use('form', function () {
+          
+          $.ajax({
+              url: "/Admin/UserLoginLog/UserLoginLogEdit",
+              type: "GET",
+              data: $("form").serialize(),
+              success: function (data) {
+                  if (data.status == 1) {
+                      layer.open({
+                          content: "保存成功",
+                          yes: function(index, layero) {
+                              location.href = '/Admin/@vs["controller"]/UserLoginLogIndex';
+                              layer.close(index); //如果设定了yes回调，需进行手工关闭
+                          }
+                      });
+                  }
+              }
+
+    });
+
+    $("#form").submit(function () {
+        editmodel("");
+        return false;
+    });
+</script>
+}
+
+

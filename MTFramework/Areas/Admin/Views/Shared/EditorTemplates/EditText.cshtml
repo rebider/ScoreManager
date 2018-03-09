@@ -1,0 +1,16 @@
+﻿@{
+    bool editFlag = false;
+    if (ViewBag.EditFlag != null && ViewBag.EditFlag == true)
+    {
+        editFlag = true;
+    }
+    if (!editFlag)
+    {
+        var obj = Model;
+    @Html.TextBoxFor(model => model, new { @class = "layui-input", maxlength = 20 })
+    }
+    else
+    {
+    @Html.TextBoxFor(model => model, new { @class = "layui-input" })
+    }
+}

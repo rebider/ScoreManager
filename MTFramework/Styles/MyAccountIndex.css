@@ -1,0 +1,94 @@
+﻿.crm-Account{
+    margin-bottom:5px;font-size:20px;
+}
+.layui-btn-normal{background:#329ef4 !important;}
+.layui-input{background-color:transparent;}
+.layui-btn-warm:hover{background:#db9a5c!important;}
+.layui-btn-warm1:hover{background:#dbb35c!important;}
+.layui-btn-normal:hover{background-color:#4b9dad!important;}
+.layui-btn-danger{background-color:#f02a4a!important;}
+.layui-input, .layui-select{border-color:#232f41;color:#cad4de;}
+.layui-form-select dl dd.layui-this{background-color:#0176b4}
+/*.layui-elem-field{float:left;}*/
+.layui-elem-field-my{background:#f67467;padding:15%;text-align:center;font-size:18px;color:#fff;}
+.layui-elem-field-my span{margin-left:10px;}
+.layui-elem-field-my1{padding:20%;text-align:center;font-size:35px;color:#f67467;}
+.layui-elem-field-my2{padding:10%;text-align:center;font-size:13px;color:#000;border-top:1px #eaeaea solid;}
+.layui-elem-field-my2 div{text-align:center;font-size:13px;color:#000;border:1px #eaeaea solid;padding:20px;border-radius:3px;}
+.layui-elem-field{margin-top:10px;background-color:#fff}
+body{background:none;}
+     .yu-table{width: 100%;
+    margin: 10px 0;
+    background-color: #1c283b;
+    color:#cad4de;
+        }
+        .yu-table td{padding: 9px 5px;
+    min-height: 20px;
+    line-height: 20px;
+    border: 1px solid #232f41;
+    font-size: 14px;
+    background-color: #1c283b;
+     border-left:none;
+      
+       border-bottom:none;
+        }
+        .yu-table th{   
+             padding: 9px 5px 9px 20px;
+    min-height: 20px;
+    line-height: 20px;
+    border: 1px solid #232f41;
+    border-left: none;
+    font-size: 14px;}
+         .yu-table tr td{   
+             padding: 9px 5px 9px 20px;
+    min-height: 20px;
+    line-height: 20px;
+    border: 1px solid #232f41;
+    border-left: none;
+    font-size: 14px;}
+        .layui-btn-normal{
+            background-color: #232f41;
+        }
+        .layui-btn-normal:hover{
+            background-color: #0176b4!important;
+        }
+        .layui-table tr:hover td{
+background: #1b2638!important;
+        }
+         .layui-table tr:hover{
+background: #1b2638!important;
+        }
+        .layui-table td:hover{
+background-color: #1b2638!important;
+        }
+        .layui-btn-warm {
+    background-color: #f4c522;
+}
+        .layui-btn-warm1{
+background-color: #329ef4;
+        }
+        .layui-btn-normal1{
+                background-color: #25c577;
+        }
+
+.m-page a.z-dis, .m-page a.z-dis:hover, .m-page a.z-dis:active {
+    cursor: default;
+    color: #cad4de;
+    background: #1c283b;
+}
+.pageboder {
+     border-top: 0; 
+     width: auto; 
+     height: auto; 
+    float: right;
+}
+.pageboder div{margin-top:0px!important;}
+.m-page-sm a, .m-page-sm i {
+    width: 30px;
+    height: 30px;
+    line-height:30px
+}
+/*资金管理*/
+.crm-rotation{width:100%;height:45px;line-height:45px;font-size:16px;color:#333;text-align:left;border-bottom:1px  #eaeaea solid;padding-left:20px}
+.layui-form-item1{width:100%}
+.layui-input-inline-1{width:70%!important;}

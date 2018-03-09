@@ -1,0 +1,71 @@
+﻿@using MT.Common
+@{
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="icon" href="~/Styles/images/16.png" type="image/x-icon">
+    <title>@ViewBag.Title</title>
+    @ResourceHelper.CreateStyleResourceUrl("Admin", new[] { "common", "backstage" })
+    @ResourceHelper.CreateScriptResourceUrl(new[] { "Common/jquery-1.7.2.min.js", "Common/CheckBoxUtil.js", "Common/artdialog.js" })
+    @RenderSection("head", false)
+</head>
+<body>
+    @RenderBody()
+    @ResourceHelper.CreateArtDialogUrl("admin")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            top.art.dialog.data[location.pathname.toLowerCase()] = location.search.replace('?', '');
+
+            $('input[value="查询"]').click(function () {
+                top.art.dialog.data[location.pathname.toLowerCase()] = $('form').serialize();
+            });
+            $('input[value="刷新"]').click(function () {
+                top.art.dialog.data[location.pathname.toLowerCase()] = $('form').serialize();
+            });
+            $("input,textarea,select").focus(function () {
+                $(this).css("border-color", "#66afe9");
+                $(this).css("padding-left", "3px");
+            });
+            $("input,textarea,select").blur(function () {
+                //让当前失去焦点的文本框背景色变为白色
+                $(this).css("border-color", "#e1e1e1");
+            });
+        });
+        function back(pn, params) {
+            var pathname = '/Admin/@vs["controller"]/Index';
+            if ((pn || '') != '') {
+                pathname = pn;
+            }
+            var keyValues = {};
+            var arr = (top.art.dialog.data[pathname.toLowerCase()] || '').split('&');
+            var i;
+            var keyValue;
+            for (i = 0; i < arr.length; i++) {
+                if (arr[i] == '' || arr[i].split('=').length < 2) {
+                    continue;
+                }
+                keyValue = arr[i].split('=');
+                keyValues[keyValue[0]] = keyValue[1];
+            }
+            if ((params || '') != '') {
+                arr = params.split('&');
+                for (i = 0; i < arr.length; i++) {
+                    if (arr[i] == '' || arr[i].split('=').length < 2) {
+                        continue;
+                    }
+                    keyValue = arr[i].split('=');
+                    keyValues[keyValue[0]] = keyValue[1];
+                }
+            }
+            var parameters = new Array();
+            for (i in keyValues) {
+                parameters.push(i + '=' + keyValues[i]);
+            }
+            location.href = pathname + '?' + parameters.join('&');
+        }
+    </script>
+    @RenderSection("foot", false)
+</body>
+</html>

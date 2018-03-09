@@ -1,0 +1,335 @@
+﻿@using MT.Models
+@using MT.Common
+@using MT.Common.Helper
+@using MT.Models
+@model PetaPoco.Page<MoneyStreamModel>
+@{
+    ViewBag.Title = "资金管理";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+    int actiontype = 0;
+    var read = "";
+    if (MTConfig.CurrentUserInfo.AgentLevelID > 0)
+    {
+        actiontype = 2;
+        read = "disabled";
+    }
+}
+
+@section head{
+}
+<link href="~/Styles/MyAccountIndex.css" rel="stylesheet" />
+<style>
+    .layui-elem-field {
+        background-color:#1c283b;
+    }
+    .layui-table ,
+    .layui-table thead tr{
+        margin:0px;
+        background-color:#1c283b;
+    }
+     .layui-table thead tr th {
+        background-color:transparent
+    }
+    .layui-table tr {
+        transition:none;
+        -webkit-transition:none;
+    }
+    .layui-table thead tr th:first-child,
+    .layui-table thead tr th:last-child,
+    .layui-table tr td:first-child,
+    .layui-table tr td:last-child{
+       border-left:none;
+    }
+    .layui-table tr:hover th,
+    .layui-table tr:hover td {
+        background-color:#1b2638
+    }
+    .layui-table th,
+    .layui-table td {
+        padding-left:20px;
+        border:1px solid #232f41;
+        color:#cad4de;
+    }
+    .layui-table-title {
+        padding-left:20px;
+        line-height:48px;
+        color:#cad4de;
+    }
+    .m-page a.z-dis, .m-page a.z-dis:hover, .m-page a.z-dis:active {
+        background-color:transparent
+    }
+    .m-page a {
+        background-color:#1c283b;
+        border:1px solid #232f41;
+        border-right:none;
+        color:#cad4de
+    }
+    .m-page a:hover {
+         background-color:#0176b4;
+         color:#cad4de
+    }
+    .m-page a.last {
+        border-right:1px solid #232f41
+    }
+    .m-page a.z-crt,
+     .m-page a.z-crt:hover{
+        background-color:#0176b4
+    }
+    .pageboder {
+        padding:20px 0px;
+    }
+    .f-fr.mart20.marr10 {
+        line-height:32px;
+    }
+</style>
+<section class="layui-larry-box" style="padding:30px 0px 64px;margin-left:14px;">
+    <div class="" style="font-size:18px;color:#cad4de;" lang="money_management">
+    </div>
+    <div class="larry-personal">
+        <br />
+        <input type="hidden" id="accId" value="@ViewBag.AccountID" />
+        <input type="hidden" id="type" value="@ViewBag.type" />
+        <input type="hidden" id="acc" value="@ViewBag.Account" />
+        <div class="larry-personal-body clearfix " style="margin: 0px;">
+            <div class="layui-elem-field f-fl iv-fiel" style="width:98%; height: auto;border:none">
+                <div class="layui-table-title" lang="records"></div>
+                <div style="text-align: center">
+                    <table class="layui-table">
+                        <thead>
+                            <tr>
+                                <td lang="date_time"></td>
+                                <td lang="type"></td>
+                                <td lang="way"></td>
+                                <td lang="source_account"></td>
+                                <td lang="target_account"></td>
+                                <td lang="sum"></td>
+                                <td lang="state"></td>
+                                <td lang="remark"></td>
+
+                                @if (actiontype == 2)
+                                {
+                                    <td lang="settle_time"></td>
+                                }
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (Model.Items.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="9" align="center" lang="nodata"></td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>@item.InsTime</td>
+
+                                        @if (item.StreamType == 1)
+                                        {
+                                            if (MTConfig.UserLang == "En")
+                                            {
+                                                <td>Deposit</td>
+                                            }
+                                            else
+                                            {
+                                                <td>入金</td>
+                                            }
+
+                                        }
+                                        else if (item.StreamType == 2)
+                                        {
+                                            if (MTConfig.UserLang == "En")
+                                            {
+                                                <td>Withdraw</td>
+                                            }
+                                            else
+                                            {
+                                                <td>出金 </td>
+                                            }
+                                        }
+                                        else if (item.StreamType == 3)
+                                        {
+                                            <td>- </td>
+                                        }
+                                        else if (item.StreamType == 4)
+                                        {
+                                            <td>- </td>
+                                        }
+                                        else if (item.StreamType == 7)
+                                        {
+                                            if (MTConfig.UserLang == "En")
+                                            {
+                                                <td>Withdraw</td>
+                                            }
+                                            else
+                                            {
+                                                <td>出金 </td>
+                                            }
+
+                                        }
+                                        else if (item.StreamType == 5)
+                                        {
+                                            if (MTConfig.UserLang == "En")
+                                            {
+                                                <td>Commision</td>
+                                            }
+                                            else
+                                            {
+                                                <td>佣金 </td>
+                                            }
+
+                                        }
+                                        @if (MTConfig.UserLang == "En")
+                                        {
+                                            if (item.SourseTradeMethodID == "0" || item.SourseTradeMethodName == "9")
+                                            {
+                                                <td>Online Payment</td>
+                                            }
+                                            else if (item.SourseTradeMethodID == "1")
+                                            {
+                                                <td>Bank Transfer</td>
+                                            }
+                                            else if (item.SourseTradeMethodID == "2")
+                                            {
+                                                <td>Commission forwarding</td>
+                                            }
+                                            else if (item.SourseTradeMethodID == "3")
+                                            {
+                                                <td>Internal Transfer</td>
+                                            }
+                                            else if (item.SourseTradeMethodID == "4")
+                                            {
+                                                <td>Deposit To MT4</td>
+                                            }
+                                            else if (item.SourseTradeMethodID == "5")
+                                            {
+                                                <td>Account Deposit</td>
+                                            }
+                                            else if (item.SourseTradeMethodID == "6")
+                                            {
+                                                <td>Cancel</td>
+                                            }
+                                            else if (item.SourseTradeMethodID == "8")
+                                            {
+                                                <td>Bouns Commistion</td>
+                                            }
+                                            else if (item.SourseTradeMethodID == "7")
+                                            {
+                                                <td>Account Transfer</td>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <td>@item.SourseTradeMethodName</td>
+                                        }
+
+                                        @if (item.SourseTradeMethodID == "2" && item.StreamType == 1)
+
+                                        {
+                                            //如果是钱包转钱包
+
+                                            @*source_account*@
+                                            <td>@item.TarUser</td>
+
+                                            @*tar_account*@
+                                            <td>@item.UserName</td>
+                                        }
+                                        else if (item.StreamType == 3)
+                                        {
+                                            //如果是钱包转MT4账户
+
+                                            @*source_account*@
+                                            <td lang="wallet"></td>
+
+                                            @*tar_account*@
+                                            <td>@item.Account</td>
+                                        }
+                                        else if (item.StreamType == 4)
+                                        {
+                                            //如果是MT4账户转钱包
+
+                                            @*source_account*@
+                                            <td>@item.Account</td>
+
+                                            @*tar_account*@
+                                            <td lang="wallet"></td>
+                                        }
+                                        else if (item.StreamType == 1 && item.SourseTradeMethodID == "0")
+                                        {
+                                            //在线支付入金
+
+                                            <td>@item.SourseOnline</td>
+                                            <td>@item.UserName</td>
+                                        }
+                                        else if (item.SourseTradeMethodID == "6")
+                                        {
+                                            <td>System Settlement</td>
+                                            <td>@item.UserName</td>
+                                        }
+                                        else if (item.SourseTradeMethodID == "5")
+                                        {
+                                            <td>System Settlement</td>
+                                            <td>@item.UserName</td>
+                                        }
+                                        else
+                                        {
+                                            @*source_account*@
+
+                                            <td>@item.UserName</td>
+
+                                            @*tar_account*@
+                                        if (item.StreamType == 2)
+                                        {
+                                            <td>@item.MoneyTakeBank</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@item.TarUser</td>
+                                            }
+
+                                        }
+
+
+                                        <td>$@item.StreamMoney </td>
+
+                                        @if (item.Status == 1)
+                                        {
+                                            <td> <span lang="status_success" style="padding:0px 5px;background:#66bb6a;line-height:20px; border-radius: 3px; color: #fff;"></span></td>
+                                        }
+                                        else if (item.Status == 2)
+                                        {
+                                            <td><span lang="status_failed" style="padding:0px 5px;background:#f67467;line-height:20px; border-radius: 3px; color: #fff;"></span></td>
+                                        }
+                                        else if (item.Status == 3)
+                                        {
+                                            <td><span lang="status_check" style="padding:0px 5px;background:#f67467;line-height:20px; border-radius: 3px; color: #fff;"></span></td>
+                                        }
+                                        <td>@item.Remark</td>
+                                        @if (actiontype == 2)
+                                        {
+                                            <td>
+                                                @if (item.StreamType == 5)
+                                                {
+                                                    if (item.SettleTimeSpan != null)
+                                                    {
+                                                        <span>@item.SettleTimeSpan</span>
+                                                    }
+                                                }
+                                            </td>
+                                        }
+                                    </tr>
+
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                    <div class="pageboder" style="width:auto;color:#cad4de"> @Html.ViewPage(Model, "Web") </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

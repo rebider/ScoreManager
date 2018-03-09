@@ -1,0 +1,48 @@
+﻿@using MT.Dal
+@{
+    bool editFlag = false;
+    bool noEmptyFlag = false;
+    string optionLabel = "全部";
+    if (ViewBag.NoEmptyFlag != null && ViewBag.NoEmptyFlag == true)
+    {
+        noEmptyFlag = true;
+    }
+    if (ViewBag.EditFlag != null && ViewBag.EditFlag == true)
+    {
+        editFlag = true;
+    }
+    string className = "layui-input layui-unselect";
+    if (editFlag)
+    {
+        className = "layui-input layui-unselect";
+        optionLabel = "无";
+    }
+    
+    if (noEmptyFlag)
+    {
+        optionLabel = "";
+    }
+
+    FieldTemplateMetadata metaData = ViewData.ModelMetadata as FieldTemplateMetadata;
+    DropDownListAttribute attribute = (metaData != null) ? metaData.Attributes.OfType<DropDownListAttribute>().SingleOrDefault() : null;
+
+    if (attribute != null)
+    {
+        attribute.HtmlAttributes["class"] = className;
+
+        var bll = new GlobalSqlDAL();
+        var list = bll.QueryDropDownListByKey(attribute.ViewDataKey);
+        if (noEmptyFlag)
+        {
+            @Html.DropDownList(string.Empty, new SelectList(list as System.Collections.IEnumerable, attribute.DataValueField, attribute.DataTextField, Model),attribute.HtmlAttributes)
+        }
+        else
+        {
+            @Html.DropDownList(string.Empty, new SelectList(list as System.Collections.IEnumerable, attribute.DataValueField, attribute.DataTextField, Model), optionLabel, attribute.HtmlAttributes)       
+        }
+    }
+    else
+    {
+    @Html.DisplayForModel();
+    }
+}

@@ -1,0 +1,121 @@
+﻿@using MT.Models
+@using MT.Common
+@model PetaPoco.Page<SystemParamModel>
+
+@{
+    ViewBag.Title = "列表";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+	RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+<script type="text/javascript">
+    $(document).ready(function () {
+        BindCheckAll();
+    });
+</script>
+}
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <div class="">
+            <blockquote class="layui-elem-quote mylog-info-tit">
+                <div class="layui-form-item ">
+                      <form action="/Admin/@vs["controller"].ToString()/@vs["action"].ToString()" method="get" class="layui-form ">
+                           <div class="layui-inline">
+                                 <input type="text" class="layui-input"   placeholder="参数名称"  name="Item.ParamName" id="Item_ParamName" value="@(Model.Item == null ? "" : Model.Item.ParamName + "")"/>
+                           </div>
+                           <div class="layui-inline">
+                                 <input type="text" class="layui-input"   placeholder="序号" lay-verify="isnumber" name="Item.OrderNo" id="Item_OrderNo" value="@(Model.Item == null ? "" : Model.Item.OrderNo + "")"/>
+                           </div>
+                          <input type="hidden" value="@ViewBag.orderby" name="orderby" id="orderby"/>
+                           <div class="layui-inline">
+                                 <button type="submit" lay-submit class="layui-btn "> 查询</button>
+                           </div>
+                          @if (Html.IsAuth("Admin", vs["controller"].ToString(), "SystemParamEdit"))
+                        {
+                           <div class="layui-inline">
+                                    <button type="button" class="layui-btn  layui-btn-normal" onclick="goAdd()">添加</button>
+                           </div>
+                        }
+                        @if (Html.IsAuth("Admin", vs["controller"].ToString(), "Delete"))
+                        {
+                           @*<div class="layui-inline f-fr">
+                                <button type="button" class="layui-btn btnDelete layui-btn-danger"> 删除</button>
+                           </div>*@
+                        }
+                       
+                     </form>
+                 </div>
+            </blockquote>
+        </div>
+    <div class="larry-personal-body clearfix">
+            <table border="0" class="layui-table">
+                <tr>
+                    @*<th><input type="checkbox" class="checkall" /></th>*@
+                    <th>
+                        @Html.LabelFor(m=>m.Item.ParamName)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m=>m.Item.ParamValue)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m=>m.Item.Description)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m=>m.Item.Remarks)
+                    </th>
+                    <th>
+                        @Html.LabelFor(m=>m.Item.OrderNo)
+                    </th>
+
+            		<th>操作</th>
+                </tr>
+            @if(Model.Items.Count == 0){
+            	<tr>
+            		<td colspan="7">@MTConfig.ListNoData</td>
+            	</tr>
+            }
+            @foreach (var item in Model.Items) {
+                <tr>
+                    @*<td><input type="checkbox" class="checkone" value="@item.ParamID" /></td>*@ 
+                    <td>
+                        @item.ParamName
+                    </td>
+                    <td>
+                        @item.ParamValue
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        @item.Remarks
+                    </td>
+                    <td>
+                        @item.OrderNo
+                    </td>
+                    <td>
+                      @if (Html.IsAuth("Admin", vs["controller"].ToString(), "SystemParamEdit"))
+                    {
+                    <a href="/Admin/@(vs["controller"])/SystemParamEdit/@item.ParamID" class="layui-btn layui-btn-small layui-btn-normal">编辑</a>
+                    }
+                        @if (Html.IsAuth("Admin", vs["controller"].ToString(), "Delete"))
+                    {
+                    <a onclick="deletemodel('/Admin/@(vs["controller"])/Delete/@item.ParamID')" class="layui-btn layui-btn-small layui-btn-danger" >删除</a>
+                     }
+                    </td>
+                </tr>
+            }
+
+            </table>
+    
+           <div class="pageboder"> @Html.RenderPage(Model, "Admin") </div>
+       </div>
+    </div>
+</section>
+@section foot{
+<script type="text/javascript">
+
+</script>
+}
+

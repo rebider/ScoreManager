@@ -1,0 +1,47 @@
+﻿
+@model MT.Models.UserRoleModel
+@using MT.Common
+
+@{
+    ViewBag.Title = "添加";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutEdit.cshtml";
+	RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+}
+
+<div class="m-content">
+    <div class="m-form f-cb">
+	@Html.RenderNavHtml()
+    @using (Html.BeginForm()) {
+	<dl class="f-cb">
+		    <dt>@Html.LabelFor(model => model.UserID):</dt>
+			<dd>
+			@Html.EditorFor(model => model.UserID)
+            @Html.ValidationMessageFor(model => model.UserID)
+			</dd>
+		    <dt>@Html.LabelFor(model => model.RoleID):</dt>
+			<dd>
+			@Html.EditorFor(model => model.RoleID)
+            @Html.ValidationMessageFor(model => model.RoleID)
+			</dd>
+		    <dt>@Html.LabelFor(model => model.DelFlag):</dt>
+			<dd>
+			@Html.EditorFor(model => model.DelFlag)
+            @Html.ValidationMessageFor(model => model.DelFlag)
+			</dd>
+            <input type="hidden" name="CreateMan" value="@(MTConfig.CurrentUserID)" />
+            <input type="hidden" name="CreateTime" value="@(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))" />
+            <dt></dt>
+            <dd>
+            <input type="submit" value="保存" class="u-btnblue" />
+			<input type="button" value="返回" class="u-btnblue marl10" onclick="location.href='/Admin/@vs["controller"].ToString()/Index';" />
+    		</dd>
+	</dl>
+    }
+	</div>
+</div>
+
+

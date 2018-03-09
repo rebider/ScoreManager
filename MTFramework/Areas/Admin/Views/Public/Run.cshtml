@@ -1,0 +1,49 @@
+﻿@using MT.Common
+@model MT.Areas.Admin.ViewModels.IndexViewModel
+@{
+    ViewBag.Title = "Run";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+}
+<input type="button" onclick="Run();" class="u-btnblue" value="运行" />
+<div class="m-content">
+    <table class="m-table f-cb mart20">
+        <tr>
+            <th>链接</th>
+        </tr>
+        @foreach (var group in Model.GroupList)
+        {
+            var l2List = Model.NodeList.Where(s => s.GroupId == group.Id.ToInt() && s.NodeLevel == 2);
+            foreach (var l2 in l2List)
+            {
+                var l3List = Model.NodeList.Where(s => s.Pid == l2.Id && s.NodeLevel == 3);
+                foreach (var l3 in l3List)
+                {
+                    <tr><td><a href="/Admin/@l2.Name/@l3.Name">@l3.Title</a></td></tr>
+                }
+            }
+        }
+    </table>
+</div>
+
+@section foot
+{
+    <script type="text/javascript">
+        function Run() {
+            $('a').each(function () {
+                AsyncCall($(this));
+            });
+        }
+
+        function AsyncCall(obj) {
+            var href = obj.attr('href');
+            $.ajax({
+                url: href,
+                success: function () {
+                    obj.parent('td').parent('tr').remove();
+                }, error: function () {
+                    obj.parent('td').parent('tr').remove();
+                }
+            });
+        }
+    </script>
+}

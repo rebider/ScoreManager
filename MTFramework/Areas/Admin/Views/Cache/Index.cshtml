@@ -1,0 +1,163 @@
+﻿@using MT.Models
+@using MT.Common
+@model PetaPoco.Page<CacheModel>
+
+@{
+    ViewBag.Title = "列表";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+    <script type="text/javascript">
+      
+    </script>
+}
+
+<div class="m-content">
+    @Html.RenderNavHtml()
+    <div class="f-fr marr10 mart-53">
+        @{
+            if (Html.IsAuth("Admin", vs["controller"].ToString(), "Delete"))
+            {
+            <a class="u-btnadd btnDelete"  onclick="stopconfirm('您确定要清除缓存吗？','清除成功','/Admin/@(vs["controller"])/Delete','')"><i class="ico-btndele"></i>清除缓存</a>
+            }
+        }
+
+    </div>
+    <div class="f-cb">
+    </div>
+    <!-- search start -->
+    @using (Html.BeginForm(vs["action"].ToString(), vs["controller"].ToString(), FormMethod.Get))
+    {
+        <div class="m-search f-cb">
+            <div class="m-schlist f-cb">
+                <div class="searchU">
+                </div>
+                <div class="searchU">
+                    <div class="searchUP">
+                        @Html.LabelFor(m => m.Item.CacheKey)：
+                    </div>
+                    <div class="searchUP">
+                        @Html.EditorFor(m => m.Item.CacheKey)
+                    </div>
+                </div>
+
+                <div class="searchU">
+                    <div class="searchUP">
+                        用户名：
+                    </div>
+                    <div class="searchUP">
+                        @Html.EditorFor(m => m.Item.Ssssname)
+                    </div>
+                </div>
+                <div class="searchU">
+                    <input name="" type="submit" value="查询" class="u-btnblue marl10" />
+                </div>
+            </div>
+        </div>
+        <!-- search end -->
+    }
+    <div class="clear01">
+    </div>
+    <!-- 跳转操作 start -->
+
+    <!-- 跳转操作 end -->
+    <div class="clear02">
+    </div>
+    <div class="m-content">
+        <table border="0" class="m-table f-cb mart20">
+            <tr>
+                <th style="width: 230px;">
+                    @Html.LabelFor(m => m.Item.CacheKey)
+                </th>
+                <th>
+                    @Html.LabelFor(m => m.Item.CacheValue)
+                </th>
+                <th>用户名
+                </th>
+                <th>类型
+                </th>
+                <th>
+                    @Html.LabelFor(m => m.Item.CacheTimes)
+                </th>
+                <th>
+                   状态
+                </th>
+                <th>
+                    @Html.LabelFor(m => m.Item.CreateTime)
+                </th>
+            </tr>
+            @if (Model.Items.Count == 0)
+            {
+                <tr>
+                    <td colspan="5">@MTConfig.ListNoData</td>
+                </tr>
+            }
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+
+                    <td>
+                        @item.CacheKey
+                    </td>
+                    <td>
+                        @item.CacheValue
+                    </td>
+                    <td>
+                             @(item.Ssssname + "" == "" ? "-" : item.Ssssname)
+                    </td>
+                    @if (item.CacheTimes == 0)
+                    {
+                        <td>Token
+                        </td>
+                    }
+                    else
+                    {
+                        <td>验证码
+                        </td>
+                    }
+                    <td>
+                        @item.CacheTimes
+                    </td>
+                    @if (item.DelFlag == 0)
+                    {
+                        if (item.CacheTimes != 0)
+                        {
+                            if (item.CreateTime.Value.AddSeconds(item.CacheTimes.Value) < DateTime.Now)
+                            {
+                        <td>已过期
+                        </td>
+                            }
+                            else
+                            {
+                        <td>未过期
+                        </td>
+                            }
+                        }
+                        else
+                        {
+                        <td>有效
+                        </td>
+                        }
+                    }
+                    else
+                    {
+                        <td>无效
+                        </td>
+                    }
+
+                    <td>
+                        @item.CreateTime.Value.ToString("yyyy-MM-dd HH:mm:ss")
+                    </td>
+
+                </tr>
+            }
+
+        </table>
+    </div>
+    <div class="pageboder">@Html.RenderPage(Model, "Admin") </div>
+</div>
+
+

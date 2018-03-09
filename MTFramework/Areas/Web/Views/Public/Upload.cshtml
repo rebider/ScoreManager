@@ -1,0 +1,83 @@
+﻿@{
+    string id = ViewBag.id;
+    string name = ViewBag.name;
+    string callback = ViewBag.callback;
+    string suffix = ViewBag.suffix;
+    string showName = ViewBag.showName;
+    string maxlength = ViewBag.maxlength;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutEdit.cshtml";
+}
+<form class="m-form" action="/Admin/Public/Upload" method="post" enctype="multipart/form-data">
+    <div>
+        <div class="uploaddiv">
+            <div class="f-fl uploadtitle">请选择您要上传的图片:</div>
+            <div class="f-fl marl10">
+                <input type="file" id="file" name="file" onchange="fileload()" style="display: none"  />
+                <input type="button" onclick="file.click()" id="mybutton" class="u-btnblue3" value="选择图片" />
+                <input type="text" id="txt2" name="txt2" readonly="readonly"/>
+            </div>
+        </div>
+        <div class="uploadbtn">
+            <input type="button" value="取消" onclick="closedil()" class="u-btnblue2 mart20 f-fr marr10" />
+            <input type="submit" value="保存" class="u-btnblue2 mart20 f-fr marr10" />
+        </div>
+    </div>
+    @*    <dl class="f-cb ">
+        <dt>选择文件</dt>
+        <dd>
+            <input type="file" id="file" name="file" class="u-iptl" /></dd>
+        <dt></dt>
+        <dd style="border-top: 1px solid #6c6c6c; width: 99%;">
+            <input type="submit" value="保存" class="u-btnblue mart20" />
+        </dd>
+    </dl>*@
+    <input type="hidden" name="id" id="id" value="@id" />
+    <input type="hidden" name="name" value="@name" />
+    <input type="hidden" name="callback" value="@callback" />
+    <input type="hidden" name="suffix" value="@suffix" />
+    <input type="hidden" name="showName" value="@showName" />
+    <input type="hidden" name="maxlength" value="@maxlength" />
+</form>
+@section foot{
+    <script type="text/javascript">
+
+        function closedil() {
+            top.art.dialog({ id: "@id" }).close();
+        }
+
+        function fileload() {
+            var filname = $("#file").val();
+            $("#txt2").val(filname.substring(filname.lastIndexOf('\\') + 1));
+            $("#mybutton").hide();
+
+        }
+
+        $('input:submit').click(function() {
+            if ($('#file').val() == '') {
+                alert('请选择上传文件');
+                return false;
+            }
+            var suffix = '@suffix';
+            if (suffix == '') {
+                return true;
+            }
+            var suffixArr = suffix.split(',');
+            var lastPoint = $('#file').val().lastIndexOf('.');
+            if (lastPoint < 0) {
+                alert('请上传后缀名为' + suffix + '的文件');
+                return false;
+            }
+            var fileSuffix = $('#file').val().substr(lastPoint);
+            for (var s in suffixArr) {
+                if (s == '') {
+                    continue;
+                }
+                if (suffixArr[s] == fileSuffix) {
+                    return true;
+                }
+            }
+            alert('请上传后缀名为' + suffix + '的文件');
+            return false;
+        });
+    </script>
+}

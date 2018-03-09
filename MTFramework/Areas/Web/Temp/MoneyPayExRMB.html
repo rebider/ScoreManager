@@ -1,0 +1,62 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link href="../../../Styles/MoneyTakeIndex.css" rel="stylesheet" />
+    <link href="../../../Styles/common.css" rel="stylesheet" />
+    <link href="../../../Plugins/common/layui/css/layui.css" rel="stylesheet" />
+    <link href="../../../Styles/Index.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        <div class="layui-form-item" style="margin-top: 30px">
+            <div class="layui-input-block">
+                <div class="layui-box layui-upload-button" style="height: 66px; border: none;">
+                    <img src="../../../Styles/Images/Avatar.png" style="width: 66px; height: 66px; border-radius: 25px;" />
+                    <form target="layui-upload-iframe" method="post" key="set-mine" enctype="multipart/form-data" action="/Admin/Public/Upload">
+                        <input type="file" name="DemoTextFile" id="DemoTextFile" class="layui-upload-file f-fl">
+                    </form>
+                </div>
+                <div style="height: 30px; line-height: 30px;">JianBing Lin</div>
+            </div>
+        </div>
+        <div class="takermb">
+            <p>入金 网银转账</p>
+            <div class="transfer" style="overflow: hidden">
+
+                <div class="f-fl amount">
+                    <div>
+                        <i style="margin-right: 50px">Westfield 钱包</i><button class="ybtn ybtn-fca">显示余额</button>
+                    </div>
+                    <div>
+                        <i style="margin-right: 50px">Westfield 银行</i><button class="ysbtn ybtn-fca">选择</button>
+                    </div>
+                    <div>
+                        <i style="margin-right: 83px">货币种类</i><button class="ysbtn ybtn-fca">选择</button>
+                    </div>
+                    <div>
+                        <i style="margin-right: 83px">入金金额</i><button class="ysbtn ybtn-fca">选择</button>
+                    </div>
+                    <div>
+                        <i style="margin-right: 83px">转换金额</i><button class="ysbtn ybtn-fca">选择</button>
+                    </div>
+                </div>
+                <div class="f-fl important">
+                    <h2 class="h2">重要事项</h2>
+                    <div>>会把您转账的净额数值注入到您的钱包。净额数值是您转账最初金额减去银行间的手续费。Westfield不收取任何手续费。</div>
+                    <div>>最低数额是100美元或等额的其他货币</div>
+                    <div>>Westfield不接受现金至银行汇款方式，请您使用您的银行账户进行入金操作</div>
+                 </div>
+              
+            </div>
+            <div class="send">
+                <button class="y-btn ybtn-defult">确定发送请求</button>
+            </div>
+        </div>
+        <div class="box">
+            <img src="../../../Styles/Images/curve.png" />
+        </div>
+    </div>
+</body>
+</html>

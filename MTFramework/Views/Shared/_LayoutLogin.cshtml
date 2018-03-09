@@ -1,0 +1,88 @@
+﻿@using MT.Common
+@{
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+
+    <title>@ViewBag.Title</title>
+    <meta name="keywords" content="@ViewBag.Keywords" />
+    <meta name="description" content="@ViewBag.Description" />
+    @ResourceHelper.CreateStyleResourceUrl("Home", new[] { "common", "home", "form" })
+
+      @ResourceHelper.CreateScriptResourceUrl(new[] { "Common/jquery-1.7.2.min.js" ,"Common/artdialog.js"})
+
+
+    @RenderSection("head", false)
+    @ResourceHelper.CreateArtDialogUrl("admin")
+
+
+</head>
+<body>
+    <div class="m-content  f-cb marb10">
+        <img src="@ResourceHelper.CreateThemesImgUrl("logo.png")"  width="150"/>
+    </div>
+    @RenderBody()
+
+    <div class="mart-40">
+        @Html.Partial("_FootPartial")
+    </div>
+    @RenderSection("foot", false)
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var pathname = '/Admin/@vs["controller"]/Index';
+           $('form').submit(function () {
+               if ($('.field-validation-error').length == 0) {
+                   $.ajax({
+                       url: $('form').attr('action'),
+                       type: $('form').attr('method'),
+                       data: $('form').serialize(),
+                       success: function (data) {
+                           if (data.status == 1) {
+                              location.href = pathname ;
+                           } else if (data.status ==0) {
+                               toptip(data.msg);
+                               return false;
+                           } else if (data.status == 2) {
+                               toptipfun(data.msg, function () {
+                                   $("#verifyTip2").val("");
+                                   $("#VerifyCode").attr("src", "/Admin/Public/VerifyCode?r=" + Math.random());
+                               });
+                           } else if (data.status == 3) {
+                               toptipfun(data.msg, function () {
+                                   
+                                   $("#user2").val("");
+                                   $("#user2").hide();
+                                   $("#user1").show();
+                                   $("#pass2").val("");
+                                   $("#pass2").hide();
+                                   $("#pass1").show();
+                                   $("#verifyTip2").val("");
+                                   $("#verifyTip2").hide();
+                                   $("#verifyTip1").show();
+                                   $("#VerifyCode").attr("src", "/Admin/Public/VerifyCode?r=" + Math.random());
+                               });
+                           }
+                       }
+                   });
+               }
+               return false;
+           });
+           $("input,textarea,select").focus(function () {
+               $(this).css("border-color", "#66afe9");
+           });
+           $("input,textarea,select").blur(function () {
+               //让当前失去焦点的文本框背景色变为白色
+               $(this).css("border-color", "#e1e1e1");
+           });
+        
+    });
+ 
+
+</script>

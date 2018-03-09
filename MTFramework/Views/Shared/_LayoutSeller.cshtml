@@ -1,0 +1,57 @@
+﻿@using MT.Common
+@{
+    Layout = null;
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+    string controller = vs["controller"].ToString().ToLower();
+    string action = vs["action"].ToString().ToLower();
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <meta name="keywords" content="@ViewBag.Keywords" />
+    <meta name="description" content="@ViewBag.Description" />
+    @ResourceHelper.CreateStyleResourceUrl("Home", new[] { "common", "home", "form" })
+    @ResourceHelper.CreateScriptResourceUrl(new[] { "Common/jquery-1.7.2.min.js" })
+    @RenderSection("head", false)
+</head>
+<body>
+    @Html.Partial("_TopPartial")
+    @Html.Partial("_SearchPartial")
+    @Html.Partial("_TopNavigationPartial")
+    <div class="m-content f-cb mart20">
+        <div class="m-left">
+            <div class="menu">
+                <a class="h f-cb">我的啪啦</a>
+                <div class="menu2 f-cb">
+                    <a class="f-cb t @(controller == "index" ? "z-crt" : "")" href="/Seller/Index/Index">我的订单</a>
+                </div>
+            </div>
+            <div class="menu">
+                <a class="h f-cb">我的活动</a>
+                <div class="menu2 f-cb">
+                    <a class="f-cb t @(controller == "activity" ? "z-crt" : "")" href="/Seller/Activity/Index">活动列表</a>
+                    <a class="f-cb t @(controller == "activity" ? "z-crt" : "")" href="/Seller/Activity/Add">活动添加</a>
+                </div>
+            </div>
+            <div class="menu">
+                <a class="h f-cb">我的账户</a>
+                <div class="menu2 f-cb">
+                    <a class="f-cb t @(controller == "account" ? "z-crt" : "")" href="/Seller/Account/Index">账户设置</a>
+                </div>
+            </div>
+        </div>
+        <div class="m-right">
+            <div class="m-rt f-cb">
+                <span class="title">@ViewBag.Title</span>
+            </div>
+            @RenderBody()
+        </div>
+    </div>
+    @Html.Partial("_FootPartial")
+    @RenderSection("foot", false)
+</body>
+</html>

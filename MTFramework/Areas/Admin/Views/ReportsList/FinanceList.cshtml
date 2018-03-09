@@ -1,0 +1,126 @@
+﻿@using MT.Models
+@using MT.Common
+@using MT.Common.Helper
+@model PetaPoco.Page<MT.Areas.Admin.ViewModels.FinanceListViewModel>
+
+@{
+    ViewBag.Title = "财务列表";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <div class="">
+            <blockquote class="layui-elem-quote mylog-info-tit">
+                <div class="layui-form-item ">
+                    <form action="/Admin/@vs["controller"].ToString()/@vs["action"].ToString()" method="get" class="layui-form ">
+                        <div class="layui-inline">
+                            @Html.Raw(DropDownListHelper.GetDropDownList("DDL_TraderOrderInfoList", "", " name='flag' id='flag' ", "", ViewBag.flag + ""))
+
+                        </div>
+
+                        <input type="hidden" value="@ViewBag.orderby" id="orderby" name="orderby" />
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn ">查询</button>
+                        </div>
+                        @if (Html.IsAuth("Admin", "ReportsList", "ReportExcel"))
+                        {
+                            <div class="layui-inline">
+                                <button type="button" class="layui-btn " id="btnExport"> 导出Excel</button>
+                            </div>
+                        }
+                    </form>
+                </div>
+            </blockquote>
+        </div>
+        <div class="larry-personal-body clearfix">
+            <table border="0" class="layui-table">
+                <tr>
+                    <th>
+                        <label for="Item_Times">日期</label>
+                    </th>
+                    <th>
+                        <label for="Item_InsMoney">入金</label>
+                    </th>
+                    <th>
+                        <label for="Item_TakeMoney">出金</label>
+                    </th>
+                    <th>
+                        <label for="Item_Profit">盈亏</label>
+                    </th>
+                    <th>
+                        <label for="Item_UserCount">平台用户注册数量</label>
+                    </th>
+                    <th>
+                        <label for="Item_AccountCount">交易账户注册数量</label>
+                    </th>
+                </tr>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+
+                        <td>
+                            @item.Times
+                        </td>
+                        <td style="color:green">
+                            @item.InsMoney
+                        </td>
+                        <td style="color:#dc143c">
+                            @item.TakeMoney
+                        </td>
+                        @if (item.Profit < 0)
+                        {
+                            <td style="color: #dc143c">
+                                @item.Profit
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="color: green">
+                                +@item.Profit
+                            </td>
+                        }
+
+
+                        <td>
+                            @item.UserCount
+                        </td>
+                        <td>
+
+                            @item.AccountCount
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="6"> 总入金：<span style="color:green">@ViewBag.count.InsMoney</span> &nbsp;总出金：<span style="color:#dc143c">@ViewBag.count.TakeMoney</span> &nbsp;
+                    总盈亏：@if (ViewBag.count.Profit < 0)
+
+                            {   
+                                <span style="color: #dc143c">@ViewBag.count.Profit</span>
+                            }
+                            else
+                            {
+                                <span style="color: green">+@ViewBag.count.Profit</span>
+                            }
+                    &nbsp;平台总注册量：<span style="color:blue">@ViewBag.count.UserCount</span>&nbsp; 交易账户总注册量：<span style="color:blue">@ViewBag.count.AccountCount</span></td>
+                </tr>
+            </table>
+            <div class="pageboder"> @Html.RenderPage(Model, "Admin") </div>
+        </div>
+    </div>
+</section>
+@section foot{
+    <script>
+        $(function () {
+            //导出Excel
+            $("#btnExport").click(function () {
+                var flag = $("#flag").val();
+                ExcelPost(flag);
+            });
+            function ExcelPost(flag) {
+                window.open("OutPutExcel?flag=" + flag);
+            }
+        });
+    </script>
+}
+

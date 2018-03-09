@@ -1,0 +1,367 @@
+﻿@using MT.Models
+@using MT.Common
+@using MT.Common.Helper
+@using MT.Models
+
+
+@{
+    ViewBag.Title = "代理专区";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+    List<UserInfoModel> list = ViewBag.list;
+    string agenttype = "";
+    if (MTConfig.UserLang =="En")
+    {
+        agenttype = "Please choose a type";
+    }
+    else
+    {
+        agenttype = "请选择代理种类";
+    }
+}
+<link rel="stylesheet" type="text/css" href="~/Plugins/jquery-easyui-1/themes/default/easyui.css">
+
+<style>
+    html, body {
+        margin:0px;
+        padding:0px;
+        background-color:#fafafa;
+    }
+    .page-title {
+        margin-bottom:36px;
+        font-size:20px;
+    }
+    .web-language2 {
+        float: left;
+        margin-left: 10px;
+        line-height: 70px;
+        position: relative;
+        text-align: left;
+    }
+    .datagrid-row{height: 39px;}
+    .datagrid-row:hover{background-color:#eee;transition: 0.5s linear;}
+    .datagrid-header-row{height:39px;background-color:#eee}
+    .panel-header, .panel-body{border-color: #eee}
+    .datagrid-cell {
+        font-weight:normal;
+        font-size:14px;
+        font-family: 'Helvetica Neue', 'Helvetica', 'PingFang SC', '微软雅黑', 'Tahoma', 'Arial', 'sans-serif';
+        font-style:normal;
+        font-variant: normal;
+        color:#666;
+    }
+    .white-bg {
+        background-color:#fff;
+        border:1px solid #eaeaea;
+    }
+</style>
+<script src="~/Scripts/jquery-1.7.2.min.js"></script>
+<script src="~/Plugins/clipboard.min.js"></script>
+<script type="text/javascript" src="~/Plugins/jquery-easyui-1/jquery.easyui.min.js"></script>
+<section class="layui-larry-box" style="padding:10px 10px 0px;">
+    <p lang="agency" class="page-title"></p>  
+    @if (MTConfig.CurrentUserInfo.AgentLevelID > 0)
+    {
+        <li class="web-language2" style="float:left;color:#888;">
+            <i style="font-style:normal;" lang="rebate_Type"></i><span>@ViewBag.UserAgentName</span>
+        </li>
+    }
+    <div class="larry-personal">
+        <div class="larry-personal-body clearfix " style="margin: 0px;">
+            <div class="white-bg">
+                <fieldset class="layui-elem-field layui-field-title" style="padding:0px;margin:0px;border:none;border-bottom:1px solid #eaeaea">
+                    <legend lang="agentarea" style="margin-left:5px;line-height:44px;font-size:16px;color:#333"></legend>
+                </fieldset>
+                <blockquote class="layui-elem-quote layui-quote-nm" style="border:none;padding:0px;overflow:hidden;margin-bottom:0px;">
+                    <form method="post" class="layui-form col-lg-12" id="form" style="padding:20px 0px">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 120px;padding-left:10px;text-align:left;font-size:14px;" lang="link"></label>
+                            <!--代理种类-->
+                            @*<div class="layui-input-inline">
+                            <select name="AgentName" id="AgentName" lay-filter="test">
+                                <option value="-1">@agenttype</option>
+                            </select>
+                        </div>*@
+                            <div class="layui-input-inline" style="width: 40%;">
+                                <input class="layui-input font-family" data-english="yes" type="text" id="myUrl" style="width: 100%;" readonly />
+                            </div>
+                            <a href="javascript:;" style="background-color:#57b6c8" onclick="javascript: layer.msg($('#demo').val())" class="layui-btn copybtn layui-btn-warm" data-clipboard-action="copy" data-clipboard-target="#myUrl" lang="rep_link"><i class="fa fa-clone" aria-hidden="true"></i>&nbsp;</a>
+                            <a href="javascript:;" style="background-color:#f67467" onclick="ShowCode()" class="layui-btn layui-btn-danger" lang="two-dimensional"><i class="fa fa-qrcode" aria-hidden="true"></i>&nbsp;</a>
+                            @*<a href="~/web/AgentArea/BonusSettleIndex" class="layui-btn layui-btn-normal" lang="commission_transfer"><i class="fa fa-exchange"></i>&nbsp;</a>*@
+                            <a href="javascript:;" style="background-color:#f6ac67" onclick="CommisionSettle();" class="layui-btn layui-btn-normal" lang="commission_transfer"></a>
+                        </div>
+                    </form>
+                </blockquote>
+            </div>
+                <input type="hidden" id="demo" btn-lang="copy" />
+            <div class="white-bg" style="margin-top:32px">
+                <fieldset class="layui-elem-field layui-field-title" style="padding:0px;margin:0px;border:none;border-bottom:1px solid #eaeaea; clear: both">
+                    <legend lang="offline_account" style="margin-left:5px;line-height:44px;font-size:16px;color:#333"></legend>
+                </fieldset>
+                <div>
+                    <table id="test"
+                           title=""
+                           class="easyui-treegrid"
+                           url="/web/AgentArea/GetComm"
+                           rownumbers="true"
+                           idField="id"
+                           treeField="text"
+                           fitColums="true"
+                           width="100%"
+                           style="height:auto"
+                           >
+                        <thead>
+                            @if (MTConfig.UserLang == "En")
+                            {
+                                <tr>
+                                    <th field="text" width="16%" formatter="fmt">Account</th>
+                                    <th field="AgentLevelID" width="14%" formatter="fmt1">User Type</th>
+                                    <th field="TradeTimes" width="14%" formatter="fmt2">Trading Times</th>
+                                    <th field="StHands" width="14%" formatter="fmt3">Settled Volume</th>
+                                    <th field="NoStHands" width="14%" formatter="fmt4">Nnliquidated Volume</th>
+                                    <th field="StBalance" width="14%" formatter="fmt5">Settled Commission</th>
+                                    <th field="NoStBalance" width="14%" formatter="fmt6">Unsettled Commission</th>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <th field="text" width="16%" formatter="fmt">账号</th>
+                                    <th field="AgentLevelID" width="14%" formatter="fmt1">用户性质</th>
+                                    <th field="TradeTimes" width="14%" formatter="fmt2">交易笔数</th>
+                                    <th field="StHands" width="14%" formatter="fmt3">已交易手数</th>
+                                    <th field="NoStHands" width="14%" formatter="fmt4">未交易手数</th>
+                                    <th field="StBalance" width="14%" formatter="fmt5">已结算佣金</th>
+                                    <th field="NoStBalance" width="14%" formatter="fmt6">未结算佣金</th>
+                                </tr>
+                            }
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div style="display: none; margin: 0 auto;" id="code">
+        <img src=""/>
+    </div>
+    <input value="@MTConfig.CurrentUserInfo.AgentLevelID" type="hidden" id="AgentLevelID"/>
+    <input value="@MTConfig.CurrentUserInfo.UserID" type="hidden" id="UserID"/>
+    <input type="hidden" btn-lang="sure_settle" id="sure_settle"/>
+    <input type="hidden" btn-lang="proxy_user" id="proxy_user"/>
+    <input type="hidden" btn-lang="personal_user" id="personal_user"/>
+    <input type="hidden" btn-lang="hands" id="hands"/>
+    <input type="hidden" btn-lang="times" id="times" />
+</section>
+@section foot{
+    <script>
+        //||||||||||||||||||||剪切板测试代码 start||||||||||||||||||||||
+
+        var clipboard = new Clipboard('.copybtn');
+
+        clipboard.on('success',
+            function(e) {
+            });
+
+        clipboard.on('error',
+            function(e) {
+            });
+        //||||||||||||||||||||剪切板测试代码 end||||||||||||||||||||||
+        var str = this.location.hostname;
+        //获取代理链接
+        $(function() {
+            $.ajax({
+                url: "/Web/AgentArea/GetAgentURL",
+                type: "post",
+                dataType: "Json",
+                data: { "str": str },
+                success: function(data) {
+                    $("#myUrl").val(data.info);
+                }
+            });
+            //获取代理级别下的所有代理种类
+            $.ajax({
+                url: "/Web/AgentArea/GetAgentTypeList",
+                Type: "post",
+                data: { "AgentLevelID": $("#AgentLevelID").val() },
+                success: function(data) {
+                    var options = "";
+                    for (var i = 0; i < data.length; i++) {
+                        options += "<option value=" + data[i].AgentID + ">" + data[i].AgentName + "</option>";
+                    }
+                    //初始化代理链接
+                    //$("#myUrl").val("http://" + str + "/Regist/RegistUser?UserCode=" + $("#UserID").val());
+                    //追加代理种类option选项
+                    $("#AgentName").empty().append(options);
+                    //LayUI渲染
+                    layui.form().render();
+                }
+            });
+        });
+
+        //代理种类OPTIONS监听
+        layui.use(['jquery', 'form'],
+            function() {
+                var form = layui.form();
+                form.on('select(test)',
+                    function(data) {
+                        $("#myUrl").val("http://" + str + "/Regist/RegistUser?UserCode=" + $("#UserID").val());
+                    });
+            });
+
+        //显示二维码
+        function ShowCode() {
+            var urlStr = $("#myUrl").val();
+            $.post('/Web/AgentArea/CreateCode',
+                { "str": urlStr },
+                function(data) {
+                    $("#code").show();
+                    layer.open({
+                        type: 1,
+                        title: "QRCODE",
+                        content: "<div style='text-align:center;margin-top:20px;'><img src='../../../uploads/" +
+                            data.info +
+                            "'></div>",
+                        area: ['300px', '300px']
+                    });
+                });
+        }
+
+        //佣金结算
+        function CommisionSettle() {
+            var index = layer.confirm($("#sure_settle").val(),
+                function() {
+                    layer.close(index);
+                    $.ajax({
+                        url: "/Web/AgentArea/CommisionSettle",
+                        type: "post",
+                        data: {},
+                        dataType: "json",
+                        success: function(data) {
+                            parent.layer.msg(data);
+                            window.location.reload();
+                        },
+                        beforeSend: function() {
+                            i = loading();
+                        }
+                    });
+                });
+        }
+
+        //加载中
+        function loading() {
+            return layer.load('', { icon: 1, shade: [0.5, '#f5f5f5'], time: 100000 });
+        }
+
+        //*********************Cloums Fomatter*************************//
+        function fmt(val, row) {
+            //console.log(row);
+            if (row.AgentLevelID != 0 && row.AgentLevelID != null) {
+                return "<span style='color:#333'>" + val + "</span>";
+            } else {
+                return "<span style='color:#333'>" + val + "</span>";
+            }
+        }
+
+
+        //用户性质
+        function fmt1(val, row) {
+            if (val != 0 && val != null) {
+                return "<span style='color:#f67467;font-size:\'微软雅黑\''>" + $("#proxy_user").val() + "</span>";
+            } else {
+                return "<span style='color:#57b6c8;font-size:\'微软雅黑\''>" + $("#personal_user").val() + "</span>";;
+            }
+        }
+
+        //交易笔数
+        function fmt2(val, row) {
+            if (row.AgentLevelID != 0 && row.AgentLevelID != null) {
+                return "<span style='color:#333;font-size:\'微软雅黑\''>" + val + " " + $("#times").val() + "</span>";
+            } else {
+                return "<span style='color:#333;font-size:\'微软雅黑\''>" + val + " " + $("#times").val() + "</span>";;
+            }
+        }
+
+        //已交易手数
+        function fmt3(val, row) {
+
+            if (row.AgentLevelID != 0 && row.AgentLevelID != null) {
+                return "<a style='color:#333;font-size:\'微软雅黑\'' href='CommisionDetail?userId=" +
+                    row.id +
+                    "&settle=1'>" +
+                    val +
+                    " " +
+                    $("#hands").val() +
+                    "&nbsp;&nbsp;<i class='fa fa-search' aria-hidden='true'></i></a>";
+            } else {
+                return "<a style='color:#333;font-size:\'微软雅黑\'' href='CommisionDetail?userId=" +
+                    row.id +
+                    "&settle=1'>" +
+                    val +
+                    " " +
+                    $("#hands").val() +
+                    "&nbsp;&nbsp;<i class='fa fa-search' aria-hidden='true'></i></a>";
+            }
+
+        }
+
+        //未交易手数
+        function fmt4(val, row) {
+            if (row.AgentLevelID != 0 && row.AgentLevelID != null) {
+                return "<a style='color:#333;font-size:\'微软雅黑\'' href='CommisionDetail?userId=" +
+                    row.id +
+                    "&settle=0'>" +
+                    val +
+                    " " +
+                    $("#hands").val() +
+                    "&nbsp;&nbsp;<i class='fa fa-search' aria-hidden='true'></i></a>";
+            } else {
+                return "<a style='color:#333;font-size:\'微软雅黑\'' href='CommisionDetail?userId=" +
+                    row.id +
+                    "&settle=0'>" +
+                    val +
+                    " " +
+                    $("#hands").val() +
+                    "&nbsp;&nbsp;<i class='fa fa-search' aria-hidden='true'></i></a>";
+            }
+
+        }
+
+        //已结算佣金
+        function fmt5(val, row) {
+            if (row.AgentLevelID != 0 && row.AgentLevelID != null) {
+                return "<a style='color:#333;font-size:\'微软雅黑\'' href='CommisionDetail?userId=" +
+                    row.id +
+                    "&settle=1'>" +
+                    val +
+                    " $&nbsp;&nbsp;<i class='fa fa-search' aria-hidden='true'></i></a>";
+            } else {
+                return "<a style='color:#333;font-size:\'微软雅黑\'' href='CommisionDetail?userId=" +
+                    row.id +
+                    "&settle=1'>" +
+                    val +
+                    " $&nbsp;&nbsp;<i class='fa fa-search' aria-hidden='true'></i></a>";
+            }
+
+        }
+
+        //未结算佣金
+        function fmt6(val, row) {
+            if (row.AgentLevelID != 0 && row.AgentLevelID != null) {
+                return "<a style='color:#333;font-size:\'微软雅黑\'' href='CommisionDetail?userId=" +
+                row.id +
+                "&settle=0'>" +
+                val +
+                " $&nbsp;&nbsp;<i class='fa fa-search' aria-hidden='true'></i></a>";
+            } else {
+                return "<a style='color:#333;font-size:\'微软雅黑\'' href='CommisionDetail?userId=" +
+               row.id +
+               "&settle=0'>" +
+               val +
+               " $&nbsp;&nbsp;<i class='fa fa-search' aria-hidden='true'></i></a>";
+            }
+            
+        }
+        //***********************************************************//
+    </script>
+}

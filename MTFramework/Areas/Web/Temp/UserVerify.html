@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="/Plugins/common/layui/css/layui.css" rel="stylesheet" media="all" />
+
+</head>
+<body>
+    
+    <form   class="layui-form" id="form" >
+        <input type="hidden" name="UserID" id="UserID" value="28" />
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <label> 身份证正面照片</label>
+            </div>
+
+            <div class="layui-input-block">
+                <input type="hidden" name="IdentityFile" id="IdentityFile" class="layui-input" />
+                <img src="" id="uploadsimg1" />
+                <input type="file" lay-type="images" name="IdentityFile1" id="IdentityFile1" class="layui-upload-file f-fl ">
+                <input type="text" name="IdentityFileTxt" id="IdentityFileTxt" disabled class="layui-input f-fl">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <label> 身份证反面照片</label>
+            </div>
+
+            <div class="layui-input-block">
+                <input type="hidden" name="IdentityFile2" id="IdentityFile2" class="layui-input" />
+                <img src="" id="uploadsimg2" />
+                <input type="file" name="IdentityFile22" id="IdentityFile22" class="layui-upload-file f-fl">
+                <input type="text" name="IdentityFileTxt2" id="IdentityFileTxt2" disabled class="layui-input f-fl">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <label>地址证明</label>
+            </div>
+
+            <div class="layui-input-block">
+                <input type="hidden" name="AddressFile" id="AddressFile" class="layui-input" />
+                <img src="" id="uploadsimg3" />
+                <input type="file" name="AddressFile1" id="AddressFile1" class="layui-upload-file f-fl">
+                <input type="text" name="AddressFileTxt" id="AddressFileTxt" disabled class="layui-input f-fl">
+            </div>
+        </div>
+        <hr />
+
+        <div>
+            <input type="button" id="ok" class="layui-btn" value="提交认证" />
+        </div>
+    </form>
+</body>
+</html>
+<script src="/Scripts/jquery-1.7.2.min.js"></script>
+<script src="/Plugins/common/layui/layui.js"></script>
+<script src="/Plugins/admin/js/larry.js"></script>
+<script src="/Plugins/common/layui/lay/dest/layui.all.js"></script>
+
+<script>
+
+    layui.upload({
+        url: '/Admin/Public/Upload',
+        elem: '#IdentityFile1',
+                before: function (input) {
+                    //返回的参数item，即为当前的input DOM对象
+                    layer.msg('文件上传中');
+                },
+                success: function (res) {
+                    $("#IdentityFileTxt").val(res.name);
+                    $("#IdentityFile").val(res.id);
+                    $("#uploadsimg1").attr("src", "http://localhost:5176/Home/Img?id=" + res.id + "&width=50&height=50");
+                }
+            });
+    
+    layui.upload({
+
+        url: '/Admin/Public/Upload',
+        elem: '#IdentityFile22',
+                before: function (input) {
+                    //返回的参数item，即为当前的input DOM对象
+                    layer.msg('文件上传中');
+                },
+                success: function (res) {
+                    $("#IdentityFileTxt2").val(res.name);
+                    $("#IdentityFile2").val(res.id);
+                    $("#uploadsimg2").attr("src", "http://localhost:5176/Home/Img?id=" + res.id + "&width=50&height=50");
+                }
+            });
+
+    layui.upload({
+        url: '/Admin/Public/Upload',
+        elem: '#AddressFile1',
+        before: function (input) {
+            //返回的参数item，即为当前的input DOM对象
+            layer.msg('文件上传中');
+        },
+        success: function (res) {
+            $("#AddressFileTxt").val(res.name);
+            $("#AddressFile").val(res.id);
+            $("#uploadsimg3").attr("src", "http://localhost:5176/Home/Img?id=" + res.id + "&width=50&height=50");
+        }
+    });
+
+
+        $('#ok').click(function () {
+            $.ajax({
+                type: 'POST',
+                url: "/Web/UserInfo/UserVerify",
+                data: $('form').serialize(),
+                success: function (data) {
+                    if (data.status == 1) {
+                        lock = false;
+                        layer.open({
+                            content: msg,
+                            yes: function (index, layero) {
+                                location.href = url;
+                                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                                console.log(data);
+                            }
+                        });
+                    } else {
+                        layer.open({
+                            content: data.msg
+                        });
+                    }
+                }
+            });
+        });
+</script>

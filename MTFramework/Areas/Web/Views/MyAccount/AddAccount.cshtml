@@ -1,0 +1,297 @@
+﻿@model MT.Models.AccountModel
+@using MT.Common
+@using MT.Common.Helper
+@using MT.Models
+@{
+    ViewBag.Title = "创建账户";
+    Layout = "~/Areas/Web/Views/Shared/_LayoutPage.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+    string tip1 = "";
+    string tip2 = "";
+    string tip3 = "";
+    string tip4 = "";
+    if (MTConfig.UserLang == "En")
+    {
+        tip1 = "You've opened ";
+        tip2 = " account(s).";
+        tip3 = " Allow each user to open up to ";
+        tip4 = ".";
+    }
+    else
+    {
+        tip1 = "您已开通";
+        tip2 = "个账户，";
+        tip3 = "最多开通";
+        tip4 = "个账户";
+    }
+
+}
+
+@section head{
+}
+
+<section class="layui-larry-box" style="padding:0px;margin-top:20px;">
+    @*<fieldset class="layui-elem-field layui-field-title" style="margin-top: 0px;">
+        <legend>创建MT4账户</legend>
+    </fieldset>*@
+    <div class="larry-personal">
+
+        <div class="larry-personal-body clearfix " style="margin:0px;margin-left:4%">
+            <form method="post" class="layui-form col-lg-10" id="form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 120px;" lang="account_type"></label>
+                    <div class="layui-input-inline">
+                        <select id="AccountType" name="AccountType">
+                            <option lang="typeone" value="1"></option>
+                        </select>
+                    </div>
+                </div>
+                @*<div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 120px;" lang="account_GroupName"></label>
+                    <div class="layui-input-inline">
+                        Html.Raw(DropDownListHelper.GetDropDownList("DDL_GETACCOUNTTYPE", "", " name='AccountType' id='AccountType' lay-filter='test' ", "", ""))
+                        @*<select id="AccountType" name="AccountType" lay-filter='test'>
+                            <option lang="typeone" value="1"></option>
+                           <option lang="typetwo" value="22"></option>
+                            <option lang="typethree" value="23"></option>
+                        </select>
+                        @Html.Raw(DropDownListHelper.GetDropDownList("DDL_GETACCOUNTGROUP", "", " name='GroupName' id='GroupName'", "", ""))
+                    </div>
+                </div>*@
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 120px;" lang="currency"></label>
+                    <div class="layui-input-inline">
+                        <select name="">
+                            <option>USD</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 120px;" lang="leverage"></label>
+                    <div class="layui-input-inline">
+                        <select name="Leverage" id="Leverage">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="button" onclick="sureAdd();" lay-submit btn-lang="sure_apply" class="layui-btn" style="margin-left:68px" />
+                        <input type="button" onclick="closelayer();" lay-submit btn-lang="cancel" class="layui-btn layui-btn-danger"/>
+                        <input type="hidden" btn-lang="select_type" id="select_type"/>
+                        <input type="hidden" btn-lang="saving" id="saving"/>
+                        <input type="hidden" id="AcountCount" value="@MTConfig.CurrentUserInfo.MaxAccount"/>
+                        @*<input type="hidden" btn-lang="noverify" id="noverify"/>
+                        <input type="hidden" btn-lang="iknow" id="iknow" />
+                        <input type="hidden" btn-lang="goverify" id="goverify" />
+                        <input type="hidden" btn-lang="seeverify" id="seeverify"/>
+                        <input type="hidden" btn-lang="failedverify" id="failedverify" />
+                        <input type="hidden" btn-lang="verifying" id="verifying" />*@
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="margin: 0 auto; text-align: center">
+                        @*<span>您已开通<span id="count" style="color:red"></span>个账户，最多开通<span style="color:red">5</span>个账户</span>*@
+                        <span>@tip1<span id="count" style="color: red"></span>@tip2 @tip3<span style="color: red" id="MaxAcount"></span>@tip4</span>
+                    </div>
+                </div>
+                <input type="hidden" name="UserID" value="@MTConfig.CurrentUserInfo.UserID" />
+            </form>
+
+        </div>
+    </div>
+</section>
+@section foot
+{
+    <script>
+        //获取用户认证状态
+        var Status = "";
+        //初始化杠杆列表（对应第一种类型）
+        $(function() {
+            var typeid = $("#AccountType").find("option:first").val(); //获取Select选择的Text
+            $.ajax({
+                url: "/Web/MyAccount/GetLeverageList",
+                Type: "post",
+                data: { 'typeId': typeid },
+                success: function(data) {
+                    var dataList = data.data;
+                    var str = "";
+                    for (var i = 0; i < dataList.length; i++) {
+                        if (dataList[i] != 1) {
+                            str += "<option value=" + dataList[i] + ">1:" + dataList[i] + "</option>";
+                        }
+                    }
+                    $("#Leverage").empty().append(str);
+                    layui.form().render();
+                }
+            });
+            //获取已开通账户个数
+            $.ajax({
+                url: "/Web/MyAccount/GetAccountCount",
+                Type: "post",
+                data: {},
+                success: function (data) {
+                    $("#count").html(data);
+                    $("#MaxAcount").html($("#AcountCount").val());
+                }
+            });
+            //获取认证状态
+            //$.ajax({
+            //    url: "/Web/MyAccount/GetIdentityStatus",
+            //    Type: "post",
+            //    data: {},
+            //    success: function(data) {
+            //        if (data.data == null) {
+            //            Status = "0";
+            //        } else {
+            //            if (data.data.Status == null) {
+            //                Status = "0";
+            //            } else if (data.data.Status == "0") {
+            //                Status = "0";
+            //            } else if (data.data.Status == "1") {
+            //                Status = "1";
+            //            } else if (data.data.Status == "2") {
+            //                Status = "2";
+            //            } else if (data.data.Status == "3") {
+            //                Status = "3";
+            //            }
+            //        }
+            //    }
+            //});
+        });
+        //下拉选监听事件
+        layui.use(['jquery', 'form'],
+            function() {
+                var form = layui.form();
+                form.on('select(test)',
+                    function(data) {
+                        $.ajax({
+                            url: "/Web/MyAccount/GetLeverageList",
+                            Type: "post",
+                            data: { 'typeId': data.value },
+                            success: function(data) {
+                                var dataList = data.data;
+                                var str = "";
+                                for (var i = 0; i < dataList.length; i++) {
+                                    if (dataList[i] != 1) {
+                                        str += "<option value=" + dataList[i] + ">1:" + dataList[i] + "</option>";
+                                    }
+                                }
+                                $("#Leverage").empty().append(str);
+                                layui.form().render();
+                            }
+                        });
+
+                    });
+            });
+        var lock = false;
+        ////开设账户
+        function sureAdd() {
+            //console.log(Status);
+            //账户未认证，不能创建账户
+            //if (Status == "0") {
+            //    layer.open({
+            //        title: "Tip",
+            //        content: $("#noverify").val(),
+            //        btn: [$("#iknow").val(), $("#goverify").val()],
+            //        yes: function(index, layero) {
+            //            layer.close(index);
+            //        },
+            //        btn2: function(index, layero) {
+            //            layer.close(index);
+            //            parent.location.href = "/web/UserInfo/UserVerify";
+            //        }
+            //    });
+            //    return false;
+            //}
+
+            //账户认证失败，不能创建交易账户
+            //if (Status == "2") {
+            //    layer.open({
+            //        title: "Tip",
+            //        content: $("#failedverify").val(),
+            //        btn: [$("#iknow").val(), $("#seeverify").val()],
+            //        yes: function(index, layero) {
+            //            layer.close(index);
+            //        },
+            //        btn2: function(index, layero) {
+            //            //layer.close(index);
+            //            parent.location.href = "/web/UserInfo/UserVerify";
+            //        }
+            //    });
+            //    return false;
+            //}
+
+            //账户认证中，不能新建交易账户
+            //if (Status == "3") {
+            //    layer.open({
+            //        title: "Tip",
+            //        content: $("#verifying").val(),
+            //        btn: [$("#iknow").val()],
+            //        yes: function (index, layero) {
+            //            layer.close(index);
+            //        }
+            //    });
+            //    return false;
+            //}
+            if (lock) return;
+            lock = true;
+            var type = $("#AccountType option:selected").val();
+            if (type == "" || type == null) {
+                layer.msg($("#select_type").val());
+                return false;
+            }
+            var i;
+            $.ajax({
+                url: "/web/AccountCreateApply/CreateApply",
+                type: "POST",
+                data: $("#form").serialize(),
+                success: function (data) {
+                    lock = false;
+                    if (data.status == 1) {
+                        //保存成功
+                        layer.open({
+                            content: data.msg,
+                            yes: function (index, layero) {
+                                layer.load();
+                                parent.location.href="/Web/MyAccount/MyAccountIndex?actiontype=1";
+                            }
+                        });
+
+                    } else {
+                        lock = false;
+                        layer.msg(data.msg);
+                    }
+                },
+                beforeSend: function() {
+                    i = loading();
+                },
+                error: function (e, jqxhr, settings, exception) {
+                    lock = false;
+                    loadOver(i);
+                }
+            });
+        }
+
+        //关闭弹窗
+        function closelayer() {
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index); //再执行关闭
+        }
+
+        //加载中
+        function loading() {
+            return layer.msg($("#saving").val(),
+            { icon: 16, shade: [0.5, '#f5f5f5'], scrollbar: false, offset: '', time: 100000 });
+        }
+
+        //加载完毕
+        function loadOver(index) {
+            layer.close(index);
+        }
+
+    </script>
+}
+
+

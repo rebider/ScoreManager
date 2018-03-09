@@ -1,0 +1,372 @@
+﻿@using MT.Common
+@using MT.Models
+@model MT.Areas.Admin.ViewModels.IndexViewModel
+@{
+    ViewBag.Title = "CRM后台管理中心";
+    Layout = "~/Areas/web/Views/Shared/_LayoutIndex.cshtml";
+
+}
+<link href="~/Styles/Index.css" rel="stylesheet" />
+<link href="/Plugins/Font-Awesome-master/css/font-awesome.min.css" rel="stylesheet">
+<style>
+    html {
+        background-color: #fafafa;
+    }
+    .layui-layout-admin .layui-side {
+        width:240px;
+        top:65px;
+    }
+    .layui-layout-admin .layui-header {
+        position:relative;
+        z-index:999;
+        border-bottom:none;
+        background-color:#131b26;
+        box-shadow:0px 1px 3px 0px #141d2a;
+        -webkit-box-shadow:0px 1px 3px 0px #141d2a;
+    }
+    .layui-side-scroll {
+        width:240px;
+    }
+    .layui-nav-tree {
+        width:240px;
+    }
+    .layui-side-bg {
+        background-color:#101823;
+    }
+    
+    .z-hide {
+        display: none !important;
+    }
+
+    .web-language:hover .web-English {
+        display: block;
+    }
+
+    .web-language1:hover .web-English1 {
+        display: block;
+    }
+
+    .web-zhm {
+        float: left;
+        margin: 0 40px;
+        line-height: 70px;
+    }
+
+    .logo img {
+        width: auto;
+        padding-top:4px;
+    }
+
+    .logout {
+        color: #000;
+        height: 100%;
+    }
+
+    .web-English div {
+        border: 1px #fff solid;
+        padding-left: 16px !important;
+    }
+
+    /*.web-English div:hover {
+            border: 1px #ccc solid;
+        }
+    .web-English1 div:hover {
+            border: 1px #ccc solid;
+        }*/
+
+    .web-language {
+        float: left;
+        line-height: 66px;
+        position: relative;
+        width: 90px;
+        text-align: left;
+    }
+
+    .web-language1 {
+        float: left;
+        line-height: 66px;
+        position: relative;
+        text-align: left;
+    }
+
+    .web-language2 {
+        float: left;
+        margin-left: 10px;
+        line-height: 66px;
+        position: relative;
+        text-align: left;
+    }
+    .web-language3 {
+        float: left;
+        line-height: 66px;
+        position: relative;
+        text-align: left;
+    }
+
+    .web-English-z {
+        display: none;
+        z-index: 1000;
+        position: absolute;
+        background: #fff;
+        margin-top: -1px;
+        line-height: 34px;
+        cursor: pointer;
+        width: 126px;
+        right: -13px;
+        border-radius:3px;
+    }
+    .web-English-z > div:hover {
+        background-color:#f7f7f7
+    }
+    .web-English-z > div:first-child {
+        border-top-left-radius:3px;
+        border-top-right-radius:3px;
+    }
+    .web-English-z > div.english-div {
+        border-bottom-left-radius:3px;
+        border-bottom-right-radius:3px;
+    }
+    .web-English-z1 {
+        display: none;
+        z-index: 1000;
+        position: absolute;
+        background: #fff;
+        margin-top: -1px;
+        line-height: 34px; 
+        cursor: pointer;
+        width: 180px;
+        left: 4px;
+        border-radius:3px;
+    }
+    .web-English-z1 > div {
+        padding-left:16px;
+    }
+    .web-English-z1 > div:first-child {
+        border-top-left-radius:3px;
+        border-top-right-radius:3px;
+    }
+    .web-English-z1 > div.layout-div {
+        border-bottom-left-radius:3px;
+        border-bottom-right-radius:3px;
+    }
+    .web-English-z1 > div:hover {
+        background-color:#f7f7f7
+    }
+    .changePassword {
+        float: left;
+        line-height: 70px;
+        cursor: pointer;
+    }
+
+        .changePassword a:hover {
+            color: #f59131 !important;
+            font-weight: bold;
+        }
+    .layui-nav-tree .layui-this {
+        border-left:4px solid #0176b4;
+        background-color:#131b26
+    }
+    .layui-nav-tree .layui-this > a {
+       background-color:#1f2732
+    }
+    .layui-nav-tree .layui-nav-item:hover > a {
+        background-color:#1f2732
+    }
+    .layui-nav-tree .layui-this:hover {
+        border-left:4px solid #0176b4;
+        background-color:#1f2732
+    }
+    .layui-nav-tree .layui-this:hover>a{
+        background-color:#1f2732
+    }
+    .layui-nav-tree:hover {
+        background-color:#1f2732
+    }
+    .layui-this .my-wallet {
+        color: #fff !important;
+    }
+    .layui-nav-bar {
+        display:none !important;
+    }
+    .header-demo .logo {
+        top:2px
+    }
+</style>
+<!-- 用户语言设置 -->
+<input type="hidden" value="@MTConfig.UserLang" id="lang" />
+
+<div class="layui-layout layui-layout-admin" id="layui_layout">
+    <!-- 顶部区域 -->
+    <div class="layui-header header header-demo">
+        <div class="layui-main">
+            <a class="logo">
+                <img src="~/Styles/Images/LOGO.png" />
+            </a>
+            <ul style="float:right">
+                <li class="web-zhm web-language1" style="color:#cad4de;">
+                    <i class="fa fa-user fa-fw" style="margin-top:23px;font-size:18px;color:#cad4de"></i>
+                    <span>@MTConfig.CurrentUserInfo.UserName </span>
+                    <a href="#" class="logout" style="">
+                        <span id="clang1" class="fa fa-angle-down" style="color:#333;"></span>
+                    </a>
+                    <div class="web-English1 web-English-z1">
+                        <div>
+                            <i class="fa fa-lock fa-fw" data-icon="fa  fa-fw" style="font-size:16px;color:#666"></i>
+                            <a lang="ChangePwd" onclick="updatePwd('/Web/Public/UpdatePassword')" style="color:#333;"></a>
+                        </div>
+                        <div class="layout-div">
+                            <i class="fa fa-power-off fa-fw" data-icon="fa  fa-fw" style="font-size:16px;color:#666"></i>
+                            <a href="#" onclick="logout()">
+                                <span class="text" lang="log_off" style="color:#333;"></span><i></i>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="web-language">
+                    <a href="#" class="logout" style="">
+                        @if (MTConfig.UserLang == "En")
+                        {
+                            <img src="~/Styles/Images/entb.jpg" />
+                            <span style="color:#cad4de;">English</span>
+                        }
+                        else
+                        {<img src="~/Styles/Images/Flag.jpg" id="cimg" /><span id="clang" style="color:#cad4de;"> 中文</span>
+                        }
+                        <i class="fa fa-angle-down" style="color:#cad4de;"></i>
+                    </a>
+
+                    <div class="web-English web-English-z">
+                        <div>
+                            <a href="#" class="logout" style="padding-left: 7px;color:#333;" onclick="setlang(2)">
+                                <img src="~/Styles/Images/Flag.jpg" />
+                                <span>中文</span>
+                            </a>
+                        </div>
+                        <div class="english-div">
+                            <a href="#" onclick="setlang(1)" style="padding-left: 9px;color:#333;">
+                                <img src="~/Styles/Images/entb.jpg" />
+                                <span>English</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <style>
+        .language:hover .English {
+            display: block;
+        }
+    </style>
+    <input type="hidden" value="@MTConfig.UserLang" id="userLang" />
+    <!-- 左侧侧边导航开始 -->
+    <div class="layui-side layui-side-bg layui-larry-side" id="larry-side" style="border-right: #8c26c7;">
+        <div class="layui-side-scroll" id="larry-nav-side" lay-filter="side">
+            <!-- 左侧菜单 -->
+            <ul class="layui-nav layui-nav-tree" style="background-color:transparent">
+                <li class="scdli layui-nav-item " ico-id="">
+                    <a href="javascript:;" data-url="/Web/Userinfo/Index">
+                        <i class="fa fa-file-text-o fa-fw" data-icon="fa  fa-fw"></i>
+                        <span class="text" lang="my_profile"></span><i></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 左侧侧边导航结束 -->
+    <!-- 右侧主体内容 -->
+    <div class="layui-body" id="admin-body" style="left:240px;top:65px;bottom: 0;border-left: none;background-color:#16202f">
+        <div class="layui-tab " id="larry-tab" lay-filter="demo" lay-allowclose="true" style="height: 100%;overflow-x:scroll;margin:0px;">
+            <div class="layui-tab-content" style="min-height: 150px; height: 0px; min-width: 1000px;padding:10px 0px; ">
+                <div class="layui-tab-item layui-show">
+                    <iframe src="/Web/Userinfo/Index"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 底部区域 -->
+    <!-- 加载js文件-->
+</div>
+<script>
+    // 点击修改密码
+    function updatePwd(url) {
+        var title = "";
+        var lang = $("#userLang").val();
+        if (lang == "En") {
+            title = "Change Password";
+        } else {
+            title = "修改密码";
+        }
+        layer.open({
+            title: title,
+            type: 2,
+            content: [url],
+            area: ['460px', '330px'],
+            success: function (layero, index) {
+            }
+        });
+    }
+    $("#larry-nav-side ul li").click(function () {
+
+        $(this).addClass("layui-this").siblings().removeClass("layui-this");
+        $(this).children('ul').slideDown();
+    });
+    $(function () {
+        $(".layui-nav-tree a").click(function () {
+            $("iframe").attr("src", ($(this).attr("data-url")));
+        });
+
+        //$("#money").click(function () {
+        //    $("iframe").attr("src", ($(this).attr("data-url")));
+        //});
+    });
+    $("#larry-nav-side ul li").click(function () {
+        $("#admin-home").children("i").attr("class", $(this).children("a").children("i").attr("class"));
+        $("#admin-home").children("em").html($(this).children("a").children(".text").html());
+    });
+    function logout() {
+        var btn1 = "";
+        var btn2 = "";
+        var title = "";
+        var content = "";
+        if ($("#lang").val() == "En") {
+            btn1 = "yes";
+            btn2 = "console";
+            title = "Exit";
+            content = "Are you sure to exit?";
+        } else {
+            btn1 = "是";
+            btn2 = "否";
+            title = "退出登录";
+            content = "你确定要退出吗？";
+        }
+        layer.open({
+            title: title,
+            closeBtn: false,
+            content: '<div style="layui-inline">' + content + '</div>',
+            btn: [btn1, btn2],
+            yes: function (index) {
+                $.ajax({
+                    url: "/Web/public/logout",
+                    type: "post",
+                    success: function (data) {
+                        if (data.status == 1) {
+                            window.location.href = "/Index";
+                        }
+                    }
+                });
+            }
+        });
+    }
+    function setlang(type) {
+        $.ajax({
+            url: "/web/public/SetLang?type=" + type,
+            type: "post",
+            success: function (data) {
+                window.location.reload();
+            }
+        });
+    }
+</script>

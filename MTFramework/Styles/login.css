@@ -1,0 +1,39 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+.g-hd{ background:url(Images/logBg.gif) repeat-x -9999px -9999px;}
+.g-hd{ height:86px; background-position:0 -130px;}
+.m-hd{ width:100%;}
+.m-hd a{ float:left; display:inline-block;width:152px; height:40px; line-height:50px; margin-top:12px; margin-left:40px;}
+.m-hd .name{ float:left; margin-top:30px; margin-left:10px; font-size:18px; color:#8c8c8c;}
+
+/* Banner */
+.g-ban{ height:473px; background:url(Images/banLogBg.jpg) repeat-x; border-top:1px solid #fff;}
+.m-ban{ height:473px; background:url(Images/banLog.jpg) no-repeat;}
+
+/* 登录 */
+.g-logcn{ position:relative; float:right;width:340px; height:330px; padding:9px 9px; margin-top:-437px; background:rgba(0, 101, 143, 0.6) none repeat scroll 0 0 !important;/*实现FF背景透明，文字不透明*/filter:Alpha(opacity=60);background:rgba(0, 101, 143, 0.9) none repeat scroll 0 0\9;/*实现FF背景透明，文字不透明*/filter:Alpha(opacity=90)\9; background:#00658f;/*实现IE背景透明*/}
+.g-login{ float:right; width:340px; height:330px; background:#FFF;}
+.m-login{ z-index:100; float:left; width:100%;}
+.m-login-tt{height:35px; line-height:35px; margin-top:10px;}
+.m-login-tt h3{ float:left; font-size:14px;  text-indent:20px; font-weight:bold; color:#676767;}
+.m-login-ct{ padding:5px 20px 0 20px;}
+.m-login-ct .item{ position:relative; width:227px; height:35px; line-height:35px; background:#fff; margin-top:10px;}
+.m-login-ct .u-ipt, .m-login-ct .u-ipt02, .m-login-ct .u-ipt03{ position:relative; float:left; height:35px;line-height:35px; margin-top:3px; *margin-top:1px; padding-left:5px; color:#999; border:1px solid #e2e2e2; background-color:#FFF;box-shadow: 0 1px 3px rgba(255, 255, 255, 255) inset;}
+.m-login-ct .u-ipt{width:289px;*width:291px;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;}
+.m-login-ct .u-ipt02{ width:120px; *width:96px;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;}
+.m-login-ct .u-ipt03{ width: 205px;}
+.m-login-ct p{ display:inline-block; width:100%; line-height:25px;}
+.m-login-ct p a{color:#a0a1a1;}
+.m-login-ct p a:hover{color:#F60;}
+.m-login-ct .test{float:left; margin-left:10px; margin-top:20px;}
+.m-login-ct .wing{ float:left; color:#999; margin-left:10px; margin-top:22px;}
+
+
+/* 登录按钮 */
+.m-login-ct .u-btn{ width:299px; height:42px; line-height:42px; text-align:center; background:#34b6e4; color:#fff; font-size:16px; font-weight:bold;}
+.m-login-ct .u-btn:hover{ background:#046c96;}
+
+.m-login-ct .ico-qq,.m-login-ct .ico-wb,.m-login-ct .ico-rr{ background: url(Images/adminicoLog.png) no-repeat 0 2px;display: inline-block;height: 25px;width: 20px;}
+.m-login-ct .ico-wb{ background-position: 0 -26px;}
+.m-login-ct .ico-rr{ background-position: 0 -56px;}

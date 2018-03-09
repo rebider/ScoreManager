@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "PayPage";
+    Layout = "~/Areas/Web/Views/Shared/_LayoutPage.cshtml";
+}
+
+<div class="larry-personal" style="width:76%;float:right;margin-right:2%;">
+    <div class="larry-personal-body clearfix">
+        <table border="0" class="layui-table">
+            <tr>
+                <th>
+                    <label>订单号</label>
+                </th>
+                <th>
+                    <label>@ViewBag.lbOrderID</label>
+                </th>
+            </tr>
+
+            <tr>
+                <th>
+                    <label>支付金额</label>
+                </th>
+                <th>
+                    <label>@ViewBag.lbMoney</label>
+                </th>
+            </tr>
+
+            <tr>
+                <th>
+                    <label>交易时间</label>
+                </th>
+                <th>
+                    <label>@ViewBag.lbDate</label>
+                </th>
+            </tr>
+
+            <tr>
+                <th>
+                    <label>交易状态</label>
+                </th>
+                <th>
+                    <label>@ViewBag.lbFlag</label>
+                </th>
+            </tr>
+        </table>
+    </div>
+</div>
+

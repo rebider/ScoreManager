@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "电汇";
+    Layout = "~/Areas/web/Views/Shared/_LayoutPage.cshtml";
+}
+<style>
+body{background-color:#16202f;padding:0 20px 10px;}
+.body{margin:30px auto;background-color:#1c283b;background:#1c283b;font-weight:lighter !important;overflow:hidden;}
+p{margin:0}
+.top{font-size:13px;color:#cad4de;float:left;background:#1c283b;font-weight:lighter;margin-bottom:30px;}
+ .title{font-size:16px;border-bottom:1px solid #232f41;padding-left:20px;color:#cad4de;height:48px;line-height:48px;}
+.top div{padding:10px 0 10px 13px;font-weight:lighter;}
+.one{margin-top:22px;}
+.bom{margin-bottom:32px;}
+.top div .span_left{display:inline-block;text-align:left;width:235px;float:left;}
+.top div .span_right{border:1px solid #232f41;width:480px;padding:10px 0px 10px 15px;float:left;}
+.important_text{float:left;background:#1c283b;margin-left:30px;font-size:12px;color:#8e949d;margin-bottom:30px;}
+.bot{margin-top:30px;}
+.bot span{color:red;float:left;padding-right:7px}
+.bot>div{line-height:1.8;}
+.bottom{color:#8e949d;clear:both;margin-top:25px;}
+.bottom p{line-height:2.0;font-size:12px;}
+</style>
+<div style="margin-top:30px;">
+    <div><a href="/web/MoneyPay/Index" style="color:#cad4de!important;font-size:14px;"><i class="layui-icon "><</i><span lang="return"></span></a></div>
+</div>
+<div style="margin-top:15px;margin-bottom:5px;color:#cad4de;font-size:18px;font-weight:lighter;">
+    <div lang="golden_bank_transfer"></div>
+</div>
+<div class="body">
+    <header class="larry-personal-tit" style="padding-top:10px">
+        <div>
+            <a onclick="window.history.go(-1);"><i class="layui-icon " style="margin-left:12px"></i><span style="font-family:'微软雅黑'" lang="return"></span></a>
+        </div>
+    </header>
+    <div class="title" lang="banking_details"></div>
+    <div class="top">
+        
+        <div class="one bom"><div class="span_left" lang="banking_details1"></div> <div class="span_right " lang="banking_details11"></div></div>
+        <div class="bom"><div class="span_left" lang="banking_details2"></div><div class="span_right" lang="banking_details21"> </div></div>
+        <div class="bom"><div class="span_left" lang="banking_details3"></div><div class="span_right" lang="banking_details31"></div></div>
+        <div class="bom"><div class="span_left" lang="banking_details4"></div><div class="span_right" lang="banking_details41"> </div></div>
+        <div class="bom"><div class="span_left" lang="banking_details5"></div><div class="span_right" lang="banking_details51"> 12-3232-0293459-00</div></div>       
+    </div>
+    <div class="important_text">
+        <div class="bot">
+            <div style="font-size:12px;">
+                <div><span>*</span><div lang="important_itemsb1"></div></div>
+                <div><span>*</span><div lang="important_itemsb2"></div></div>
+            </div>
+        </div>
+
+        <div class="bottom">
+            <div style="font-size:13px;font-weight:700;padding-bottom:6px;" lang="important_itemsa"></div>
+            <p lang="important_itemsa1"></p>
+            <p lang="important_itemsa2"></p>
+            <p lang="important_itemsa3"></p>
+            <p lang="important_itemsa4"></p>
+            <p lang="important_itemsa5"></p>
+            <p lang="important_itemsa6"></p>
+        </div>
+    </div>
+</div>

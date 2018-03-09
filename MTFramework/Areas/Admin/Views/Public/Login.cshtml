@@ -1,0 +1,247 @@
+﻿@using MT.Common
+@model MT.Models.UserModel
+@{
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>登录中心</title>
+    <link rel="icon" href="@ResourceHelper.CreateThemesImgUrl("favicon.ico")" type="image/x-icon" />
+    <meta property="qc:admins" content="204422114265135176536727" />
+    <meta http-equiv=“X-UA-Compatible” content=“IE =Edge″ />
+    <link rel="icon" href="~/Styles/images/16.png" type="image/x-icon" />
+    <meta http-equiv=“X-UA-Compatible” content=“IE =7″ />
+    <link href="~/Styles/common.css" rel="stylesheet" />
+    <link href="~/Styles/login-new.css" rel="stylesheet" />
+
+
+    <script src="~/Scripts/jquery-1.7.2.min.js"></script>
+    <link href="~/Styles/Images/signin.css" rel="stylesheet" />
+
+    <link href="~/Plugins/common/layui/css/layui.css" rel="stylesheet" />
+
+    @*<script src="~/Scripts/Reports/public.js"></script>*@
+    @*<script src="~/Scripts/Reports/FSS.js"></script>*@
+    <style>
+    ::-webkit-input-placeholder {color:#67717e;}
+　　:-moz-placeholder {color:#67717e;}
+　　::-moz-placeholder {color:#67717e;}
+　　:-ms-input-placeholder { color:#67717e;}
+    .login-float-bg {
+        position:absolute;
+        z-index:10;
+        right:0px;
+        top:0px;
+        width:50%;
+        height:100%;
+        background-color:#16202f;
+        opacity:0.5;
+        filter:alpha(opacity=50)
+    }   
+    .login-box {
+        position:fixed;
+        left:50%;
+        top:50%;
+        margin-left:60px;
+        margin-top:-200px;
+    }
+    .lg-inputdiv{
+        border-color:#3f4957;
+        border-radius:3px;
+    }
+    .lg-inputdiv input {
+        color: #909aa6;
+        background: url(../../../../Styles/Images/login-icon-list.png) 16px 18px no-repeat;
+    }
+    .logo {
+        position:absolute;
+        z-index:3;
+        left:24px;
+        top:16px;
+        width:auto;
+        height:auto;
+    }
+    .focus-bg {
+        background-color:#202a39!important;
+    }
+    </style>
+
+</head>
+<body>
+    <div class="can-ss" style="width: 100%; height: 100%;">
+        <div id="canvas-warp" class="canvas-in">
+            <div id="output"></div>
+        </div>
+    </div>
+    <img src="/Styles/Images/LOGO.png" class="logo" />
+    <div class="login-float-bg"></div>
+    <div class="m-content01 " style="z-index: 999; position: absolute; left: 0px; top: 0px; width: 100%">
+
+        <div class="m-content">
+            <div class="">
+
+                <form action="/Admin/Public/Login" method="POST">
+                    <div class="login-box">
+
+
+
+                        <h1 style="font-size: 30px; color: #c7d1db">管理员登录</h1>
+
+                        <div class="lg-inputdiv" id="loginname" style="height:50px;line-height:50px;width:300px;margin-top:60px;color:#fab653!important;">
+
+
+                            <input type="text" id="user2" name="Name" placeholder="请输入账号" value="" style="padding: 0 15px 0px 46px;"/>
+
+                        </div>
+
+                        <div class="lg-inputdiv marl35" id="loginpsd" style="margin-bottom: 20px; margin-top: 20px;height:50px;line-height:50px;width:300px;">
+
+                            <input type="password" id="pass2" name="Password" placeholder="请输入密码" value="" style="padding: 0 15px 0px 46px;background-position:16px -45px"/>
+
+                        </div>
+                        <div class="" style="width: 80%; margin-bottom: 20px;color:#909aa6;">
+                            <div style="border:1px solid #3f4957;height:50px;width:300px;margin:0 auto;border-radius:3px; background: url(../../../../Styles/Images/login-icon-list.png) 16px -110px no-repeat;">
+                                <input type="text" id="verify" class="quan f-fl" placeholder="请输入验证码" value="" style="height: 50px; width: 44%; padding: 0 15px 0px 46px;background-color:transparent;line-height:50px;font-size:18px;" />
+                                <span class="hquan">
+                                    <input type="hidden" name="verify" />
+                                    <a id="GetVerifyCode" onclick="document.getElementById('verifyImg').src = '/Admin/Public/VerifyCode?r=' + Math.random();">
+                                        <img alt="验证码" id="verifyImg" class="verify" src="/Admin/Public/VerifyCode?r=@(new Random().Next(int.MaxValue))" height="40" width="30%" style="cursor: pointer; padding:5px 0 0 10px;" />
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                        <div style="width: 80%; margin: 0 auto; height: 50px;width:300px">
+
+                            <input type="button" id="submitBtn2" class="marl35 btnlogin" value="登录" onclick="return ShowVerify();" style="width: 100%; height: 50px;color:#ffffff;border-radius:4px;background-color:#329ef4" />
+
+                        </div>
+
+                    </div>
+                    <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-copyright" id="copyrigth" style="z-index: 999; position: absolute; left: 0; top: 55%; width: 100%; color: #fff; font-size: 18px; text-align: center">
+
+    </div>
+
+
+</body>
+</html>
+
+<script src="~/Plugins/common/layui/layui.js"></script>
+<script src="~/Plugins/common/layui/lay/dest/layui.all.js"></script>
+<script type="text/javascript">
+
+    function SignIn_Top() {
+        var Win_H = $(window).height();
+        var SignIn_H = $('.SignIn').height();
+        var SignIn_Top = 100 - (100 / Win_H * SignIn_H);
+        var SignIn_Top_H = SignIn_Top / 2;
+        if (Win_H <= SignIn_H) {
+            $('.SignIn_header').css({ 'height': +0 + 'px' });
+        } else {
+            $('.SignIn_header').css({ 'height': +SignIn_Top_H + '%' });
+        };
+    };
+
+    $(document).ready(function () {
+        SignIn_Top();
+        //initTooltipHandler("dark");
+        //	$('#fl_name').numberbox({
+        //		min:0,
+        //		precision:0,
+        //		value:""
+        //	});
+
+        //FSS("canvas-warp", "output");
+        //$(".color li").mouseover(function (event) {
+        //    $(".can-ss").css("background-color", $(this).css("background-color"));
+        //});
+        $("input[type=text],input[type=password]").focus(function () {
+            $(this).parent().addClass("focus-bg")
+        });
+        $("input[type=text],input[type=password]").blur(function () {
+            $(this).parent().removeClass("focus-bg")
+        });
+    });
+
+
+    $(window).resize(function () {
+        SignIn_Top();
+    });
+
+    var nameObj = $('#user2');
+    var passwordObj = $('#pass2');
+
+    function ShowVerify() {
+
+    }
+
+
+    function login() {
+        if (nameObj.val() == '') {
+            layer.msg('请输入账号！');
+            return false;
+        }
+        if (passwordObj.val() == '') {
+            layer.msg('请输入密码！');
+            return false;
+        }
+
+        if ($('#verify').val() == '') {
+            layer.msg("请输入验证码");
+            return false;
+        } else {
+
+            $('input[name="verify"]').val($('#verify').val());
+            //loading层
+            var index = layer.load(1, {
+                shade: [0.5, '#000'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                url: $('form').attr('action'),
+                type: $('form').attr('method'),
+                data: $('form').serialize(),
+                success: function (data) {
+                    if (data.status == 1) {
+                        location.href = "/Admin/Public/Index";
+                    } else if (data.status == 0) {
+                        layer.closeAll("loading");
+                        $("#GetVerifyCode").click();
+                        layer.msg(data.msg);
+                        return false;
+                    } else if (data.status == 2) {
+                        layer.closeAll("loading");
+                        $("#GetVerifyCode").click();
+                        layer.msg(data.msg);
+                        return false;
+                    } else if (data.status == 3) {
+                        layer.closeAll("loading");
+                        $("#GetVerifyCode").click();
+                        layer.msg(data.msg);
+                        return false;
+                    }
+                }
+            });
+
+        }
+    }
+
+    $('#submitBtn2').click(function () {
+        login();
+    });
+
+    //Enter监听事件
+    document.onkeydown = function (event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if (e && e.keyCode == 13) { // enter 键
+            login();
+        }
+    };
+</script>

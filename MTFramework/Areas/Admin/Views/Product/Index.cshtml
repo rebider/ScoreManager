@@ -1,0 +1,68 @@
+﻿@using MT.Models
+@using MT.Common
+@model PetaPoco.Page<ProductModel>
+
+@{
+    ViewBag.Title = "列表";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+    RouteValueDictionary vs = ViewContext.RouteData.Values;
+}
+
+
+@section head{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            BindCheckAll();
+        });
+    </script>
+}
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        @*<header class="larry-personal-tit">
+            <span>个人信息</span>
+        </header>*@
+        @*@Html.RenderNavHtml()
+        <div class="f-cb">
+        </div>*@
+        <!-- search start -->
+        <!-- 跳转操作 start -->
+        <!-- 跳转操作 end -->
+        <div class="larry-personal-body clearfix">
+            <table class="layui-table">
+                <tr>
+                    <th>
+                        @Html.LabelFor(m => m.Item.Name)
+                    </th>
+                    <th>操作</th>
+                </tr>
+                @if (Model.Items.Count == 0)
+                {
+                    <tr>
+                        <td colspan="2">@MTConfig.ListNoData</td>
+                    </tr>
+                }
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @{
+                                if (Html.IsAuth("Admin", vs["controller"].ToString(), "Edit"))
+                                {
+                                    <a href="/Admin/@(vs["controller"])/Edit/@item.ID" class="f-oper"><i class="ico-edit"></i>编辑</a>
+                                    <a href="/Admin/Node/Index?productid=@item.ID" class="f-oper"><i class="ico-details"></i>节点编辑</a>
+                                    <a href="/Admin/Group/Index?Item.ProductId=@item.ID" class="f-oper"><i class="ico-addbakls"></i>节点分组</a>
+                                    <a href="/Admin/Role/Index?Item.ProductId=@item.ID" class="f-oper"><i class="ico-character"></i>角色编辑</a>
+                                    <a href="/Admin/Access/Index?productid=@item.ID" class="f-oper"><i class="ico-userblk"></i>权限编辑</a>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</section>
